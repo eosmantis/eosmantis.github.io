@@ -435,7 +435,7 @@ alert("(" + walletversion+ ") Status..." + currentwallet + " " + global_account 
  
 window.scatterdologin = async () => 
     {
-    
+     
     try {
     
         await ScatterJS.login();
@@ -469,7 +469,7 @@ window.dologout = async() =>
  
   
 function setStatus() {
-               
+            
                      if (!scatter) { return }
 
                      // get accountname
@@ -478,19 +478,22 @@ function setStatus() {
                         {
                         scatter_account = account.name;
                         curaccount = _getCookie("myeosaccount");
-                              
+console.log("SET");     
+console.log("global_account: ",global_account);                        
+console.log(scatter_account , " c:" , curaccount);
                         if (scatter_account != "" && curaccount != scatter_account)
                            {
                            global_account            = scatter_account; 
                             external_login_action();  
-                           _setCookie("myeosaccount",scatter_account,30);                          
+                           _setCookie("myeosaccount",scatter_account,30);    
+                                                      
+                                                                                                           
                            }
                            
-                        currentwallet = "SCATTER"; 
-                        func_setaccountname(scatter_account);     
-                        global_account            = scatter_account;    
-                        global_account_permission = account.authority;   
-                                                   
+                         currentwallet = "SCATTER"; 
+                           func_setaccountname(scatter_account);     
+                           global_account            = scatter_account;    
+                           global_account_permission = account.authority;                      
                   
                         } else
                              {
