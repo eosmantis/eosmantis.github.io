@@ -1,11 +1,974 @@
 <html>
-<body>
-<h2>EOSMantis</h2>
- <br>
-<img src='https://eosmantis.github.io/eosmantis.png' style='width:100px;'>
- <br>
- <br>
-<a href='https://github.com/eosmantis'>GitHub profile</a><br>
+<head>
+<link rel="icon" href="img/icon.png" />
+<link rel="stylesheet" href="css/style.css?ttd=4zdte23934" />
 
+
+ <!-- WALLET-INCLUDE-->
+ 
+    <!-- Anchor js -->
+    <script src="https://unpkg.com/anchor-link@next"></script>
+    <script src="https://unpkg.com/anchor-link-browser-transport@next"></script>
+        
+    <!-- Scatter js -->
+    <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.9/lib/eos.min.js"></script>
+    <script src="js/bundles/scatterjs-core.min.js"></script>
+    <script src="js/bundles/scatterjs-plugin-eosjs.min.js"></script>
+    <script src="js/bundles/scatterjs-plugin-lynx.min.js"></script>    
+    
+    <script src="js/eosiowallet/wallet.js?dsd=79524"></script>   
+    
+    <script src="js/eosjs-account-name_2.2.1.js"></script>  
+   
+ <!-- END WALLET-INCLUDE-->
+
+
+</head>
+
+<body class='bodyclass'>
+<div class='bodyclass_inner'>
+<div style='margin-top:10px;margin-bottom:10px;font-weight:bold;'>
+Membershipfee - direct debit authorization
+</div>
+
+
+
+
+
+
+<!-- walletmenu -->
+
+<div id='walletmenu'  class='walletmenu' style='width:100%;height:90px;'>
+
+<div id='walletmenu_left' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#55ff55;'>
+
+ <div id='walletmenu_accountname' style='position:absolute;width:100%;top:0px;'> 
+  <div id='myaccountname' class='myaccountname' style='font-size:2em;color:#888888;font-weight:bold;'>...</div>
+ </div>
+ 
+ <div id='walletmenu_anchor' style='position:absolute;width:100%;'>
+ <div id='anchorbutton' onclick="login_anchor()" class='loginbutton_anchor noselect' style='margin-left:auto;margin-right:auto;' >ANCHOR</div> 
+ 
+ </div>
+
+ 
+</div>
+
+
+
+
+
+<div id='walletmenu_right' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#5555ff;'>
+  <div id='walletmenu_aa' style='position:absolute;width:100%;'>
+   <div id='logoutbutton' onclick="logout_all()"  class='defaultbutton noselect' style='visibility:hidden;margin-left:auto;margin-right:auto;' >Logout</div>
+  </div>
+
+  <div id='walletmenu_scatter' style='position:absolute;width:100%;visibility:hiddenx;'>
+   <div onclick="login_scatter()" class='defaultbutton noselect' style='margin-left:auto;margin-right:auto;'  >SCATTER/TP/WOMBAT</div>
+  </div>
+</div>
+
+<div style='clear:both;'></div>
+
+
+
+
+</div> <!-- end walletmenu -->
+<br>
+Account Balance: <span id='balance1'>....</span>
+<br>
+
+
+<br>
+<div class='window_outer'>
+<div class='window_inner'>
+<strong>Your Funds</strong><br>
+<br>
+<div id='yourpayments'   style=''>
+...
+</div>
+</div>
+</div>
+<br>
+<br>
+
+
+
+
+<br>
+
+<div class='window_outer'>
+<div class='window_inner'>
+
+<strong>Your Contract Balance</strong> (For payments to other accounts)<br>
+<span id='yourcontractbalance' style=''>...</span> EOS<br>
+
+<br>
+<input id='addfunds' type='text'> EOS <br>
+<br>
+<div onclick='dodeposit()' class='tbl_button' style='width:150px;'>Deposit</div>
+<br>
+<br>
+<br>
+<input id='withdrawvalue' type='text'> EOS <br>
+<br>
+<div onclick='dowithdraw()' class='tbl_button' style='width:150px;'>Withdraw</div>
+  
+</div>
+</div>
+
+
+ 
+
+<br>
+
+
+<div class='window_outer'>
+<div class='window_inner'>
+
+<strong>Your Approvals</strong><br>
+<br>
+<div id='yourapprovals' style=''>
+...
+</div>
+<br>
+</div>
+</div>
+
+<br>
+<br>
+
+
+<div class='window_outer'>
+<div class='window_inner'>
+<strong>Create New Approval</strong><br>
+<br>
+<br>
+beneficiary (EOS-accountname):<br>
+<input id='beneficiary' type='text'>  <br>
+<br>
+<br>
+Withdraw amount:<br>
+<input id='withdrawvalue' type='text'> EOS <br>
+<br>
+<div onclick='createapproval()' class='tbl_button' style='width:200px;'>Create Approval</div>
+
+</div>
+</div>
+
+
+
+
+<br>
+<div style='clear:both;'></div>
+<br>
+<br>
+<br>
+
+<hr>
+<div style='text-align:center'>
+NO LIABILITY! USE AT YOUR OWN RISK! NO SUPPORT! NOT AUDITED!
+</div>
+<hr> 
+<br>
+
+ 
+
+<script>
+var id = 10;
+var tokenid = 12;
+var price = 1;
+var user = "sovdex"
+  
+var lock_approvals_update = 0;  
+ 
+function setaccountname( name )
+{
+document.getElementById('myaccountname').innerHTML            = ""+name+"";
+ 
+document.getElementById('walletmenu_anchor').style.visibility = "hidden";
+document.getElementById('walletmenu_anchor').style.height     = "0px";
+
+document.getElementById('walletmenu_scatter').style.visibility = "hidden";
+document.getElementById('walletmenu_scatter').style.height     = "0px"; 
+
+document.getElementById('logoutbutton').style.visibility       = "visible";
+document.getElementById('logoutbutton').style.height           = ""; 
+ 
+// reset all update counter                  
+counter             = -3;
+cnt_contractbalance = -3;
+cnt_approvals       = -3 
+}
+
+
+
+function logoutall( name )
+{
+document.getElementById('myaccountname').innerHTML = "...";
+
+document.getElementById('walletmenu_anchor').style.visibility  = "visible";
+document.getElementById('walletmenu_anchor').style.height      = "";
+
+document.getElementById('walletmenu_scatter').style.visibility = "visible";
+document.getElementById('walletmenu_scatter').style.height     = "";
+ 
+document.getElementById('logoutbutton').style.visibility       = "hidden";
+document.getElementById('logoutbutton').style.height           = "0px";
+}
+
+
+
+function external_login_action()
+{
+update_counter = 0;
+}
+
+function func_success( message )
+{
+                  
+// reset all update counter                  
+counter             = -3;
+cnt_contractbalance = -3;
+cnt_approvals       = -3
+
+alert(message);
+}
+
+function func_error( message )
+{
+alert(message);
+}
+
+
+function dodeposit()
+{
+value1 = document.getElementById('addfunds').value * 1;
+
+value = value1.toFixed(4) + " EOS";
+ 
+
+var theactions = [];
+
+memo = "";
+    
+   
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "membershipfe",
+                       "quantity": value,
+                       "memo": memo
+                       }
+                 };
+
+ 
+theactions.push(action);
+   
+
+ 
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+ 
+
+} // dodeposit
+
+
+
+
+function dowithdraw()
+{
+value1 = document.getElementById('withdrawvalue').value * 1;
+
+value = value1.toFixed(4) + " EOS";
+ 
+ 
+
+var theactions = [];
+
+memo = "";
+
+
+    
+   
+    var action = {
+                 account: "membershipfe",
+                 name: 'withdraw',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "myaccount": global_account,    
+                       "theamount": value
+                       }
+                 };
+
+ 
+theactions.push(action);
+   
+
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+
+} // dowithdraw
+
+
+
+
+ 
+
+
+function createapproval()
+{
+beneficiary = document.getElementById('beneficiary').value;
+
+withdrawvalue = document.getElementById('withdrawvalue').value *1;
+
+value = withdrawvalue.toFixed(4) + " EOS";
+ 
+
+
+var theactions = [];
+
+memo = "";
+
+   
+    var action = {
+                 account: "membershipfe",
+                 name: 'authorize',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "myaccount": global_account,    
+                       "beneficiary": beneficiary,    
+                       "theamount": value
+                       }
+                 };
+
+ 
+theactions.push(action);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+ 
+} // createapproval
+
+
+
+
+function testtransaction()
+{
+var theactions = [];
+
+memo = "This is it";
+
+    
+   
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "hexenmeister",
+                       "quantity": "0.0001 EOS",
+                       "memo": memo
+                       }
+                 };
+
+ 
+theactions.push(action);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+} // testtransaction
+
+
+
+
+
+function claim( myaccount, payer )
+{
+console.log("CLAIM");
+console.log(myaccount);
+console.log( payer);
+
+
+var theactions = [];
+
+    
+   
+    var action = {
+                 account: "membershipfe",
+                 name: 'claim',
+                 authorization: [{
+                                actor: myaccount,
+                                permission: "active"
+                                }],
+                 data: {
+                       "myaccount": myaccount,
+                       "payer": payer
+                       }
+                 };
+
+theactions.push(action);
+   
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+   
+} // claim
+
+
+
+
+function callback_render_balance1( value )
+{
+
+if (value.rows.length == 0) return;     
+              
+balance = value.rows[0].balance;
+buffer  = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance1').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getbalancedata()
+{
+getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+function callback_render_claims( value )
+{
+if (value.rows.length == 0) return;  
+
+
+var dateObj = new Date();
+var month = dateObj.getUTCMonth() + 1; //months from 1-12
+var day = dateObj.getUTCDate();
+var year = dateObj.getUTCFullYear();
+
+newdate = year + "/" + month + "/" + day;
+
+console.log("claims");
+console.log(value);
+ 
+var size = value.rows.length;
+ 
+var buffer = "";
+
+
+
+buffer += "<div class='tbl_line' style=''>";
+buffer += "<div class='tbl_cell15' style='font-weight:bold;'>";
+buffer += "From";        
+buffer += "</div>"; 
+
+buffer += "<div class='tbl_cell15' style='font-weight:bold;'>";
+buffer += "Amount";        
+buffer += "</div>"; 
+
+buffer += "<div class='tbl_cell15' style='font-weight:bold;'>";
+buffer += "Last claim";        
+buffer += "</div>"; 
+
+buffer += "<div class='tbl_cell10' style='font-weight:bold;'>";
+buffer += "&nbsp;";        
+buffer += "</div>"; 
+        
+buffer += "</div>"; 
+buffer += "<div class='tbl_clear' style=''></div>";       
+       
+
+var FOUND = 0;
+for (var i=0; i<size; i++)
+    {
+    var user        = value.rows[i].user;
+    var beneficiary = value.rows[i].beneficiary;
+    
+    if (beneficiary == global_account)
+       {
+       FOUND = 1;
+       var amount     = value.rows[i].amount;
+       var lastclaim  = value.rows[i].lastclaim;
+       var last_year  = value.rows[i].last_year;
+       var last_month = value.rows[i].last_month;
+       
+       amount = formateos( amount ) + " EOS";
+       
+       
+       var claimbutton = "";
+       if (last_year == year && last_month == month)
+          {
+          claimbutton = "<span onclick='' class='tbl_button' style='color:#aaaaaa;background-color:#eeeeee;'>&nbsp;CLAIM&nbsp;</span>";
+          } else
+            {
+            claimbutton = "<span onclick='claim(\""+global_account+"\",\""+user+"\")' style='' class='tbl_button' >&nbsp;CLAIM&nbsp;</span>";
+            } 
+    
+
+       
+       buffer += "<div class='tbl_line' style=''>";
+        buffer += "<div class='tbl_cell15' style=''>";
+        buffer += user;        
+        buffer += "</div>"; 
+        
+        buffer += "<div class='tbl_cell15' style=''>";
+        buffer += amount;        
+        buffer += "</div>"; 
+
+        buffer += "<div class='tbl_cell15' style=''>";
+        buffer += lastclaim;        
+        buffer += "</div>"; 
+        
+        buffer += "<div class='tbl_cell10' style=''>";
+        buffer += claimbutton;        
+        buffer += "</div>";         
+        
+       buffer += "</div>"; 
+       buffer += "<div class='tbl_clear' style=''></div>";       
+       } // if
+    } // for...
+
+
+
+ 
+if (FOUND == 0) buffer += "Nothing to claim!<br>";
+
+
+
+document.getElementById('yourpayments').innerHTML =  buffer;                          
+} // callback_render_balance1
+
+
+function getclaimdata()
+{
+getdata(callback_render_claims, "membershipfe", "membershipfe", "approvals", "", "", "", 1112 );
+}
+
+
+
+
+
+
+
+
+
+function openeditapproval( id )
+{
+divid = "editmenu_"+id; 
+ 
+ var spanid = "editbutton_"+id;   
+   
+ 
+ if (editopen[id] == "" || editopen[id] == undefined)
+    {
+    editopen[id] = 1;
+
+    lock_approvals_update = 1;
+    document.getElementById(divid).style.height = "";
+
+    document.getElementById(spanid).innerHTML = "CLOSE&nbsp;&#9650;";
+    } else
+      {
+      editopen[id] = "";
+      
+      lock_approvals_update = 0;
+      divid = "editmenu_"+id; 
+      document.getElementById(divid).style.height = "0px";
+  
+      document.getElementById(spanid).innerHTML = "EDIT&nbsp;&#9660;";
+      }
+ 
+} // openeditapproval
+
+ 
+ 
+
+function saveeditapproval( id )
+{
+var div_beneficiary = "beneficiary_"+id;    
+var div_amount      = "amount_"+id;    
+var div_last_year   = "last_year_"+id;    
+var div_last_month  = "last_month_"+id;    
+       
+       
+beneficiary = document.getElementById(div_beneficiary).value   ;    
+amount = document.getElementById(div_amount).value * 1      ;
+amount = amount.toFixed(4) + " EOS";
+
+last_year = document.getElementById(div_last_year).value    ;   
+last_month = document.getElementById(div_last_month).value   ;    
+       
+
+var theactions = [];
+
+      
+   
+    var action = {
+                 account: "membershipfe",
+                 name: 'authedit',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "myaccount": global_account,
+                       "beneficiary": beneficiary,
+                       "theamount": amount,
+                       "last_year": last_year,
+                       "last_month": last_month
+                       }
+                 };
+
+ 
+theactions.push(action);
+   
+
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   
+   lock_approvals_update = 0;
+   }
+   
+   
+} // saveeditapproval
+
+
+
+
+
+var editopen = new Array();
+
+
+
+function callback_render_approvals( value )
+{ 
+if (value.rows.length == 0) return;  
+
+var dateObj = new Date();
+var month = dateObj.getUTCMonth() + 1; // months from 1-12
+var day = dateObj.getUTCDate();
+var year = dateObj.getUTCFullYear();
+
+newdate = year + "/" + month + "/" + day;
+
+
+
+console.log("claims");
+console.log(value);
+ 
+var size = value.rows.length;
+ 
+var buffer = "";
+
+
+
+
+       buffer += "<div class='tbl_line' style=''>";
+        buffer += "<div class='tbl_cell15' style='font-weight:bold;'>";
+        buffer += "To";        
+        buffer += "</div>"; 
+
+        buffer += "<div class='tbl_cell15' style='font-weight:bold;'>";
+        buffer += "Amount";        
+        buffer += "</div>"; 
+
+        buffer += "<div class='tbl_cell15' style='font-weight:bold;'>";
+        buffer += "Last claim";        
+        buffer += "</div>"; 
+
+        buffer += "<div class='tbl_cell10' style='font-weight:bold;'>";
+        buffer += "&nbsp;";        
+        buffer += "</div>"; 
+        
+       buffer += "</div>"; 
+       buffer += "<div class='tbl_clear' style=''></div>";     
+
+for (var i=0; i<size; i++)
+    {
+    var user        = value.rows[i].user;
+    var beneficiary = value.rows[i].beneficiary;
+    
+    if (user == global_account)
+       {
+       
+       var amount     = value.rows[i].amount;
+       
+       amount = formateos( amount ) + "";
+       var lastclaim  = value.rows[i].lastclaim;
+       var last_year  = value.rows[i].last_year;
+       var last_month = value.rows[i].last_month;
+       
+       var spanid = "editbutton_"+i;    
+       var claimbutton = "<span id='"+spanid+"' onclick='openeditapproval("+i+")' style='cursor:pointer;'>EDIT&nbsp;&#9660;</span>";
+    
+                  
+       var divid = "editmenu_"+i;    
+       
+       var div_beneficiary = "beneficiary_"+i;    
+       var div_amount      = "amount_"+i;    
+       var div_last_year   = "last_year_"+i;    
+       var div_last_month  = "last_month_"+i;    
+       
+          
+       var editform = "<div id='"+divid+"' class='editmenu' style='height:0px;'>";
+        editform += "<div id='editmenu_inner' class='editmenu_inner' style=''>"
+        editform += "<br>";
+                     
+       
+        editform += "<div class='tbl_line' style=''>";
+         editform += "<div class='tbl_cell15' style=''>";
+         editform += "Beneficiary";        
+         editform += "</div>"; 
+        
+         editform += "<div class='tbl_cell15' style=''>";
+         editform += "<input id='"+div_beneficiary+"' type='text' readonly='readonly' style='color:#aaaaaa;' value='"+beneficiary+"'>";        
+         editform += "</div>"; 
+       
+       editform += "</div>"; 
+       
+       editform += "<div class='tbl_clear' style=''></div>";    
+
+
+       
+       editform += "<div class='tbl_line' style=''>";
+        editform += "<div class='tbl_cell15' style=''>";
+        editform += "Amount";        
+        editform += "</div>"; 
+        
+        editform += "<div class='tbl_cell15' style=''>";
+        editform += "<input id='"+div_amount+"' type='text' style='' value='"+amount+"'>";        
+        editform += "</div>"; 
+       editform += "</div>"; 
+       editform += "<div class='tbl_clear' style=''></div>";    
+
+
+        
+       editform += "<div class='tbl_line' style=''>";
+        editform += "<div class='tbl_cell15' style=''>";
+        editform += "Last year";        
+        editform += "</div>"; 
+        
+        editform += "<div class='tbl_cell15' style=''>";
+        editform += "<input id='"+div_last_year+"' type='text' style='' value='"+last_year+"'>";        
+        editform += "</div>"; 
+       editform += "</div>"; 
+       editform += "<div class='tbl_clear' style=''></div>";      
+       
+       
+       
+       
+       
+              
+       editform += "<div class='tbl_line' style=''>";
+        editform += "<div class='tbl_cell15' style=''>";
+        editform += "Last month";        
+        editform += "</div>"; 
+        
+        editform += "<div class='tbl_cell15' style=''>";
+        editform += "<input id='"+div_last_month+"' type='text' style='' value='"+last_month+"'>";        
+        editform += "</div>"; 
+        
+       editform += "</div>"; 
+       editform += "<div class='tbl_clear' style=''></div>";   
+       
+       
+       
+       
+       
+       editform += "<div id='' onclick='saveeditapproval("+i+")'  class='tbl_button' style='width:150px;'>&nbsp;SAVE&nbsp;</div><br>";
+
+
+       editform += "</div>";  // editmenu_inner
+       editform += "</div>";  // class='editmenu
+       editform += "<br>";
+       
+       
+       
+       
+       buffer += "<div class='tbl_line' style=''>";
+        buffer += "<div class='tbl_cell15' style=''>";
+        buffer += beneficiary;        
+        buffer += "</div>"; 
+        
+        buffer += "<div class='tbl_cell15' style=''>";
+        buffer += amount;        
+        buffer += "</div>"; 
+
+        buffer += "<div class='tbl_cell15' style=''>";
+        buffer += lastclaim + "&nbsp;";        
+        buffer += "</div>"; 
+        
+        buffer += "<div class='tbl_cell10' style=''>";
+        buffer += claimbutton;        
+        buffer += "</div>";         
+        
+       buffer += "</div>"; 
+       buffer += "<div class='tbl_clear' style=''></div>";      
+       
+       
+            
+       
+       buffer += editform;
+       
+       } // if
+    } // for...
+ 
+ 
+ 
+                       
+document.getElementById('yourapprovals').innerHTML =  buffer;                          
+} // callback_render_approvals
+
+
+function getapprovals()
+{
+getdata(callback_render_approvals, "membershipfe", "membershipfe", "approvals", "", "", "", 1112 );
+}
+
+
+
+
+function callback_render_contractbalance( value )
+{
+if (value.rows.length == 0) return;  
+
+balance = value.rows[0].amount;
+
+balance = formateos( balance );
+document.getElementById('yourcontractbalance').innerHTML = "  " + balance;
+                                                                          
+} // callback_render_balance1
+
+
+
+
+function toFixed3(num, fixed) {
+    var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
+    return num.toString().match(re)[0];
+}
+
+
+function formateos( balance )
+{
+balance = balance / 10000;
+console.log("b: " + balance);
+balance = balance.toFixed(4);
+return( balance );
+}
+
+
+function getcontractbalance()
+{
+if (global_account == "") return;
+ 
+uint64var =   eosjsName.nameToUint64( global_account + "" );
+console.log(uint64var);
+
+getdata(callback_render_contractbalance, "membershipfe", "membershipfe",  "deposits" ,uint64var, 1, "i64", 1112 );
+}
+
+ 
+
+
+var counter = 0;
+var cnt_contractbalance = 0;
+var cnt_approvals       = 0;
+
+function update_thread()
+{
+console.log(counter + " " + cnt_contractbalance);
+
+if ( (counter % 30) == 0)
+   {
+   getbalancedata();
+   }
+
+if ( (counter % 130) == 0)
+   {
+   getclaimdata();
+   }
+   
+   
+   
+if ( (cnt_contractbalance % 30) == 0)
+   {
+   getcontractbalance();
+   }
+   
+   
+   
+
+if ( (cnt_approvals % 30) == 0 && lock_approvals_update == 0)
+   {
+   getapprovals();
+   }
+      
+   
+   
+if (global_account != "") 
+   {
+   counter++;
+   cnt_contractbalance++;
+   cnt_approvals++;
+   }
+
+
+var time = setTimeout("update_thread()", 1000);
+} //// update_thread
+
+
+</script>
+
+
+<script>
+ 
+init_wallets( "membershipfe",setaccountname, logoutall );
+
+update_thread(); 
+
+</script>
+
+</div>
 </body>
-</html>
+</hmtl>
