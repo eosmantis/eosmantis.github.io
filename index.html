@@ -149,7 +149,7 @@ beneficiary (EOS-accountname):<br>
 <br>
 <br>
 Withdraw amount:<br>
-<input id='withdrawvalue' type='text'> EOS <br>
+<input id='withdrawvalue2' type='text'> EOS <br>
 <br>
 <div onclick='createapproval()' class='tbl_button' style='width:200px;'>Create Approval</div>
 
@@ -170,7 +170,7 @@ Withdraw amount:<br>
 NO LIABILITY! USE AT YOUR OWN RISK! NO SUPPORT! NOT AUDITED!
 </div>
 <hr> 
-<small style='color:#cccccc;'>&nbsp;V1.0.0</small><br>
+<small style='color:#cccccc;'>&nbsp;V1.0.1</small><br>
 <br>
 
  
@@ -341,8 +341,8 @@ function createapproval()
 {
 beneficiary = document.getElementById('beneficiary').value;
 
-withdrawvalue = document.getElementById('withdrawvalue').value *1;
-
+withdrawvalue = document.getElementById('withdrawvalue2').value *1;
+ 
 value = withdrawvalue.toFixed(4) + " EOS";
  
 
