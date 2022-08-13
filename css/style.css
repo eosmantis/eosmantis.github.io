@@ -204,4 +204,10 @@ text-align:center;
 background:#0269d9;
 }
 
+.textfield
+{
+min-height:20px;
+font-size:25px;
+}
+
 /* */

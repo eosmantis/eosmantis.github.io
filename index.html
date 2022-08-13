@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="icon" href="img/icon.png" />
-<link rel="stylesheet" href="css/style.css?ttd=4zdte23934" />
+<link rel="stylesheet" href="css/style.css?ttd=4zd23934" />
 
 
  <!-- WALLET-INCLUDE-->
@@ -104,13 +104,13 @@ Account Balance: <span id='balance1'>....</span>
 <span id='yourcontractbalance' style=''>...</span> EOS<br>
 
 <br>
-<input id='addfunds' type='text'> EOS <br>
+<input id='addfunds' type='text' class='textfield'> EOS <br>
 <br>
 <div onclick='dodeposit()' class='tbl_button' style='width:150px;'>Deposit</div>
 <br>
 <br>
 <br>
-<input id='withdrawvalue' type='text'> EOS <br>
+<input id='withdrawvalue' type='text' class='textfield'> EOS <br>
 <br>
 <div onclick='dowithdraw()' class='tbl_button' style='width:150px;'>Withdraw</div>
   
@@ -145,11 +145,11 @@ Account Balance: <span id='balance1'>....</span>
 <br>
 <br>
 beneficiary (EOS-accountname):<br>
-<input id='beneficiary' type='text'>  <br>
+<input id='beneficiary' type='text' class='textfield'>  <br>
 <br>
 <br>
 Withdraw amount:<br>
-<input id='withdrawvalue2' type='text'> EOS <br>
+<input id='withdrawvalue2' type='text' class='textfield'> EOS <br>
 <br>
 <div onclick='createapproval()' class='tbl_button' style='width:200px;'>Create Approval</div>
 
@@ -766,7 +766,7 @@ for (var i=0; i<size; i++)
          editform += "</div>"; 
         
          editform += "<div class='tbl_cell15' style=''>";
-         editform += "<input id='"+div_beneficiary+"' type='text' readonly='readonly' style='color:#aaaaaa;' value='"+beneficiary+"'>";        
+         editform += "<input id='"+div_beneficiary+"' type='text' readonly='readonly' class='textfield' style='color:#aaaaaa;' value='"+beneficiary+"'>";        
          editform += "</div>"; 
        
        editform += "</div>"; 
@@ -781,7 +781,7 @@ for (var i=0; i<size; i++)
         editform += "</div>"; 
         
         editform += "<div class='tbl_cell15' style=''>";
-        editform += "<input id='"+div_amount+"' type='text' style='' value='"+amount+"'>";        
+        editform += "<input id='"+div_amount+"' type='text' class='textfield' style='' value='"+amount+"'>";        
         editform += "</div>"; 
        editform += "</div>"; 
        editform += "<div class='tbl_clear' style=''></div>";    
@@ -794,7 +794,7 @@ for (var i=0; i<size; i++)
         editform += "</div>"; 
         
         editform += "<div class='tbl_cell15' style=''>";
-        editform += "<input id='"+div_last_year+"' type='text' style='' value='"+last_year+"'>";        
+        editform += "<input id='"+div_last_year+"' type='text' class='textfield' style='' value='"+last_year+"'>";        
         editform += "</div>"; 
        editform += "</div>"; 
        editform += "<div class='tbl_clear' style=''></div>";      
@@ -810,7 +810,7 @@ for (var i=0; i<size; i++)
         editform += "</div>"; 
         
         editform += "<div class='tbl_cell15' style=''>";
-        editform += "<input id='"+div_last_month+"' type='text' style='' value='"+last_month+"'>";        
+        editform += "<input id='"+div_last_month+"' type='text' class='textfield' style='' value='"+last_month+"'>";        
         editform += "</div>"; 
         
        editform += "</div>"; 
