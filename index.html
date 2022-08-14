@@ -175,7 +175,7 @@ Withdraw amount:<br>
 NO LIABILITY! USE AT YOUR OWN RISK! NO SUPPORT! NOT AUDITED!
 </div>
 <hr> 
-<small style='color:#cccccc;'>&nbsp;V1.0.2</small><br>
+<small style='color:#cccccc;'>&nbsp;V1.0.3</small><br>
 <br>
 
  
@@ -427,7 +427,6 @@ function claimall()
 {
 size = claimarray.length;
 console.log(claimarray);
-alert("Claimall " + size);
 
 
 
@@ -454,10 +453,13 @@ for (var i=0; i<size; i++)
 
    
  
-if (1)
+if (size > 0)
    {
    transact( func_success, func_error, theactions );
-   }
+   } else 
+     {
+     alert("Nothing to claim");
+     }
    
 /*
          row = new Array();
