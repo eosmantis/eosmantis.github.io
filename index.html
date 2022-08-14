@@ -87,6 +87,11 @@ Account Balance: <span id='balance1'>....</span>
 <div id='yourpayments'   style=''>
 ...
 </div>
+<br>
+
+
+<div onclick='claimall()' class='tbl_button' style='width:150px;'>Claim all</div>
+
 </div>
 </div>
 <br>
@@ -170,7 +175,7 @@ Withdraw amount:<br>
 NO LIABILITY! USE AT YOUR OWN RISK! NO SUPPORT! NOT AUDITED!
 </div>
 <hr> 
-<small style='color:#cccccc;'>&nbsp;V1.0.1</small><br>
+<small style='color:#cccccc;'>&nbsp;V1.0.2</small><br>
 <br>
 
  
@@ -379,43 +384,7 @@ if (1)
 } // createapproval
 
 
-
-
-function testtransaction()
-{
-var theactions = [];
-
-memo = "This is it";
-
-    
-   
-    var action = {
-                 account: "eosio.token",
-                 name: 'transfer',
-                 authorization: [{
-                                actor: global_account,
-                                permission: "active"
-                                }],
-                 data: {
-                       "from": global_account,
-                       "to": "hexenmeister",
-                       "quantity": "0.0001 EOS",
-                       "memo": memo
-                       }
-                 };
-
  
-theactions.push(action);
-    
- 
-if (1)
-   {
-   transact( func_success, func_error, theactions );
-   }
-   
-} // testtransaction
-
-
 
 
 
@@ -454,7 +423,52 @@ if (1)
    
 } // claim
 
+function claimall()
+{
+size = claimarray.length;
+console.log(claimarray);
+alert("Claimall " + size);
 
+
+
+var theactions = [];
+
+    
+for (var i=0; i<size; i++)
+    {   
+    var action = {
+                 account: "membershipfe",
+                 name: 'claim',
+                 authorization: [{
+                                actor: claimarray[i]['account'],
+                                permission: "active"
+                                }],
+                 data: {
+                       "myaccount": claimarray[i]['account'],
+                       "payer": claimarray[i]['user']
+                       }
+                 };
+
+    theactions.push(action);
+    } // for...
+
+   
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+/*
+         row = new Array();
+       row['id'] = i;
+       row['account'] = global_account;
+       row['user'] = user;
+       
+       
+         claimarray.push( row );
+*/
+}
 
 
 function callback_render_balance1( value )
@@ -477,7 +491,7 @@ getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "",
 }
 
 
-
+var claimarray = new Array();
 
 function callback_render_claims( value )
 {
@@ -521,6 +535,8 @@ buffer += "</div>";
 buffer += "<div class='tbl_clear' style=''></div>";       
        
 
+claimarray = new Array();
+
 var FOUND = 0;
 for (var i=0; i<size; i++)
     {
@@ -545,6 +561,14 @@ for (var i=0; i<size; i++)
           } else
             {
             claimbutton = "<span onclick='claim(\""+global_account+"\",\""+user+"\")' style='' class='tbl_button' >&nbsp;CLAIM&nbsp;</span>";
+          
+            
+            row = new Array();
+            row['id'] = i;
+            row['account'] = global_account + "";
+            row['user'] = user  + "";
+       
+            claimarray.push( row );
             } 
     
 
