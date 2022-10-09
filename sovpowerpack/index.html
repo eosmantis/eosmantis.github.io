@@ -1,0 +1,509 @@
+<html>
+<head>
+<link rel="icon" href="img/icon.png" />
+<link rel="stylesheet" href="css/style.css?ttd=4324" />
+
+ <!-- BEGINN WALLET-INCLUDE-->
+    
+    <!-- Anchor js -->
+    <script src="https://unpkg.com/anchor-link@next"></script>
+    <script src="https://unpkg.com/anchor-link-browser-transport@next"></script>
+        
+    <!-- Scatter js -->
+    <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.9/lib/eos.min.js"></script>
+    <script src="js/bundles/scatterjs-core.min.js"></script>
+    <script src="js/bundles/scatterjs-plugin-eosjs.min.js"></script>
+    <script src="js/bundles/scatterjs-plugin-lynx.min.js"></script>    
+    
+    <script src="js/eosiowallet/wallet.js?dsd=79524"></script>   
+    
+    <script src="js/eosjs-account-name_2.2.1.js"></script>  
+   
+ 
+              
+ <!-- END WALLET-INCLUDE-->
+
+
+
+</head>
+
+<body class='bodyclass'>
+ 
+  <div id='logo1' class='logo1x' style='text-align:center;'>
+  <img src='img/logo.svg?t=d453s' style='margin-top:30px;height:60px;'><br>
+  SOVPOWERPACK<br>
+  <br>
+  </div>
+
+ 
+
+
+
+<!-- walletmenu -->
+
+<div id='walletmenu' class='walletmenu' style='border:width:100%;height:90px;'>
+
+<div id='walletmenu_left' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#55ff55;'>
+
+
+ <div id='walletmenu_accountname' style='position:absolute;width:100%;top:0px;'>
+ 
+ <div id='myaccountname' class='myaccountname' style='font-size:2em;color:#ffffff;font-weight:bold;'>...abc</div>
+ 
+ </div>
+ 
+ <div id='walletmenu_anchor' style='position:absolute;width:100%;'>
+ <div id='anchorbutton' onclick="login_anchor()" class='loginbutton_anchor noselect' style='margin-left:auto;margin-right:auto;' >ANCHOR</div> 
+ 
+ </div>
+
+ 
+</div>
+
+
+
+
+
+<div id='walletmenu_right' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#5555ff;'>
+  <div id='walletmenu_aa' style='position:absolute;width:100%;'>
+  <div id='logoutbutton' onclick="logout_all()"  class='defaultbutton noselect' style='visibility:hidden;margin-left:auto;margin-right:auto;' >Logout</div>
+
+  </div>
+
+  <div id='walletmenu_scatter' style='position:absolute;width:100%;visibility:hiddenx;'>
+ <div onclick="login_scatter()" class='defaultbutton noselect' style='margin-left:auto;margin-right:auto;'  >SCATTER/TP/WOMBAT</div>
+
+  </div>
+
+</div>
+
+
+<div style='clear:both;'></div>
+
+
+
+
+</div> <!-- end walletmenu -->
+
+<br>
+<br>
+
+
+<br>
+<br>
+
+
+<div id='divcenter' style='text-align:center;'> 
+
+<div id='' style='text-align:center'>SOV burned since page load</div>
+<div id='sovburn' style='text-align:center;font-size:40px;'>...</div>
+<br>
+
+Burn <input id='eostoburn' type='text' value='0.1'> EOS **
+<div onclick='burnsov()' class='minibutton'>burn</div>
+<br>
+<br>
+<small>( ** This action will buy SOV on newdex.io for the given amount of EOS and prepare for burning.<br>
+This single action will just send EOS to the contract <em>sovpowerpack</em> with the memo <em>"buy-sov-from-newdex-and-burn"</em>
+ )</small>
+</div> <!-- divcenter -->
+
+
+<div class='separator'>&nbsp;</div>
+
+<div style='clear:both;'></div>
+<br>
+<br>
+<br>
+ 
+<div id='divcenter' style='text-align:center;'> 
+
+
+<div id='' style='text-align:center'>SVX balance</div>
+<div id='svxbalance' style='text-align:center;font-size:40px;'>...</div>
+
+
+<br>
+<br>
+<br>
+
+<div id='' style='text-align:center'>saved SVX balance</div>
+<div id='svxbalancesaved' style='text-align:center;font-size:40px;'>...</div>
+
+<div onclick='savesvxbalance()' class='minibutton'>save</div>
+
+</div> <!-- divcenter -->
+
+<div style='clear:both;'></div>
+ 
+<br>
+<br>
+<br>
+<br>
+<div class='separator'>&nbsp;</div>
+<br>
+
+<div id='' style='text-align:center'>EOS balance</div>
+<div id='balance1' style='text-align:center;font-size:40px;'>...</div>
+
+<div style='clear:both;'></div>
+ 
+<br>
+<br>
+
+ 
+
+
+<script>
+var id = 10;
+var tokenid = 12;
+var price = 1;
+var user = "sovdex"
+  var row2 = { 0:id,1:tokenid,2:price,3:user,4:1.3,5:6 };
+      
+   
+       console.log("row:");
+       console.log(row2);
+ 
+ 
+function setaccountname( name )
+{
+document.getElementById('myaccountname').innerHTML = ""+name+"";
+ 
+document.getElementById('walletmenu_anchor').style.visibility = "hidden";
+document.getElementById('walletmenu_anchor').style.height = "0px";
+
+document.getElementById('walletmenu_scatter').style.visibility = "hidden";
+document.getElementById('walletmenu_scatter').style.height = "0px"; 
+
+document.getElementById('logoutbutton').style.visibility = "visible";
+document.getElementById('logoutbutton').style.height = ""; 
+}
+
+
+
+function logoutall( name )
+{
+document.getElementById('myaccountname').innerHTML = "xxx";
+
+document.getElementById('walletmenu_anchor').style.visibility = "visible";
+document.getElementById('walletmenu_anchor').style.height = "";
+
+document.getElementById('walletmenu_scatter').style.visibility = "visible";
+document.getElementById('walletmenu_scatter').style.height = "";
+
+ 
+document.getElementById('logoutbutton').style.visibility = "hidden";
+document.getElementById('logoutbutton').style.height = "0px";
+}
+
+
+
+function external_login_action()
+{
+update_counter = 0;
+}
+
+function func_success( message )
+{
+alert(message);
+}
+
+function func_error( message )
+{
+alert(message);
+}
+
+
+function testtransaction()
+{
+
+var theactions = [];
+
+memo = "This is it";
+
+
+    
+   
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "testtesttest",
+                       "quantity": "0.0001 EOS",
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+   
+
+ 
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+}
+
+
+
+//
+function burnsov()
+{
+var eostoburn = document.getElementById('eostoburn').value;
+eostoburn = Number(eostoburn).toFixed(4) + " EOS";
+ 
+var theactions = [];
+
+memo = "buy-sov-from-newdex-and-burn";
+   
+var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "sovpowerpack",
+                       "quantity": eostoburn,
+                       "memo": memo
+                       }
+                 };
+
+ 
+theactions.push(action);
+   
+
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+    
+} // burnsov
+
+
+
+
+
+function savesvxbalance()
+{
+var theactions = [];
+
+   
+    var action = {
+                 account: "sovpowerpack",
+                 name: 'savesvxbal',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account
+                       }
+                 };
+
+ 
+theactions.push(action);
+   
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+}
+
+
+
+function callback_render_balance1( value )
+{
+
+if (value.rows.length == 0) return;                   
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance1').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getbalancedata()
+{
+getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+function callback_render_savedsvxbalance( value )
+{
+if (value.rows.length == 0) return;                   
+
+
+if (value.rows[0].user == global_account)
+{
+balance = value.rows[0].quantity;
+ 
+buffer = "" + balance;
+document.getElementById('svxbalancesaved').innerHTML = buffer;
+} else
+  {
+  document.getElementById('svxbalancesaved').innerHTML = "no data";
+  }
+                                 
+} // callback_render_balance1
+
+
+function getsvxbalance()
+{ 
+if (global_account == "") return;
+ 
+
+ 
+uint64var =   eosjsName.nameToUint64( global_account + "" );
+console.log(uint64var);
+
+
+
+getdata(callback_render_savedsvxbalance, "sovpowerpack", "sovpowerpack", "svxbalance", uint64var, "", "", 112 );
+}
+
+
+
+
+
+
+
+var first_sov_supply = "";
+var sovburneddiff    = "";
+// 
+function callback_render_sovsupply( value )
+{
+
+console.log("value sovsupply");
+console.log(value);
+
+ 
+if (value.rows.length == 0) return;                   
+
+
+
+supply = value.rows[0].supply;
+ 
+
+// Calc diff
+var supply2 = supply.replace("SOV", "");
+supply2 = parseFloat (supply2);
+   
+sovburneddiff = first_sov_supply - supply2 ;
+if (sovburneddiff <= 0) sovburneddiff = 0;
+
+sovburneddiff = Number(sovburneddiff).toFixed(4);
+
+ 
+ 
+
+buffer = sovburneddiff;
+document.getElementById('sovburn').innerHTML = buffer + " SOV";
+
+if ( first_sov_supply == "" )
+   {   
+   supply = supply.replace("SOV", "");
+   supply = parseFloat (supply);
+   first_sov_supply = supply;
+   }
+                              
+} // callback_render_sovsupply
+
+
+
+function getsovsupply()
+{
+getdata(callback_render_sovsupply, "sovmintofeos", "SOV", "stat", "", "", "", 112 );
+}
+
+
+
+
+function callback_render_svxbalance( value )
+{
+console.log("value callback_render_svxbalance");
+console.log(value);
+
+ 
+if (value.rows.length == 0) return;                   
+
+balance = value.rows[0].balance;
+  
+  
+if (balance != undefined)
+   {
+   document.getElementById('svxbalance').innerHTML = balance + "";
+   }
+                              
+} // callback_render_sovsupply
+
+
+
+function getsvxbalance2()
+{
+getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+
+var cnt = 0;
+function update_thread()
+{
+console.log("THREAD");
+
+getsovsupply();
+
+
+if ( (cnt % 2) == 0 ) getsvxbalance();
+if ( (cnt % 2) == 0 ) getsvxbalance2();
+
+if ( (cnt % 4) == 0 ) getbalancedata();
+
+ 
+console.log("first_sov_supply: " );
+console.log(first_sov_supply);
+
+console.log("sovburneddiff: " );
+console.log(sovburneddiff);
+
+cnt++; 
+var time = setTimeout("update_thread()", 3000);
+  
+} //// update_thread
+
+
+
+
+</script>
+
+
+<script>
+init_wallets( "sovpowerpack",setaccountname, logoutall );
+
+update_thread(); 
+</script>
+
+</body>
+</hmtl>
