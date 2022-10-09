@@ -104,7 +104,7 @@ Burn <input id='eostoburn' type='text' value='0.1'> EOS **
 <br>
 <br>
 <small>( ** This action will buy SOV on newdex.io for the given amount of EOS and prepare for burning.<br>
-This single action will just send EOS to the contract <em>sovpowerpack</em> with the memo <em>"buy-sov-from-newdex-and-burn"</em>
+This single action will just send EOS to the contract <em>sovpowerpack</em> with the memo <em>"burn"</em>  
  )</small>
 </div> <!-- divcenter -->
 
@@ -264,7 +264,8 @@ eostoburn = Number(eostoburn).toFixed(4) + " EOS";
  
 var theactions = [];
 
-memo = "buy-sov-from-newdex-and-burn";
+//memo = "buy-sov-from-newdex-and-burn";
+memo = "burn";
    
 var action = {
                  account: "eosio.token",
