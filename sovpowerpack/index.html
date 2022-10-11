@@ -132,6 +132,12 @@ This single action will just send EOS to the contract <em>sovpowerpack</em> with
 
 <div onclick='savesvxbalance()' class='minibutton'>save</div>
 
+<br>
+<br>
+<div id='svxbalancediff' style='text-align:center;'>...</div>
+
+
+
 </div> <!-- divcenter -->
 
 <div style='clear:both;'></div>
@@ -350,6 +356,8 @@ getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "",
 
 
 
+var lastsavedsvxbalance = 0;
+
 function callback_render_savedsvxbalance( value )
 {
 if (value.rows.length == 0) return;                   
@@ -361,6 +369,15 @@ balance = value.rows[0].quantity;
  
 buffer = "" + balance;
 document.getElementById('svxbalancesaved').innerHTML = buffer;
+
+
+
+
+  balance2 = balance.replace("SOV", "");
+   balance2 = parseFloat (balance); 
+lastsavedsvxbalance = balance2;
+
+
 } else
   {
   document.getElementById('svxbalancesaved').innerHTML = "no data";
@@ -454,6 +471,18 @@ balance = value.rows[0].balance;
 if (balance != undefined)
    {
    document.getElementById('svxbalance').innerHTML = balance + "";
+   
+   // alf 
+   balance2 = balance.replace("SOV", "");
+   balance2 = parseFloat (balance); 
+   
+   if (lastsavedsvxbalance != undefined)
+      {
+      var difference = balance2 - lastsavedsvxbalance;
+      difference = Number(difference).toFixed(4);
+      
+      document.getElementById('svxbalancediff').innerHTML = "&#916; " + difference + " SVX";
+      }
    }
                               
 } // callback_render_sovsupply
