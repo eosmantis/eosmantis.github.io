@@ -148,15 +148,36 @@ This single action will just send EOS to the contract <em>sovpowerpack</em> with
 <br>
 <div class='separator'>&nbsp;</div>
 <br>
-
 <div id='' style='text-align:center'>EOS balance</div>
 <div id='balance1' style='text-align:center;font-size:40px;'>...</div>
 
+
+<br>
+<br>
+<div id='' style='text-align:center'>SOV balance</div>
+<div id='balance3' style='text-align:center;font-size:40px;'>...</div>
+
+
 <div style='clear:both;'></div>
+ 
+ 
+ <div class='separator'>&nbsp;</div>
+ 
+<div id='divcenter2' style='text-align:center;'> 
+<br> 
+<br> 
+Burn <input id='sovtoburn' type='text' value='10.0'> SOV ***
+<div onclick='burnsov2()' class='minibutton'>burn</div>
+<br>
+<br>
+<small>( *** This action will burn SOV instantly by sending it to <em>themintofeos</em> with the memo <em>"burn"</em>  )</small>
+
+ 
+</div> <!-- divcenter2 --> 
  
 <br>
 <br>
-
+<div style='float:right;font-size:12px;'>frontend V0.1</div>
  
 
 
@@ -302,6 +323,46 @@ if (1)
 
 
 
+//
+function burnsov2()
+{
+var eostoburn = document.getElementById('sovtoburn').value;
+eostoburn = Number(eostoburn).toFixed(4) + " SOV";
+ 
+var theactions = [];
+
+//memo = "buy-sov-from-newdex-and-burn";
+memo = "burn";
+   
+var action = {
+                 account: "sovmintofeos",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "themintofeos",
+                       "quantity": eostoburn,
+                       "memo": memo
+                       }
+                 };
+
+ 
+theactions.push(action);
+   
+
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+    
+} // burnsov2
+
+
+
+
 
 function savesvxbalance()
 {
@@ -356,6 +417,36 @@ getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "",
 
 
 
+
+
+
+// sov balance
+
+function callback_render_balance2( value )
+{
+
+if (value.rows.length == 0) return;                   
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance3').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getsovbalancedata()
+{
+getdata(callback_render_balance2, "sovmintofeos", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+
+
+
 var lastsavedsvxbalance = 0;
 
 function callback_render_savedsvxbalance( value )
@@ -384,6 +475,8 @@ lastsavedsvxbalance = balance2;
   }
                                  
 } // callback_render_balance1
+
+
 
 
 function getsvxbalance()
@@ -510,6 +603,9 @@ if ( (cnt % 2) == 0 ) getsvxbalance();
 if ( (cnt % 2) == 0 ) getsvxbalance2();
 
 if ( (cnt % 4) == 0 ) getbalancedata();
+
+if ( (cnt % 6) == 0 ) getsovbalancedata();
+
 
  
 console.log("first_sov_supply: " );
