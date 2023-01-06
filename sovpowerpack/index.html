@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="icon" href="img/icon.png" />
-<link rel="stylesheet" href="css/style.css?ttd=4324" />
+<link rel="stylesheet" href="css/style.css?ttd=434324" />
 
  <!-- BEGINN WALLET-INCLUDE-->
     
@@ -10,7 +10,8 @@
     <script src="https://unpkg.com/anchor-link-browser-transport@next"></script>
         
     <!-- Scatter js -->
-    <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.9/lib/eos.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.9/lib/eos.min.js"></script>  
+
     <script src="js/bundles/scatterjs-core.min.js"></script>
     <script src="js/bundles/scatterjs-plugin-eosjs.min.js"></script>
     <script src="js/bundles/scatterjs-plugin-lynx.min.js"></script>    
@@ -35,8 +36,9 @@
   <br>
   </div>
 
- 
-
+ <div id='' style='position:absolute;top:30px;right:50px;border:1px solid #5555ff;cursor:pointer;'> 
+ <img src='img/powerup.svg?t=d453s' alt='PowerUp' title='PowerUp' onclick='powerup(0.01)' style='height:60px;width:60px;'>  
+ </div>
 
 
 <!-- walletmenu -->
@@ -177,7 +179,7 @@ Burn <input id='sovtoburn' type='text' value='10.0'> SOV ***
  
 <br>
 <br>
-<div style='float:right;font-size:12px;'>frontend V0.1</div>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1b</div>
  
 
 
@@ -588,6 +590,62 @@ getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", 
 }
 
 
+
+function powerup( eosforpower )
+{
+
+//eosforpower = document.getElementById("eosforpower").value;
+ 
+var theactions = [];
+
+      
+
+eosforpower = Number(eosforpower).toFixed(4) + " EOS";   
+
+    
+   
+var memo = global_account+"";
+ 
+   
+  
+//var quantityeos = globaldata['a_sov'] / 10000;
+//quantitysov = Number(quantitysov).toFixed(4) + " SOV";   
+   
+
+ 
+   
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "powerupcalc1",
+                       "quantity": eosforpower,
+                       "memo": memo,
+                        
+                      
+                       }
+                 };
+
+
+
+ 
+    theactions.push(action);
+   
+
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+   
+} // powerup
 
 
 
