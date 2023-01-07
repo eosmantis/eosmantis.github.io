@@ -192,7 +192,6 @@ alert(message);
 
 function callback_render_loadfaucet( value )
 {
-console.log( value );
 
 if (value.rows.length == 0) return;   
 
@@ -210,13 +209,63 @@ size = value.rows.length;
 console.log("size: ",size);
 //buffer += "size: " + size;
 
+
+
+// sort array
+var thearray = new Array();
+
 for (var i=0; i<size; i++)
     {
+    thearray[i] = new Object();
+    thearray[i]['index'] = i;
+    thearray[i]['order'] = value.rows[i].order;    
+    } // for i..size
+
+
+console.log("PRE");
+console.log( thearray );
+
+// sort
+
+var SORT = 1;
+while (SORT == 1)
+{
+SORT = 0;
+
+for (var i=0; i<size-1; i++)
+    {
+//    thearray[i] = new Object();
+
+    if ( thearray[i]['order'] > thearray[i+1]['order'] )
+       {
+       o_index = thearray[i]['index'];
+       o_order = thearray[i]['order'];    
+
+       thearray[i]['index'] = thearray[i+1]['index'];
+       thearray[i]['order'] = thearray[i+1]['order'];
     
-    tokenid = value.rows[i].id;
-    payout = value.rows[i].payout;
-    contract = value.rows[i].contract;
-    description = value.rows[i].description;
+       thearray[i+1]['index'] = o_index;
+       thearray[i+1]['order'] = o_order;
+       SORT = 1;
+       } // 
+       
+    } // for i..size
+    
+} // while (SORT)
+
+console.log("AFTER");
+console.log( thearray );
+
+
+
+for (var i=0; i<size; i++)
+    {
+    var i2 = thearray[i]['index'];
+    
+    tokenid     = value.rows[i2].id;
+    payout      = value.rows[i2].payout;
+    contract    = value.rows[i2].contract;
+    description = value.rows[i2].description;
     
     claimbutton = "";
     claimbutton += "<div onclick='claimtoken("+tokenid+")' class='claimtokenbutton'>";
@@ -263,7 +312,7 @@ for (var i=0; i<size; i++)
 
 document.getElementById('faucetdiv').innerHTML = buffer;
                                
-} // callback_render_balance1
+} // callback_render_loadfaucet
 
 
  
