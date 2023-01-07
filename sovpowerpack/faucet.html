@@ -453,7 +453,14 @@ buffer = "";
 
 if (usernodes > 0)
 {
-buffer += "You can claim "  + usernodes + " times a day";
+
+if (usernode == 1)
+   {
+   buffer += "You can claim 1 time a day";
+   } else
+     {
+     buffer += "You can claim "  + usernodes + " times a day";
+     } 
 //if (claimstoday
 }
  
