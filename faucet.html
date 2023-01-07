@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="icon" href="img/icon.png" />
-<link rel="stylesheet" href="css/style.css?ttd=434324" />
+<link rel="stylesheet" href="css/style.css?ttd=44324" />
 
  <!-- BEGINN WALLET-INCLUDE-->
     
@@ -86,104 +86,44 @@
 
 
 </div> <!-- end walletmenu -->
-
 <div id='menu' style='width:margin-left:auto;margin-right:auto;padding:5px;'>
 <a href='index.html' style='color:#ffffff;text-decoration:none;'>START</a> | <a href='faucet.html' style='color:#ffffff;text-decoration:none;'>FAUCET</a>  
 </div>
-
 <br>
 <br>
 
 
+SVX-Node owners (SVX 777 Club) can claim here daily free tokens. The tokens are donated by the SOV/SVX-community. this faucet is intended as an additional incentive and reward for running an SVX node.<br> 
+Check faucet-pool balances: <a href='https://bloks.io/account/sovsvxfaucet' target='_blank' style='color:#ffffff;'>sovsvxfaucet</a>
 <br>
 <br>
 
+<div style='text-align:center;'>
 
-<div id='divcenter' style='text-align:center;'> 
 
-<div id='' style='text-align:center'>SOV burned since page load</div>
-<div id='sovburn' style='text-align:center;font-size:40px;'>...</div>
+<div id='faucetdiv' style='margin-left:auto;margin-right:auto;width:90%;border:none;'>
+...
+</div>
+
+<div id='faucetdiv_user' style='margin-left:auto;margin-right:auto;width:90%;border:none;text-align:left;font-size:20px;'>
+... 
+</div>
+
+
+
+</div> <!-- center -->
+
+
+<br>
 <br>
 
-Burn <input id='eostoburn' type='text' value='0.1'> EOS **
-<div onclick='burnsov()' class='minibutton'>burn</div>
-<br>
-<br>
-<small>( ** This action will buy SOV on newdex.io for the given amount of EOS and prepare for burning.<br>
-This single action will just send EOS to the contract <em>sovpowerpack</em> with the memo <em>"burn"</em>  
- )</small>
-</div> <!-- divcenter -->
-
-
+<!--
 <div class='separator'>&nbsp;</div>
-
-<div style='clear:both;'></div>
-<br>
-<br>
-<br>
- 
-<div id='divcenter' style='text-align:center;'> 
-
-
-<div id='' style='text-align:center'>SVX balance</div>
-<div id='svxbalance' style='text-align:center;font-size:40px;'>...</div>
-
-
-<br>
-<br>
-<br>
-
-<div id='' style='text-align:center'>saved SVX balance</div>
-<div id='svxbalancesaved' style='text-align:center;font-size:40px;'>...</div>
-
-<div onclick='savesvxbalance()' class='minibutton'>save</div>
-
-<br>
-<br>
-<div id='svxbalancediff' style='text-align:center;'>...</div>
-
-
-
-</div> <!-- divcenter -->
-
-<div style='clear:both;'></div>
+-->
+  
  
 <br>
 <br>
-<br>
-<br>
-<div class='separator'>&nbsp;</div>
-<br>
-<div id='' style='text-align:center'>EOS balance</div>
-<div id='balance1' style='text-align:center;font-size:40px;'>...</div>
-
-
-<br>
-<br>
-<div id='' style='text-align:center'>SOV balance</div>
-<div id='balance3' style='text-align:center;font-size:40px;'>...</div>
-
-
-<div style='clear:both;'></div>
- 
- 
- <div class='separator'>&nbsp;</div>
- 
-<div id='divcenter2' style='text-align:center;'> 
-<br> 
-<br> 
-Burn <input id='sovtoburn' type='text' value='10.0'> SOV ***
-<div onclick='burnsov2()' class='minibutton'>burn</div>
-<br>
-<br>
-<small>( *** This action will burn SOV instantly by sending it to <em>themintofeos</em> with the memo <em>"burn"</em>  )</small>
-
- 
-</div> <!-- divcenter2 --> 
- 
-<br>
-<br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1b</div>
  
 
 
@@ -246,6 +186,397 @@ function func_error( message )
 {
 alert(message);
 }
+
+
+
+
+function callback_render_loadfaucet( value )
+{
+console.log( value );
+
+if (value.rows.length == 0) return;   
+
+/*
+                
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+*/
+
+buffer = "";
+
+size = value.rows.length;
+console.log("size: ",size);
+//buffer += "size: " + size;
+
+for (var i=0; i<size; i++)
+    {
+    
+    tokenid = value.rows[i].id;
+    payout = value.rows[i].payout;
+    contract = value.rows[i].contract;
+    description = value.rows[i].description;
+    
+    claimbutton = "";
+    claimbutton += "<div onclick='claimtoken("+tokenid+")' class='claimtokenbutton'>";
+    claimbutton += "CLAIM";
+    
+    claimbutton += "</div>";
+    
+    buffer += "<div style='border:none;margin:5px;height:60px;' class='claimarea'>";
+  
+    
+ 
+ 
+    /*
+    buffer +=   "<div style='float:left;width:10%;border:1px solid #ffff00;'>";
+  buffer += " id:"+ tokenid + " ";
+    buffer +=   "</div>";
+  */
+      buffer +=   "<div style='float:left;width:30%;border:none;font-size:30px;margin-top:15px;'>";
+ buffer +=  contract ;
+    buffer +=   "</div>";
+  
+    buffer +=   "<div style='float:left;width:30%;border:none;font-size:15px;margin-top:15px;'>";
+    buffer += description ;
+    buffer +=   "</div>";
+    
+        buffer +=   "<div style='float:left;width:25%;border:none;font-size:30px;text-align:left;margin-top:15px;'>";
+    buffer +=    payout ;
+    buffer +=   "</div>";
+     
+      
+    
+        buffer +=   "<div style='float:left;width:15%;border:none;margin-top:10px;'>";
+    buffer +=   claimbutton + " ";
+    buffer +=   "</div>";    
+            
+    buffer += "</div>";
+    
+    
+ 
+     buffer += "<div style='clear:both'></div>";
+
+
+    } // for i...
+
+document.getElementById('faucetdiv').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+ 
+
+function loadfaucet()
+{
+getdata(callback_render_loadfaucet, "sovsvxfaucet", "sovsvxfaucet", "claimtoken", "", "", "", 1102 );
+} // loadfaucet
+
+
+
+
+
+
+
+
+var usernodes = 0;
+
+
+function callback_render_loadnodeuser( value )
+{
+if (value.rows.length == 0) return;   
+
+
+console.log("load node user:");
+
+console.log( value );
+
+staker = value.rows[0].staker;
+console.log("staker:" + staker);
+
+if (global_account == "") return;
+if (staker != global_account) return;
+                
+svxstaked = value.rows[0].svxstaked;
+
+balance = svxstaked.replace("SVX", "");
+balance2 = parseFloat (balance); 
+svxstaked = balance2;
+
+
+usernodes = parseInt( svxstaked / 777000 );
+
+
+console.log("svxstaked:" + svxstaked + " usernodes:" + usernodes);
+
+
+
+return;
+
+
+
+/*
+                
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+*/
+
+buffer = "";
+
+size = value.rows.length;
+console.log("size: ",size);
+//buffer += "size: " + size;
+
+for (var i=0; i<size; i++)
+    {
+    
+    tokenid = value.rows[i].id;
+    payout = value.rows[i].payout;
+    contract = value.rows[i].contract;
+    description = value.rows[i].description;
+    
+    claimbutton = "";
+    claimbutton += "<div onclick='claimtoken("+tokenid+")' class='claimtokenbutton'>";
+    claimbutton += "CLAIM";
+    
+    claimbutton += "</div>";
+    
+    buffer += "<div style='border:none;margin:5px;height:60px;' class='claimarea'>";
+  
+    
+ 
+ 
+    /*
+    buffer +=   "<div style='float:left;width:10%;border:1px solid #ffff00;'>";
+  buffer += " id:"+ tokenid + " ";
+    buffer +=   "</div>";
+  */
+      buffer +=   "<div style='float:left;width:30%;border:none;font-size:30px;margin-top:15px;'>";
+ buffer +=  contract ;
+    buffer +=   "</div>";
+  
+    buffer +=   "<div style='float:left;width:30%;border:none;font-size:15px;margin-top:15px;'>";
+    buffer += description ;
+    buffer +=   "</div>";
+    
+        buffer +=   "<div style='float:left;width:25%;border:none;font-size:30px;text-align:left;margin-top:15px;'>";
+    buffer +=    payout ;
+    buffer +=   "</div>";
+     
+      
+    
+        buffer +=   "<div style='float:left;width:15%;border:none;margin-top:10px;'>";
+    buffer +=   claimbutton + " ";
+    buffer +=   "</div>";    
+            
+    buffer += "</div>";
+    
+    
+ 
+     buffer += "<div style='clear:both'></div>";
+
+
+    } // for i...
+
+document.getElementById('faucetdiv').innerHTML = buffer;
+                               
+} // callback_render_loadnodeuser
+
+
+
+
+function loadnode_user()
+{
+
+/*
+ staketable_s my_staketable( name("sovdexpaydiv") , name("sovdexpaydiv") .value );  
+      	 
+	  auto itr = my_staketable.find( user.value );
+      check( itr != my_staketable.end(), "No SVX node"  );
+
+      uint64_t balance = itr->svxstaked.amount;
+      eosio::print("SVX Balance is ",balance," * ",itr->svxstaked," ");
+      
+      int nodes = (balance / 10000) / 777000;
+      eosio::print(" nodes: ",nodes," ");
+      
+      
+*/
+
+getdata(callback_render_loadnodeuser, "sovdexpaydiv", "sovdexpaydiv", "staketable", global_account, "", "", 1102 );
+} // loadnode_user
+
+
+
+
+
+function callback_render_loadfaucetuser( value )
+{
+console.log("USER...");
+console.log( value );
+
+if (value.rows.length == 0) return;   
+
+if (global_account == "") return;
+if (value.rows[0].user != global_account) return;
+
+
+/*
+ last_zero_ts
+: 
+1673049600
+*/               
+ 
+ /*
+now = gettimestamp();
+var ts_last =    ( now / (24*60*60) ) * (24*60*60);
+ 
+ 
+ */
+claimstoday  = value.rows[0].claimstoday;
+
+/*
+last_zero_ts = value.rows[0].last_zero_ts;
+
+*/
+/* 
+buffer = "" + balance;
+last_balance1 = balance;
+*/
+
+buffer = "";
+
+//buffer += "  ("+ts_last+")    ("+last_zero_ts+") ";
+
+if (usernodes > 0)
+{
+buffer += "You can claim "  + usernodes + " times a day";
+//if (claimstoday
+}
+ 
+/*
+size = value.rows.length;
+console.log("size: ",size);
+//buffer += "size: " + size;
+
+for (var i=0; i<size; i++)
+    {
+    
+    tokenid = value.rows[i].id;
+    payout = value.rows[i].payout;
+    contract = value.rows[i].contract;
+    description = value.rows[i].description;
+    
+    claimbutton = "";
+    claimbutton += "<div onclick='claimtoken("+tokenid+")' class='claimtokenbutton'>";
+    claimbutton += "CLAIM";
+    
+    claimbutton += "</div>";
+    
+    buffer += "<div style='border:none;margin:5px;height:60px;' class='claimarea'>";
+  
+    
+ 
+  
+      buffer +=   "<div style='float:left;width:30%;border:none;font-size:30px;margin-top:15px;'>";
+ buffer +=  contract ;
+    buffer +=   "</div>";
+  
+    buffer +=   "<div style='float:left;width:30%;border:none;font-size:15px;margin-top:15px;'>";
+    buffer += description ;
+    buffer +=   "</div>";
+    
+        buffer +=   "<div style='float:left;width:25%;border:none;font-size:30px;text-align:left;margin-top:15px;'>";
+    buffer +=    payout ;
+    buffer +=   "</div>";
+     
+      
+    
+        buffer +=   "<div style='float:left;width:15%;border:none;margin-top:10px;'>";
+    buffer +=   claimbutton + " ";
+    buffer +=   "</div>";    
+            
+    buffer += "</div>";
+    
+    
+ 
+     buffer += "<div style='clear:both'></div>";
+
+
+    } // for i...
+    
+    */
+
+document.getElementById('faucetdiv_user').innerHTML = buffer;
+                               
+} // callback_render_loadfaucetuser
+
+
+
+function gettimestamp()
+{
+ret = Math.floor(Date.now() /1000);
+
+return(ret);
+} // gettimestamp
+
+
+function loadfaucet_user()
+{
+//console.log("load...user");
+// getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "", "", "", 112 );
+// getdata(callback_render_balance2, "sovmintofeos", global_account, "accounts", "", "", "", 112 );
+//   function getdata( callback, _code, _scope, _table, _lower, _index, _key_type, _limit )
+//  "index_position":2 , "key_type": "i64",  "json":true } );
+
+ getdata(callback_render_loadfaucetuser, "sovsvxfaucet", "sovsvxfaucet", "nodes", global_account, "", "", 1 );
+} // loadfaucet_user
+
+
+
+function claimtoken( tokenid )
+{
+//alert("Tokenid: " + tokenid);
+
+
+var theactions = [];
+
+memo = "This is it";
+
+ 
+    
+   
+    var action = {
+                 account: "sovsvxfaucet",
+                 name: 'claim',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account,
+                       "tokenid": tokenid,                   
+                       }
+                 };
+
+ 
+    theactions.push(action);
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+} // claimtoken
+
+
+/*
+faucetdiv_user
+*/
 
 
 function testtransaction()
@@ -658,6 +989,10 @@ function update_thread()
 {
 console.log("THREAD");
 
+if ( (cnt % 5) == 0 ) loadfaucet_user()
+if ( (cnt % 5) == 0 ) loadnode_user()
+
+/*
 getsovsupply();
 
 
@@ -675,7 +1010,7 @@ console.log(first_sov_supply);
 
 console.log("sovburneddiff: " );
 console.log(sovburneddiff);
-
+*/
 cnt++; 
 var time = setTimeout("update_thread()", 3000);
   
@@ -691,6 +1026,8 @@ var time = setTimeout("update_thread()", 3000);
 init_wallets( "sovpowerpack",setaccountname, logoutall );
 
 update_thread(); 
+
+loadfaucet();
 </script>
 
 </body>
