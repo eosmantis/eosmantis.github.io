@@ -1,0 +1,761 @@
+<html class='htmlclass'>
+<head>
+<link rel="icon" href="img/icon.png" />
+<link rel="stylesheet" href="css/style.css" />
+
+ <!-- BEGINN WALLET-INCLUDE-->
+    
+    <!-- Anchor js -->
+    <script src="https://unpkg.com/anchor-link@next"></script>
+    <script src="https://unpkg.com/anchor-link-browser-transport@next"></script>
+        
+    <!-- Mandel eosjs -->                
+    <script src='js/dist-web/eosjs-api.js'></script>
+    <script src='js/dist-web/eosjs-jsonrpc.js'></script>
+    <script src='js/dist-web/eosjs-jssig.js'></script>
+        
+    <!-- Scatter js -->
+    <script src='js/assets/scatterjs-core.min.js'></script>
+    <script src='js/assets/scatterjs-plugin-eosjs2.min.js'></script>
+ 
+    
+    <script src="js/eosiowallet/wallet.js?dsd=79524"></script>   
+    <script src="js/eosjs-account-name_2.2.1.js"></script>  
+   
+               
+ <!-- END WALLET-INCLUDE-->
+
+ 
+
+</head>
+
+<body class='bodyclass'>
+ 
+  <div id='logo1' class='logo1x' style='text-align:center;'>
+  <img src='img/logo.svg?t=d4543s' style='margin-top:30px;height:160px;'><br>
+  T I M E L O C K<br>
+  <br>
+  </div>
+
+ <div id='' style='position:absolute;top:30px;right:50px;border:none;cursor:pointer;'> 
+ <img src='img/powerup.svg?t=d453s' alt='PowerUp' title='PowerUp' onclick='powerup(0.01)' style='height:60px;width:60px;'>  
+ </div>
+
+
+<!-- walletmenu -->
+
+<div id='walletmenu' class='walletmenu' style='border:width:100%;height:90px;'>
+
+<div id='walletmenu_left' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#55ff55;'>
+
+ <div id='walletmenu_accountname' style='position:absolute;width:100%;top:0px;'>
+  <div id='myaccountname' class='myaccountname' style='font-size:2em;color:#ffffff;font-weight:bold;'>...abc</div> 
+ </div>
+ 
+ <div id='walletmenu_anchor' style='position:absolute;width:100%;'>
+ <div id='anchorbutton' onclick="login_anchor()" class='loginbutton_anchor noselect' style='margin-left:auto;margin-right:auto;' >ANCHOR</div>  
+ </div>
+
+</div>
+
+
+
+
+
+<div id='walletmenu_right' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#5555ff;'>
+  <div id='walletmenu_aa' style='position:absolute;width:100%;'>
+  <div id='logoutbutton' onclick="logout_all()"  class='defaultbutton noselect' style='visibility:hidden;margin-left:auto;margin-right:auto;' >Logout</div>
+
+  </div>
+
+  <div id='walletmenu_scatter' style='position:absolute;width:100%;visibility:hiddenx;'>
+   <div onclick="login_scatter()" class='defaultbutton noselect' style='margin-left:auto;margin-right:auto;'  >SCATTER/TP/WOMBAT</div>
+  </div>
+
+</div>
+
+<div style='clear:both;'></div>
+
+
+</div> <!-- end walletmenu -->
+
+
+
+
+
+<div id='main' style='border:none;width:90%;margin-left:auto;margin-right:auto;'>
+<span id='balance1'>...</span><br>
+<br><br>
+
+<div id='entrylist'>...</div>
+
+
+<br>
+<br>
+<div style='border-bottom:1px solid #ffffff;'></div>
+
+<h3>Create EOS Deposit:</h3>
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ EOS:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+ <input type='text' id='deposit_eos' value='' style='font-size:1.5em;' placeholder='1.5000 EOS'>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+
+
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Beneficiary:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+   <input type='text' id='deposit_eos_beneficiary' value='' style='font-size:1.5em;'  placeholder='timelocktest'>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+
+
+
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Description:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+   <input type='text' id='deposit_eos_description' value='' style='font-size:1.5em;'  placeholder=''>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Unlock time:
+ </div>
+
+ 
+ 
+ 
+  <div style='float:left;width:40%;border:none;'>  
+  <input id='date_eos' type="date" style='font-size:1.5em;'  value="">
+  <input id='time_eos' type="time" style='font-size:1.5em;'  value="00:00">
+  </div>
+ 
+  <div style='clear:both;'></div>
+ 
+ 
+ 
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ &nbsp;
+ </div>
+
+ <div style='float:left;width:20%;border:none;'> 
+ <br> 
+ <div onclick='create_deposit_eos()'  class='defaultbutton noselect'>Create Deposit</div> 
+ </div>
+ 
+ 
+
+<div style='clear:both;'></div>
+</div>
+
+ 
+
+
+<div style='height:100px;'></div>
+
+
+<h3>Create Token Deposit:</h3>
+
+
+
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Token:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+  <input type='text' id='deposit_token' value='' style='font-size:1.5em;' placeholder='1.5000 TOKEN'>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+
+
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Token Contract:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+ <input type='text' id='deposit_token_contract' value='' style='font-size:1.5em;' placeholder='tokentoken11'>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+ 
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Beneficiary:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+ <input type='text' id='deposit_token_beneficiary' value='' style='font-size:1.5em;' placeholder=''>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+
+ 
+ 
+ 
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Description:
+ </div>
+
+ <div style='float:left;width:15%;border:none;'>
+ <input type='text' id='deposit_token_description' value='' style='font-size:1.5em;'  placeholder=''>
+ </div>
+
+ <div style='clear:both;'></div>
+</div>
+ 
+ 
+
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ Unlock time:
+ </div>
+
+ <div style='float:left;width:40%;border:none;'>  
+  <input id='date_token' type="date" style='font-size:1.5em;'  value="">
+  <input id='time_token' type="time" style='font-size:1.5em;'  value="00:00">
+ </div>
+ 
+<div style='clear:both;'></div>
+ 
+ 
+ 
+<div style='margin-bottom:10px;'>
+ <div style='float:left;width:20%;border:none;font-size:1.5em;'>
+ &nbsp;
+ </div>
+
+ <div style='float:left;width:20%;border:none;'>
+  
+<br> 
+<div onclick='create_deposit_token()'  class='defaultbutton noselect'>Create Deposit</div>
+ 
+</div>
+ 
+ 
+
+<div style='clear:both;'></div>
+ 
+   
+<br>
+<br>  
+<br>
+<br>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend v0.1 &nbsp;</div>
+<br> 
+</div> <!-- main -->
+
+
+
+
+<script>
+var id = 10;
+var tokenid = 12;
+var price = 1;
+
+      
+    
+ 
+document.getElementById('date_eos').valueAsDate   = new Date();
+document.getElementById('date_token').valueAsDate = new Date();
+ 
+ 
+function setaccountname( name )
+{
+document.getElementById('myaccountname').innerHTML = ""+name+"";
+ 
+document.getElementById('walletmenu_anchor').style.visibility = "hidden";
+document.getElementById('walletmenu_anchor').style.height = "0px";
+
+document.getElementById('walletmenu_scatter').style.visibility = "hidden";
+document.getElementById('walletmenu_scatter').style.height = "0px"; 
+
+document.getElementById('logoutbutton').style.visibility = "visible";
+document.getElementById('logoutbutton').style.height = ""; 
+
+loadentries();
+}
+
+
+
+function logoutall( name )
+{
+document.getElementById('myaccountname').innerHTML = "xxx";
+
+document.getElementById('walletmenu_anchor').style.visibility = "visible";
+document.getElementById('walletmenu_anchor').style.height = "";
+
+document.getElementById('walletmenu_scatter').style.visibility = "visible";
+document.getElementById('walletmenu_scatter').style.height = "";
+ 
+document.getElementById('logoutbutton').style.visibility = "hidden";
+document.getElementById('logoutbutton').style.height = "0px";
+}
+
+
+
+function external_login_action()
+{
+update_counter = 0;
+}
+
+function func_success( message )
+{
+alert(message);
+}
+
+function func_error( message )
+{
+alert(message);
+}
+
+
+
+
+function create_deposit_eos()
+{
+deposit_eos             = document.getElementById('deposit_eos').value;
+
+deposit_eos_beneficiary = document.getElementById('deposit_eos_beneficiary').value;
+deposit_eos_beneficiary =  deposit_eos_beneficiary.trim();
+
+deposit_eos_description = document.getElementById('deposit_eos_description').value;
+deposit_eos_description =  deposit_eos_description.trim();
+
+
+if (deposit_eos == "") 
+   {
+   alert(" Please enter EOS amount ");
+   return;
+   }
+
+if (deposit_eos_beneficiary == "") 
+   {
+   alert(" Please enter beneficiary ");
+   return;
+   }
+
+
+date_token = document.getElementById('date_eos').value;
+time_token = document.getElementById('time_eos').value;
+
+lock_time = date_token + " " + time_token;
+var ts = Date.parse(lock_time);
+ts = (ts / 1000) ;
+
+
+
+
+var theactions = [];
+memo = "deposit;"+deposit_eos_beneficiary+";"+ts+";"+deposit_eos_description;
+
+   
+var action = {
+             account: "eosio.token",
+             name: 'transfer',
+             authorization: [{
+                            actor: global_account,
+                            permission: "active"
+                            }],
+             data: {
+                   "from": global_account,
+                   "to": "timelockboxx",
+                   "quantity": deposit_eos,
+                   "memo": memo
+                   }                                            
+             };
+
+ 
+theactions.push(action);
+   
+
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+} // create_deposit_eos()
+
+
+
+
+function create_deposit_token()
+{
+deposit_token             = document.getElementById('deposit_token').value;
+deposit_token_contract    = document.getElementById('deposit_token_contract').value;
+deposit_token_beneficiary = document.getElementById('deposit_token_beneficiary').value;
+
+deposit_token_description = document.getElementById('deposit_token_description').value;
+deposit_token_description =  deposit_token_description.trim();
+
+
+date_token = document.getElementById('date_token').value;
+time_token = document.getElementById('time_token').value;
+
+lock_time = date_token + " " + time_token;
+var ts = Date.parse(lock_time);
+ts = (ts / 1000) ;
+
+
+
+if (deposit_token == "") 
+   {
+   alert(" Please enter Token amount ");
+   return;
+   }
+
+if (deposit_token_beneficiary == "") 
+   {
+   alert(" Please enter beneficiary ");
+   return;
+   }
+
+ 
+  
+deposit_eos_beneficiary = document.getElementById('deposit_eos_beneficiary').value;
+deposit_eos_beneficiary = deposit_eos_beneficiary.trim();
+
+
+var theactions = [];
+
+
+memo = "deposit;"+deposit_token_beneficiary+";"+ts+";"+deposit_token_description;
+
+
+   
+var action = {
+             account: deposit_token_contract,
+             name: 'transfer',
+             authorization: [{
+                             actor: global_account,
+                             permission: "active"
+                            }],
+             data: {
+                   "from": global_account,
+                   "to": "timelockboxx",
+                   "quantity": deposit_token,
+                   "memo": memo
+                   }                                            
+             };
+
+ 
+theactions.push(action);
+   
+
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+      
+
+} // create_deposit_token
+
+ 
+
+
+
+function callback_render_loadentries( value )
+{
+if (value.rows.length == 0) return;                   
+
+buffer = "";
+
+now = gettimestamp();
+
+
+var size = value.rows.length;
+
+for (var i=0; i<size; i++)
+    {
+    theid           = value.rows[i].id;
+    beneficiary     = value.rows[i].beneficiary;
+    payout          = value.rows[i].payout;
+    contract        = value.rows[i].contract;
+    withdrawtime    = value.rows[i].withdrawtime;
+    from            = value.rows[i].from;
+    description     = value.rows[i].description;
+    
+    
+    if (beneficiary == global_account)
+    {
+    
+      claimbutton = "";
+    
+      if (withdrawtime <= now) 
+         {
+         claimbutton = "<span onclick='claim("+theid+")' class='claimtokenbutton'>WITHDRAW</span>";
+         } else
+           {
+           claimbutton = "<span   class='claimtokenbutton' style='background:#cccccc;'>WITHDRAW</span>";
+           } 
+         
+    thedate = timeConverter( withdrawtime );
+    
+    
+    buffer += "<div class='withdrawentry'>";
+    
+      buffer += "<div id='area_l' style='float:left;width:80%;border:;'>";
+
+        //...
+        buffer += "<div style='padding:0px;'>";
+    
+         buffer += "<div style='width:15%;padding-top:10px;border:none;float:left;text-align:center;'>";
+         buffer += "" +from ;    
+         buffer += "</div>";    
+
+         buffer += "<div style='width:15%;padding-top:10px;border:none;float:left'>";
+         buffer += ""+contract;    
+         buffer += "</div>";    
+
+         buffer += "<div style='width:20%;padding-top:10px;border:none;float:left'>";
+         buffer += ""+payout;    
+         buffer += "</div>";                      
+
+         buffer += "<div style='width:30%;padding-top:10px;border:none;float:left'>";
+         buffer += ""+thedate;    
+         buffer += "</div>";    
+
+ 
+
+         buffer += "<div style='clear:both'></div>";    
+         
+    buffer += "</div>";
+    
+    
+    buffer += "<div style='padding-top:0px;width:100%;'>";
+    
+         buffer += "<div style='width:100%;max-width:100%;margin-left:2%;margin-top:11px;border:none;overflow:hidden;float:left;color:eeeeee;font-style: italic;'>";
+         buffer += ""+description+"&nbsp;";    
+         buffer += "</div>";    
+
+         buffer += "</div>";
+      // ...
+      
+      buffer += "</div>";
+
+
+      buffer += "<div id='area_l' style='float:left;width:19%;border:none;text-align:right;'>";
+         buffer += "<div style='width:100%;padding-top:27px; margin-right:5px; border:none;float:right;'>";
+         buffer += claimbutton;    
+         buffer += "</div>"; 
+      buffer += "</div>";
+    
+    
+    buffer += "</div>"; // withdrawentry
+    
+    
+    } // if (beneficiary == global_account)
+
+
+    } // for i...
+
+   
+document.getElementById('entrylist').innerHTML = buffer;
+} // callback_render_loadentries
+
+
+
+function loadentries()
+{
+getdata(callback_render_loadentries, "timelockboxx", "timelockboxx", "deposits", global_account,2, "name", 10000 );
+} // loadentries
+
+
+
+function claim( id )
+{
+var theactions = [];
+
+   
+    var action = {
+                 account: "timelockboxx",
+                 name: 'withdraw',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "beneficiary": global_account,
+                       "id":  id                       
+                       }
+                 };
+
+ 
+    theactions.push(action);
+   
+
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+} // claim
+
+
+
+function gettimestamp()
+{
+ret = Math.floor(Date.now() /1000);
+
+return(ret);
+} // gettimestamp
+
+
+
+
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+  return time;
+}
+ 
+ 
+  
+
+
+function callback_render_balance1( value )
+{
+
+if (value.rows.length == 0) return;                   
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance1').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getbalancedata()
+{
+getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+
+ 
+
+
+ 
+
+ 
+ 
+
+
+function powerup( eosforpower )
+{ 
+var theactions = [];
+
+eosforpower = Number(eosforpower).toFixed(4) + " EOS";   
+       
+var memo = global_account+"";
+ 
+      
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "powerupcalc1",
+                       "quantity": eosforpower,
+                       "memo": memo,                                              
+                       }
+                 };
+
+
+
+ 
+theactions.push(action);
+   
+
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+   
+} // powerup
+
+
+
+var cnt = 0;
+function update_thread()
+{
+console.log("THREAD");
+
+if ( (cnt % 4) == 0 ) getbalancedata();
+
+if ( (cnt % 12) == 0 ) loadentries();
+
+cnt++; 
+var time = setTimeout("update_thread()", 1000);
+  
+} //// update_thread
+
+
+</script>
+
+
+
+<script>
+init_wallets( "timelockboxx",setaccountname, logoutall );
+
+update_thread(); 
+</script>
+
+</body>
+</html>
+
+<!-- EOF -->
