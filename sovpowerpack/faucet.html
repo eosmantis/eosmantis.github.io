@@ -114,6 +114,14 @@ Check faucet-pool balances: <a href='https://bloks.io/account/sovsvxfaucet' targ
 
 
 
+
+<br>
+<br>
+<div style='margin-left:auto;margin-right:auto;width:90%;text-align:left;'>
+Action Multiplier: <input type='text' id='multiplier' value='1' style='width:100px;text-align:center;'><br> 
+<small>( If you want and can claim a token multiple times )</small>
+</div>
+
 </div> <!-- center -->
 
 
@@ -123,11 +131,13 @@ Check faucet-pool balances: <a href='https://bloks.io/account/sovsvxfaucet' targ
 <!--
 <div class='separator'>&nbsp;</div>
 -->
+
+
   
- 
+<div style='float:right;margin-right:20px;'><small>V.0.1</small></div>
 <br>
 <br>
- 
+<br> 
 
 
 <script>
@@ -598,7 +608,11 @@ function loadfaucet_user()
 
 function claimtoken( tokenid )
 {
-//alert("Tokenid: " + tokenid);
+
+
+multiplier = document.getElementById('multiplier').value * 1;
+
+//alert("multiplier: " + multiplier);
 
 
 var theactions = [];
@@ -621,8 +635,10 @@ memo = "This is it";
                        }
                  };
 
- 
-    theactions.push(action);
+ for (var i=0; i<multiplier; i++)
+     {
+     theactions.push(action);
+     }
  
  
 if (1)
