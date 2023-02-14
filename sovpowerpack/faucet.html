@@ -275,10 +275,11 @@ for (var i=0; i<size; i++)
     {
     var i2 = thearray[i]['index'];
     
-    tokenid     = value.rows[i2].id;
-    payout      = value.rows[i2].payout;
-    contract    = value.rows[i2].contract;
-    description = value.rows[i2].description;
+    tokenid      = value.rows[i2].id;
+    payout       = value.rows[i2].payout;
+    contract     = value.rows[i2].contract;
+    description  = value.rows[i2].description;
+    noderequired = value.rows[i2].noderequired;
     
     claimbutton = "";
     claimbutton += "<div onclick='claimtoken("+tokenid+")' class='claimtokenbutton'>";
@@ -298,6 +299,10 @@ for (var i=0; i<size; i++)
   */
       buffer +=   "<div style='float:left;width:30%;border:none;font-size:30px;margin-top:15px;'>";
  buffer +=  contract ;
+    if (noderequired == 0) 
+       {
+       buffer += "<br><div style='font-size:8px;'>Free - No SVX-node required</div>";
+       }
     buffer +=   "</div>";
   
     buffer +=   "<div style='float:left;width:20%;border:none;font-size:15px;margin-top:15px;'>";
