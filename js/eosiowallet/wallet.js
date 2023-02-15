@@ -7,18 +7,22 @@ wallet.js - combines ANCHOR- and SCATTER/TP/WOMBAT-wallets in a single lib
 
 // ---
 const walletversion = "0.0.1b";
-const identifier = "membershipfe";
+const identifier = "sovspacegame";
 var currentwallet = "";
 var func_setaccountname = null;
 var func_logout         = null;
 var chainID = "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906";
+
 //var chainID = "2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840"; // Jungle3
 
 
 // --
 // Node-selection
 //var   thenode      = "eos.greymass.com"; // Default RPC-node. Testnet:  "jungle3.greymass.com"
-var   thenode      = "eos.api.eosnation.io"; // 
+var   thenode      = "eos.api.eosnation.io"; // Default RPC-node. Testnet:  "jungle3.greymass.com"
+
+//var   thenode      = "eos.api.eosnation.io"; // 
+
 //var   thenode      = "jungle3.greymass.com"; // 
 //var   thenode      = "jungle3.cryptolions.io"; // 
 // https://jungle4.cryptolions.io/v2/docs/
@@ -206,7 +210,7 @@ _eraseCookie("myeosaccount");
 } // logout_all()
 
 
- 
+  
  
 
 function transact( func_transfer_success, func_transfer_error, myactions )
@@ -219,36 +223,64 @@ if (currentwallet == "ANCHOR")
    session.transact(   {  actions: myactions }    ).then((result) => 
             {                        
             func_transfer_success(result.processed.id);            
-            })            
-   }
+            })  ;       
+   } // ANCHOR
 
 
 
 if (currentwallet == "SCATTER")
    {   
+   /*
+   const signatureProvider = new eosjs_jssig.JsSignatureProvider([defaultPrivateKey]);
+  const api = new eosjs_api.Api({ rpc, signatureProvider });
 
-   scattereos.transaction(                       
-                         {                           
-                         actions: myactions                    
-                         }).then(result => 
-                            {
-                            
-                            func_transfer_success("Success!");
-                                                        
-                            return;
-                        	}).catch(error => {
-                            				  console.log("jsonerr: " + error);
+   */
+   console.log("scatter aaa " + thenode);
+//                const rpc = new eosjs_jsonrpc.default(network.fullhost());
+                
+//                  const rpc = new eosjs_jsonrpc.JsonRpc('https://eos.greymass.com');
 
-                                              err = JSON.parse(error);
+                  var rpc = new eosjs_jsonrpc.JsonRpc("https://"+thenode);
+                  
+   console.log("scatter bbb " + eosjs_api.default);
+
+//                  api = ScatterJS.eos(network, eosjs_api.default, {rpc});
+//                  api = ScatterJS.eos(network, eosjs_api.default, {rpc});
+                    var api = new eosjs_api.Api({ rpc: rpc, signatureProvider: scatter.eosHook(network), textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
+
+                
+//                api = scatter.eos(network, Eos);
+   console.log("scatter ccc"); 
+            
+              
+  (async () => {
+    try {
+      const result = await api.transact({
+        actions: myactions
+         
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30,
+      });
+      func_transfer_success(result.processed.id);          
+    } catch (e) {
+                 refreshcounter = 4; // update-hack from index.html
+     console.log("Scatter tx Error:");
+     console.log(e);
+//       err = JSON.parse(e);
                         
-                                              func_transfer_error( err.error.details[0].message );
-                                              return;
-                         					  });
-
-
-    					    } 
+         //   func_transfer_error( JSON.stringify(e.json, null, 2) );
+//      pre.textContent = '\nCaught exception: ' + e;
+//      if (e instanceof eosjs_jsonrpc.RpcError)
+  //      pre.textContent += '\n\n' + JSON.stringify(e.json, null, 2);
+    }
+  })();
+            
+            
+    
+   } // SCATTER
    
-
+ 
 } // transact
 
 
@@ -314,7 +346,7 @@ if (currentwallet == "SCATTER")
 //
 // getdata()
 //
-   function getdata( callback, _code, _scope, _table, _lower, _index, _key_type, _limit )
+ function getdata( callback, _code, _scope, _table, _lower, _index, _key_type, _limit )
 {
 
 /*
@@ -406,6 +438,103 @@ const rows = await link.client.v1.chain.get_table_rows({
 } // getdata
 
 
+
+//
+// getdata()
+//
+   function getdata2( callback, externparams, _code, _scope, _table, _lower, _index, _key_type, _limit )
+{
+
+/*
+ $data_string2 = '{"table":"collections","scope":"atomicassets","code":"atomicassets","limit":1, "lower_bound":"'.$acc.'" ,  "json":"true"}';
+ 
+ 
+    const rows = await link.client.v1.chain.get_table_rows({
+          code: 'claimdropbox',
+          scope: 'claimdropbox',
+          table: 'drops',
+          index_position: 3,
+          lower_bound: eosio_account
+        })
+        
+        
+  const rows = await link.client.v1.chain.get_table_rows({
+          code: 'claimdropbox',
+          scope: 'claimdropbox',
+          table: 'drops',
+          index_position: 3,
+          lower_bound: "goldstandard"
+        })
+     "sovorderbook", "sovorderbook", "token", "9"
+
+          json: true,      
+          code : code,
+          scope: scope,
+          table: table,
+          index_position: 1,
+          lower_bound: 9
+
+*/
+
+var rows = null;
+
+//     var url = "https://jungle3.greymass.com/v1/chain/get_table_rows";
+    // var url = "https://eos.greymass.com/v1/chain/get_table_rows";
+//     var url = "https://eos.api.eosnation.io/v1/chain/get_table_rows";
+     
+     var url = "https://"+thenode+"/v1/chain/get_table_rows";
+    
+var xhr = new XMLHttpRequest();
+
+//var params = JSON.stringify(  {"code":"sovorderbook","scope":"sovorderbook","table":"token", "lower_bound":"12" ,  "json":true } );
+//var params = JSON.stringify(  {"code":"sovorderbook","scope":"sovorderbook","table":"asks", "lower_bound":"10", "index_position":2 , "key_type": "i64",  "json":true } );
+//var params = JSON.stringify(  {"code":_code,"scope":_scope,"table":_table, "lower_bound":_lower, "index_position":2 , "key_type": "i64",  "json":true } );
+var params = JSON.stringify(  {"code":_code,"scope":_scope,"table":_table, "lower_bound":_lower, "index_position":_index , "key_type": _key_type, "limit": _limit,  "json":true } );
+
+xhr.open("POST", url);
+
+//xhr.setRequestHeader("Content-length", params.length);
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+//      console.log("hic--2-");
+  //    console.log(xhr.status);
+   //   console.log(xhr.responseText);
+      json = xhr.responseText;
+      
+      const rows = JSON.parse(json);
+//console.log(" CB2 ");
+//console.log(externparams);
+      callback(rows,externparams);
+//      document.getElementById('backdata').innerHTML = "XXX:"+xhr.responseText+"AA";
+   }};
+
+//var mydata = {"code":"sovorderbook","scope":"sovorderbook","table":"token", "lower_bound":"10" ,  "json":true };
+
+xhr.send(params);
+         
+         /*
+
+const rows = await link.client.v1.chain.get_table_rows({
+          json: true,      
+           lower_bound: _lower,
+          code : _code,
+          scope: _scope,
+          table: _table,
+//         index_position: 2,
+          limit: _limit,       
+          
+         
+               
+          });
+*/
+// console.log("back");
+} // getdata2
+
+
 //
 // getaccount()
 //
@@ -435,16 +564,20 @@ alert("(" + walletversion+ ") Status..." + currentwallet + " " + global_account 
  
 window.scatterdologin = async () => 
     {
-     
+    
     try {
     
         await ScatterJS.login();
         var eos = null;
+     
+        setStatus();
+        
+        /*
         setStatus();
         setInterval(() => {
                           setStatus();
                           }, 1000);                          
-   
+   */
         } catch (err) {
             	      return Promise.reject(err);
                       }    
@@ -469,7 +602,7 @@ window.dologout = async() =>
  
   
 function setStatus() {
-            
+               
                      if (!scatter) { return }
 
                      // get accountname
@@ -478,22 +611,19 @@ function setStatus() {
                         {
                         scatter_account = account.name;
                         curaccount = _getCookie("myeosaccount");
-console.log("SET");     
-console.log("global_account: ",global_account);                        
-console.log(scatter_account , " c:" , curaccount);
+                              
                         if (scatter_account != "" && curaccount != scatter_account)
                            {
                            global_account            = scatter_account; 
                             external_login_action();  
-                           _setCookie("myeosaccount",scatter_account,30);    
-                                                      
-                                                                                                           
+                           _setCookie("myeosaccount",scatter_account,30);                          
                            }
                            
-                         currentwallet = "SCATTER"; 
-                           func_setaccountname(scatter_account);     
-                           global_account            = scatter_account;    
-                           global_account_permission = account.authority;                      
+                        currentwallet = "SCATTER"; 
+                        func_setaccountname(scatter_account);     
+                        global_account            = scatter_account;    
+                        global_account_permission = account.authority;   
+                                                   
                   
                         } else
                              {
