@@ -147,7 +147,7 @@ Faucet-Pool Balances: <a href='https://bloks.io/account/sovsvxfaucet' target='_b
 </div>
 
   
-<div style='float:right;margin-right:20px;'><small>V.0.1</small></div>
+<div style='float:right;margin-right:20px;'><small>V.0.2</small></div>
 <br>
 <br>
 <br> 
@@ -302,7 +302,25 @@ for (var i=0; i<size; i++)
     
     buffer += "<div style='border:none;margin:5px;height:60px;' class='claimarea'>";
   
-    
+    //
+    // Logo
+    //
+
+    logoimg = removenumbersandpoint(payout);
+    logoimg = 'logo/' + logoimg.toLowerCase() + '_' + contract + '.png';
+ /*
+ svx_svxmintofeos.png
+ */   
+      buffer +=   "<div style='float:left;width:5%;border:none;font-size:30px;margin-left:2%;margin-top:10px;'>";
+
+      if ( imgexist( logoimg ) )
+         buffer +=   "<img src='"+logoimg+"' style='width:37px;'>" ; else
+         buffer +=   "&nbsp;" ;
+         
+//         buffer += logoimg;  
+         
+      buffer +=   "</div>"; 
+
  
  
     /*
@@ -310,7 +328,7 @@ for (var i=0; i<size; i++)
   buffer += " id:"+ tokenid + " ";
     buffer +=   "</div>";
   */
-      buffer +=   "<div style='float:left;width:30%;border:none;font-size:30px;margin-top:15px;'>";
+      buffer +=   "<div style='float:left;width:25%;border:none;font-size:30px;margin-top:15px;'>";
  buffer +=  contract ;
     if (noderequired == 0) 
        {
@@ -322,7 +340,7 @@ for (var i=0; i<size; i++)
     buffer += description ;
     buffer +=   "</div>";
     
-        buffer +=   "<div style='float:left;width:35%;border:none;font-size:30px;text-align:right;margin-top:15px;'>";
+        buffer +=   "<div style='float:left;width:29%;border:none;font-size:30px;text-align:right;margin-top:15px;'>";
     buffer +=    payout ;
     buffer +=   "</div>";
      
@@ -601,6 +619,18 @@ document.getElementById('faucetdiv_user').innerHTML = buffer;
                                
 } // callback_render_loadfaucetuser
 
+
+function removenumbersandpoint(text) {
+  var newtext = text.replace(/[0-9. ]/g, '');
+  return newtext;
+}
+
+function imgexist(path) {
+  var theimg = new Image();
+  theimg.src = path;
+
+  return theimg.complete || theimg.height !== 0;
+}
 
 
 function gettimestamp()
