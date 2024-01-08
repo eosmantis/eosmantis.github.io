@@ -180,10 +180,39 @@ Burn <input id='sovtoburn' type='text' value='10.0'> SOV ***
 
  
 </div> <!-- divcenter2 --> 
+
+
+
+
+
+ <div class='separator'>&nbsp;</div>
+
+
+<div id='divcenter2' style='text-align:center;'> 
+<br> 
+<br> 
+
+<div id='infoarea' class='claimarea' style='padding:1px;background:#5555aa;border:1px solid #ffffff;'>
+ <div id='' class='claimarea' style='margin:10px;background:#5555aa;text-align:left;'>
+
+<strong>Account Info (without login):</strong>
+<input type='text' id='externaccount' value='' placeholder='testtesttest' > 
+<div onclick='getexternaccountinfo()' class='minibutton' style=''>get info</div>
+<br>
+ 
+ <div id='externaccountaccount'>...</div>
+
+ </div>
+</div> <!-- infoarea -->
+
+<br>
+<br>
+
+
  
 <br>
 <br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1b</div>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1c</div>
  
 
 
@@ -680,6 +709,94 @@ cnt++;
 var time = setTimeout("update_thread()", 3000);
   
 } //// update_thread
+
+
+
+//
+// 
+//
+function getexternaccountinfo()
+{
+
+var externaccount = document.getElementById('externaccount').value;
+
+ 
+ 
+uint64var =   eosjsName.nameToUint64( externaccount + "" );
+console.log(uint64var);
+ 
+getdata(callback_render_externaccountbalance, "svxmintofeos", externaccount, "accounts", "", "", "", 112 );
+ 
+
+
+
+/*
+<input type='text' id='externaccount' > 
+<div onclick='getexternaccountinfo()' class='minibutton' style=''>get info</div>
+<br>
+ 
+ <div id='externaccountaccount'>...</div>
+
+*/
+} // getexternaccountinfo()
+
+
+
+function callback_render_externaccountbalance( value )
+{
+
+balance      = value.rows[0].balance;
+storebalance = value.rows[0].storebalance;
+
+balance2 = balance.replace("SVX", "");
+balance2 = parseFloat (balance); 
+
+balance3 = storebalance.replace("SVX", "");
+balance3 = parseFloat (balance3); 
+
+diffbalance  = balance2 - balance3;
+buffer = "";
+
+buffer += "SVX balance: " + balance + "<br>";
+buffer += "SVX staked: " + storebalance + "<br>";
+buffer += "SVX transferable: " + diffbalance + "<br>";
+
+document.getElementById('externaccountaccount').innerHTML = buffer;
+
+
+//alert('bbb: ' + balance);
+
+
+/*
+if (value.rows.length == 0) return;                   
+
+
+if (value.rows[0].user == global_account)
+{
+balance = value.rows[0].quantity;
+ 
+buffer = "" + balance;
+document.getElementById('svxbalancesaved').innerHTML = buffer;
+
+
+
+
+  balance2 = balance.replace("SOV", "");
+   balance2 = parseFloat (balance); 
+lastsavedsvxbalance = balance2;
+
+
+} else
+  {
+  document.getElementById('svxbalancesaved').innerHTML = "no data";
+  }
+                       */          
+} // callback_render_balance1
+
+
+
+ 
+
 
 
 
