@@ -755,6 +755,7 @@ balance3 = storebalance.replace("SVX", "");
 balance3 = parseFloat (balance3); 
 
 diffbalance  = balance2 - balance3;
+diffbalance = Number(diffbalance).toFixed(4) + " SVX"; 
 buffer = "";
 
 buffer += "SVX balance: " + balance + "<br>";
@@ -763,34 +764,7 @@ buffer += "SVX transferable: " + diffbalance + "<br>";
 
 document.getElementById('externaccountaccount').innerHTML = buffer;
 
-
-//alert('bbb: ' + balance);
-
-
-/*
-if (value.rows.length == 0) return;                   
-
-
-if (value.rows[0].user == global_account)
-{
-balance = value.rows[0].quantity;
- 
-buffer = "" + balance;
-document.getElementById('svxbalancesaved').innerHTML = buffer;
-
-
-
-
-  balance2 = balance.replace("SOV", "");
-   balance2 = parseFloat (balance); 
-lastsavedsvxbalance = balance2;
-
-
-} else
-  {
-  document.getElementById('svxbalancesaved').innerHTML = "no data";
-  }
-                       */          
+        
 } // callback_render_balance1
 
 
