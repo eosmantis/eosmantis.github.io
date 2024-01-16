@@ -200,6 +200,7 @@ Burn <input id='sovtoburn' type='text' value='10.0'> SOV ***
 <div onclick='getexternaccountinfo()' class='minibutton' style=''>get info</div>
 <br>
  
+ <div id='externaccountaccountsov'>...</div>
  <div id='externaccountaccount'>...</div>
 
  </div>
@@ -212,7 +213,7 @@ Burn <input id='sovtoburn' type='text' value='10.0'> SOV ***
  
 <br>
 <br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1c</div>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1d</div>
  
 
 
@@ -727,7 +728,8 @@ console.log(uint64var);
  
 getdata(callback_render_externaccountbalance, "svxmintofeos", externaccount, "accounts", "", "", "", 112 );
  
-
+getdata(callback_render_externaccountbalancesov, "sovmintofeos", externaccount, "accounts", "", "", "", 112 );
+ 
 
 
 /*
@@ -765,9 +767,34 @@ buffer += "SVX transferable: " + diffbalance + "<br>";
 document.getElementById('externaccountaccount').innerHTML = buffer;
 
         
-} // callback_render_balance1
+} // callback_render_externaccountbalance
 
 
+
+function callback_render_externaccountbalancesov( value )
+{
+
+balance      = value.rows[0].balance;
+//storebalance = value.rows[0].storebalance;
+
+////balance2 = balance.replace("SOV", "");
+//balance2 = parseFloat (balance); 
+
+/*
+balance3 = storebalance.replace("SVX", "");
+balance3 = parseFloat (balance3); 
+
+diffbalance  = balance2 - balance3;
+diffbalance = Number(diffbalance).toFixed(4) + " SVX"; 
+*/
+buffer = "";
+
+buffer += "SOV balance: " + balance + "<br>";
+buffer += "<br>";
+document.getElementById('externaccountaccountsov').innerHTML = buffer;
+
+        
+} // callback_render_externaccountbalancesov
 
  
 
