@@ -196,3 +196,14 @@ background:#6969d9;
 background:#7a8aff;
 }
   
+  
+  
+
+.imground
+{
+
+-webkit-border-radius: 10px;
+   -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+  
