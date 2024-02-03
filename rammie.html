@@ -1,0 +1,1193 @@
+<html>
+<head>
+<link rel="icon" href="img/icon.png" />
+<link rel="stylesheet" href="css/style.css?ttd=434324" />
+
+ <!-- BEGINN WALLET-INCLUDE-->
+    
+    <!-- Anchor js -->
+    <script src="https://unpkg.com/anchor-link@next"></script>
+    <script src="https://unpkg.com/anchor-link-browser-transport@next"></script>
+        
+    <!-- Scatter js -->
+    <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.9/lib/eos.min.js"></script>  
+
+    <script src="js/bundles/scatterjs-core.min.js"></script>
+    <script src="js/bundles/scatterjs-plugin-eosjs.min.js"></script>
+    <script src="js/bundles/scatterjs-plugin-lynx.min.js"></script>    
+    
+    <script src="js/eosiowallet/wallet.js?dsd=79524"></script>   
+    
+    <script src="js/eosjs-account-name_2.2.1.js"></script>  
+   
+ 
+              
+ <!-- END WALLET-INCLUDE-->
+
+
+
+</head>
+
+<body class='bodyclass'>
+ 
+  <div id='logo1' class='logo1x' style='text-align:center;'>
+  <img src='img/logo.svg?t=d453s' style='margin-top:30px;height:60px;'><br>
+  SOVPOWERPACK<br>
+  <br>
+  </div>
+
+ <div id='' style='position:absolute;top:30px;right:50px;border:1px solid #5555ff;cursor:pointer;'> 
+ <img src='img/powerup.svg?t=d453s' alt='PowerUp' title='PowerUp' onclick='powerup(0.01)' style='height:60px;width:60px;'>  
+ </div>
+
+
+<!-- walletmenu -->
+
+<div id='walletmenu' class='walletmenu' style='border:width:100%;height:90px;'>
+
+<div id='walletmenu_left' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#55ff55;'>
+
+
+ <div id='walletmenu_accountname' style='position:absolute;width:100%;top:0px;'>
+ 
+ <div id='myaccountname' class='myaccountname' style='font-size:2em;color:#ffffff;font-weight:bold;'>...abc</div>
+ 
+ </div>
+ 
+ <div id='walletmenu_anchor' style='position:absolute;width:100%;'>
+ <div id='anchorbutton' onclick="login_anchor()" class='loginbutton_anchor noselect' style='margin-left:auto;margin-right:auto;' >ANCHOR</div> 
+ 
+ </div>
+
+ 
+</div>
+
+
+
+
+
+<div id='walletmenu_right' style='float:left;position:relative;width:49%;text-align:center;margin-top:20px;background:#5555ff;'>
+  <div id='walletmenu_aa' style='position:absolute;width:100%;'>
+  <div id='logoutbutton' onclick="logout_all()"  class='defaultbutton noselect' style='visibility:hidden;margin-left:auto;margin-right:auto;' >Logout</div>
+
+  </div>
+
+  <div id='walletmenu_scatter' style='position:absolute;width:100%;visibility:hiddenx;'>
+ <div onclick="login_scatter()" class='defaultbutton noselect' style='margin-left:auto;margin-right:auto;'  >SCATTER/TP/WOMBAT</div>
+
+  </div>
+
+</div>
+
+
+<div style='clear:both;'></div>
+
+
+
+
+</div> <!-- end walletmenu -->
+
+<div id='menu' style='width:margin-left:auto;margin-right:auto;padding:5px;'>
+<a href='index.html' style='color:#ffffff;text-decoration:none;'>START</a> | <a href='faucet.html' style='color:#ffffff;text-decoration:none;'>FAUCET</a>  
+</div>
+
+<br>
+<br>
+
+
+<br>
+<br>
+
+
+<div id='divcenter' style='text-align:center;'> 
+ RAMMIES DEBUG-Frontend...<br>
+ <br>
+ 
+ 
+ 
+ <br>
+ <div onclick='getnftbalance()'>Get NFT Balance</div>
+ 
+ 
+ <br>
+
+
+ DEBUG: <div id='nftdivdebug'>...</div>
+ <br>
+ 
+
+ <img src='img/rammie/rammie1.png' class='imground' style='width:100px'> <br>
+ <div id='nftdiv1'>...0...</div>  
+ <div id='nftdiv1_price_buy'>...</div>  
+ <div id='nftdiv1_price_sell'>...</div>  
+
+
+
+<br>
+<br>
+ <img src='img/rammie/rammie2.png' class='imground' style='width:100px'> <br>
+ <div id='nftdiv2'>...0...</div>  
+ <div id='nftdiv2_price_buy'>...</div>  
+ <div id='nftdiv2_price_sell'>...</div>  
+
+
+
+<br>
+<br>
+ <img src='img/rammie/rammie3.png' class='imground' style='width:100px'> <br>
+ <div id='nftdiv3'>...0...</div>  
+ <div id='nftdiv3_price_buy'>...</div>  
+ <div id='nftdiv3_price_sell'>...</div>  
+
+
+</div> <!-- divcenter -->
+
+
+
+<div class='separator'>&nbsp;</div>
+
+<div style='clear:both;'></div>
+<br>
+<br>
+<br>
+ 
+<div id='divcenter' style='text-align:center;'> 
+
+
+<div id='' style='text-align:center'>SVX balance</div>
+<div id='svxbalance' style='text-align:center;font-size:40px;'>...</div>
+
+ 
+
+</div> <!-- divcenter -->
+
+<div style='clear:both;'></div>
+ 
+<br>
+<br>
+<br>
+<br>
+<div class='separator'>&nbsp;</div>
+<br>
+<div id='' style='text-align:center'>EOS balance</div>
+<div id='balance1' style='text-align:center;font-size:40px;'>...</div>
+
+
+<br>
+<br>
+<div id='' style='text-align:center'>SOV balance</div>
+<div id='balance3' style='text-align:center;font-size:40px;'>...</div>
+
+
+<div style='clear:both;'></div>
+ 
+  
+
+ <div class='separator'>&nbsp;</div>
+
+
+
+
+ 
+<br>
+<br>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1</div>
+ 
+
+
+<script>
+var id = 10;
+var tokenid = 12;
+var price = 1;
+var user = "sovdex"
+  var row2 = { 0:id,1:tokenid,2:price,3:user,4:1.3,5:6 };
+      
+   
+       console.log("row:");
+       console.log(row2);
+ 
+ 
+function setaccountname( name )
+{
+document.getElementById('myaccountname').innerHTML = ""+name+"";
+ 
+document.getElementById('walletmenu_anchor').style.visibility = "hidden";
+document.getElementById('walletmenu_anchor').style.height = "0px";
+
+document.getElementById('walletmenu_scatter').style.visibility = "hidden";
+document.getElementById('walletmenu_scatter').style.height = "0px"; 
+
+document.getElementById('logoutbutton').style.visibility = "visible";
+document.getElementById('logoutbutton').style.height = ""; 
+}
+
+
+
+function logoutall( name )
+{
+document.getElementById('myaccountname').innerHTML = "xxx";
+
+document.getElementById('walletmenu_anchor').style.visibility = "visible";
+document.getElementById('walletmenu_anchor').style.height = "";
+
+document.getElementById('walletmenu_scatter').style.visibility = "visible";
+document.getElementById('walletmenu_scatter').style.height = "";
+
+ 
+document.getElementById('logoutbutton').style.visibility = "hidden";
+document.getElementById('logoutbutton').style.height = "0px";
+}
+
+
+
+function external_login_action()
+{
+update_counter = 0;
+}
+
+function func_success( message )
+{
+alert(message);
+}
+
+function func_error( message )
+{
+alert(message);
+}
+
+
+function testtransaction()
+{
+
+var theactions = [];
+
+memo = "This is it";
+
+
+    
+   
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "testtesttest",
+                       "quantity": "0.0001 EOS",
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+   
+
+ 
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+}
+
+ 
+
+
+ 
+
+
+ 
+
+function callback_render_balance1( value )
+{
+
+if (value.rows.length == 0) return;                   
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance1').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getbalancedata()
+{
+getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+
+
+
+// sov balance
+
+function callback_render_balance2( value )
+{
+
+if (value.rows.length == 0) return;                   
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance3').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getsovbalancedata()
+{
+getdata(callback_render_balance2, "sovmintofeos", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+
+
+
+
+var lastsavedsvxbalance = 0;
+
+function callback_render_savedsvxbalance( value )
+{
+if (value.rows.length == 0) return;                   
+
+
+if (value.rows[0].user == global_account)
+{
+balance = value.rows[0].quantity;
+ 
+//buffer = "" + balance;
+//document.getElementById('svxbalancesaved').innerHTML = buffer;
+
+
+
+/*
+  balance2 = balance.replace("SOV", "");
+   balance2 = parseFloat (balance); 
+lastsavedsvxbalance = balance2;
+*/
+
+} else
+  {
+ // document.getElementById('svxbalancesaved').innerHTML = "no data";
+  }
+                                 
+} // callback_render_balance1
+
+
+
+
+function getsvxbalance()
+{ 
+if (global_account == "") return;
+ 
+
+ 
+uint64var =   eosjsName.nameToUint64( global_account + "" );
+console.log(uint64var);
+
+
+
+getdata(callback_render_savedsvxbalance, "sovpowerpack", "sovpowerpack", "svxbalance", uint64var, "", "", 112 );
+}
+
+
+
+
+
+
+
+var first_sov_supply = "";
+var sovburneddiff    = "";
+// 
+function callback_render_sovsupply( value )
+{
+
+console.log("value sovsupply");
+console.log(value);
+
+ 
+if (value.rows.length == 0) return;                   
+
+
+
+supply = value.rows[0].supply;
+ 
+
+// Calc diff
+var supply2 = supply.replace("SOV", "");
+supply2 = parseFloat (supply2);
+   
+ 
+ 
+
+if ( first_sov_supply == "" )
+   {   
+   supply = supply.replace("SOV", "");
+   supply = parseFloat (supply);
+   first_sov_supply = supply;
+   }
+                              
+} // callback_render_sovsupply
+
+
+
+function getsovsupply()
+{
+getdata(callback_render_sovsupply, "sovmintofeos", "SOV", "stat", "", "", "", 112 );
+}
+
+
+
+
+function callback_render_svxbalance( value )
+{
+console.log("value callback_render_svxbalance");
+console.log(value);
+
+ 
+if (value.rows.length == 0) return;                   
+
+balance = value.rows[0].balance;
+  
+  
+if (balance != undefined)
+   {
+   document.getElementById('svxbalance').innerHTML = balance + "";
+   
+   // alf 
+   balance2 = balance.replace("SOV", "");
+   balance2 = parseFloat (balance); 
+   
+ 
+   }
+                              
+} // callback_render_sovsupply
+
+
+
+function getsvxbalance2()
+{
+getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", "", "", "", 112 );
+}
+
+
+
+function powerup( eosforpower )
+{
+
+//eosforpower = document.getElementById("eosforpower").value;
+ 
+var theactions = [];
+
+      
+
+eosforpower = Number(eosforpower).toFixed(4) + " EOS";   
+
+    
+   
+var memo = global_account+"";
+ 
+   
+  
+//var quantityeos = globaldata['a_sov'] / 10000;
+//quantitysov = Number(quantitysov).toFixed(4) + " SOV";   
+   
+
+ 
+   
+    var action = {
+                 account: "eosio.token",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "powerupcalc1",
+                       "quantity": eosforpower,
+                       "memo": memo,
+                        
+                      
+                       }
+                 };
+
+
+
+ 
+    theactions.push(action);
+   
+
+ 
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }
+   
+   
+} // powerup
+
+
+
+var cnt = 0;
+function update_thread()
+{
+console.log("THREAD");
+
+getsovsupply();
+
+
+if ( (cnt % 2) == 0 ) getsvxbalance();
+if ( (cnt % 2) == 0 ) getnftbalance();
+
+if ( (cnt % 4) == 0 ) getbalancedata();
+
+if ( (cnt % 6) == 0 ) getsovbalancedata();
+
+
+
+
+ 
+
+ 
+console.log("first_sov_supply: " );
+console.log(first_sov_supply);
+
+console.log("sovburneddiff: " );
+console.log(sovburneddiff);
+
+cnt++; 
+var time = setTimeout("update_thread()", 3000);
+  
+} //// update_thread
+
+
+
+
+// ---
+
+ /*
+var idata = value.rows[0].immutable_serialized_data;
+var mdata = value.rows[0].mutable_serialized_data;
+
+
+decoded_data = mydecoder( idata, mdata );
+
+nick = decoded_data['nick'];
+atype = decoded_data['atype'];
+
+coordinatei = params['id'];
+
+var asset_id = params['asset_id'];
+
+
+// ---
+if ( nick != "" )
+{
+select = document.getElementById('select_fav_objects');
+
+// Add option to selectlist
+var opt = document.createElement('option');
+opt.value = coordinatei;
+opt.innerHTML = nick;
+select.appendChild(opt);
+} // if...
+
+// ---
+
+
+
+// add own_collectors
+
+// only collectors
+if (atype == 8)
+{
+var asset_object = Object();
+asset_object['asset_id'] = asset_id;
+asset_object['atype'] = atype;
+own_collectors.push( asset_object );
+}
+
+ 
+
+//console.log(value);
+
+ 
+return;
+
+//var data = value.rows[0].immutable_serialized_data;
+var data = value.rows[0].mutable_serialized_data;
+var idata = value.rows[0].immutable_serialized_data;
+var mdata = value.rows[0].mutable_serialized_data;
+
+
+decoded_data = mydecoder( idata, mdata );
+
+ 
+// ---
+//document.getElementById('debugout').innerHTML = "[" + decoded_data['name'] + "]" ;
+
+x = params['x'];
+y = params['y'];
+
+ 
+
+//a = decoded_data['attack'];
+//console.log("a: " + a);
+
+tilearray[x][y]['attack']   = decoded_data['attack'];
+tilearray[x][y]['atype']    = decoded_data['atype'];
+    tilearray[x][y]['config']    = decoded_data['config'];
+    tilearray[x][y]['eos']    = decoded_data['eos'];
+    tilearray[x][y]['name']    =decoded_data['name'];
+
+    tilearray[x][y]['nick']    = decoded_data['nick'];
+    tilearray[x][y]['ori']    = decoded_data['ori'];
+    tilearray[x][y]['race']    = decoded_data['race'];
+    tilearray[x][y]['shield']    = decoded_data['shield'];
+    tilearray[x][y]['shield_max']    = decoded_data['shield_max'];
+    tilearray[x][y]['sov']    = decoded_data['sov'];
+
+
+
+
+
+    loadobjects_cnt++;
+       if (loadobjects_cnt == loadobjects_size)
+          {
+          console.log("loadobjects_size reached! ");
+          renderboard();
+          } else
+            {
+            //console.log("loadobjects_cnt: ", loadobjects_cnt, " of ", loadobjects_size );
+            }
+
+
+
+} // callback_readasset_forlist
+
+*/
+
+
+var rowsinventory = null;
+
+function callback_getinventory( rows )
+{
+console.log("INV----");
+     console.log(rows);
+
+rowsinventory = rows;
+
+  var size = rows.rows.length;
+      console.log("size:::"+ size);
+      
+  document.getElementById('nftdivdebug').innerHTML  = "ABC " + global_account + " size:" + size ;
+
+/*
+rammiestest2	testcat1	11305 3 
+rammiestest2	testcat1	11306 2 
+rammiestest2	testcat1	11308 1
+*/  
+
+// nftdiv1
+
+nftdiv1_cnt = 0;
+nftdiv2_cnt = 0;
+nftdiv3_cnt = 0;
+
+for (var i=0; i<size; i++)
+    {
+    var asset_id = rows.rows[i].asset_id;
+    
+    collection_name = rows.rows[i].collection_name;
+    schema_name     = rows.rows[i].schema_name;
+    template_id     = rows.rows[i].template_id*1;
+          
+    console.log("cn: "+  i +  " - " + collection_name + " " + schema_name + " " + template_id);      
+    
+    if ( collection_name == "rammiestest2" && template_id == 11308 ) 
+       {
+       nftdiv1_cnt++;
+       console.log("found 1");
+       }
+       
+    if ( collection_name == "rammiestest2" && template_id == 11306 ) 
+       {
+       nftdiv2_cnt++;
+       console.log("found 2");
+       }
+       
+    if ( collection_name == "rammiestest2" && template_id == 11305 ) 
+       {
+       nftdiv3_cnt++;
+       console.log("found 3");
+       }
+    
+    } // for i...size
+
+document.getElementById('nftdiv1').innerHTML =  nftdiv1_cnt + " Rammies";
+document.getElementById('nftdiv2').innerHTML =  nftdiv2_cnt + " Rammies";
+document.getElementById('nftdiv3').innerHTML =  nftdiv3_cnt + " Rammies";
+  
+/* 
+content = "";
+content += "<table><tr>";
+
+    
+
+for (var i=0; i<size; i++)
+          {
+          var asset_id = rows.rows[i].asset_id;
+
+ 
+          collection_name = rows.rows[i].collection_name;
+          
+          var idata   = rows.rows[i].immutable_serialized_data;
+          var mdata   = rows.rows[i].mutable_serialized_data;
+          
+          
+          decoded_data = mydecoder( idata, mdata );
+ 
+
+         if (  collection_name == "sovspacegame" )
+            {
+         
+            
+            hash_img            = decoded_data['ipfs'];
+            the_race            = decoded_data['race'];
+            the_atype           = decoded_data['atype'];
+            title               = decoded_data['name'];
+            
+            
+            if (title == undefined) title = "Alien Girl";
+            console.log("hash_img: " + hash_img);
+            content += "<td>";
+            content += "<div class='nft_cell' style=''>";
+
+
+            // var the_race        = json_array['data']['data']['race'];
+            //  var the_atype       = json_array['data']['data']['atype'];
+            var imgbuffer       = "";
+
+        
+                  {
+                  imgbuffer = "<img src='img/nft_"+the_race+"_"+the_atype+".png' style='width:100px;margin-top:10px;'>";
+                  }
+
+            content +=   imgbuffer + "<br>";
+
+
+
+            asset_link = "<a href='https://eos.atomichub.io/explorer/asset/" + asset_id + "' style='color:#eeeeee;' target='_blank'>#"+asset_id+ "</a>";
+
+            content += "<strong>"+ title + "</strong><br>";
+            content += "<small>"+ asset_link + "</small><br>";
+
+
+           content += "&nbsp;<br>";
+
+         thelink = "sellasset("+asset_id+")";
+
+
+   if (asset_id >= 2199025449661)
+
+           {
+
+           if (the_atype == 6)
+              {
+              content += "[street]";
+              } else
+                 {
+
+
+                 // Get current prices
+
+
+
+
+
+                   marketid = 1;
+       //
+       size2 = pricedata.length;
+       for (var i2=1; i2<=size2; i2++)
+           {
+           if (pricedata[i2]['race'] !== undefined)
+              {
+              if ( pricedata[i2]['race'] == the_race && pricedata[i2]['atype'] == the_atype)
+                 {
+                 marketid = i2;
+                 i2 = size2;
+                 } // if ...
+              } // != undefined
+           } // for...
+        // pricedata[id]['race']
+   var sov2 =  marketdata_item[marketid];
+
+
+            content += "<span >"+sov2+" SOV</span><br>";
+
+                 content += "<span class='mintbutton' onclick='"+thelink+"'>Sell NFT</span>";
+                 }
+           } else
+              {
+                  content += "[TEST-NFT]";
+
+
+                 thelink = "burnasset("+asset_id+")";
+                 content += "<br>";
+                 content += "<span class='mintbutton' onclick='"+thelink+"' style='background:#ff3333;'>Burn NFT</span>";
+
+               }
+
+
+
+            content += "</div>";
+            content += "</td>";
+            } // if (  collection_name == "xusogamedemo" )
+
+          } // for i...
+
+
+         content += "</tr></table>";
+
+
+         document.getElementById('div_inventory_inner2').innerHTML =  content;
+*/
+} // callback_getinventory()
+
+
+
+var rowsrelays = null;
+
+function callback_getrelays( rows )
+{
+console.log("RELAYS----");
+     console.log(rows);
+     
+rowsrelays = rows;     
+
+size = rows.rows.length;
+
+// nftdiv1_price
+
+/*
+rammiestest2	testcat1	11305 3  relay 1
+rammiestest2	testcat1	11306 2  relay 2
+rammiestest2	testcat1	11308 1  relay 3
+*/  
+
+for (var i=0; i<size; i++)
+    {
+    var template_id = rows.rows[i].template_id;
+    var price_buy   = rows.rows[i].price_buy;
+    var price_sell  = rows.rows[i].price_sell;
+    var fee         = rows.rows[i].fee*1;
+    var fee_pool    = rows.rows[i].fee_pool*1;
+    var fee_share   = rows.rows[i].fee_share;
+    
+    
+    price_buy  = price_buy.replace("SVX", "")*1;
+    price_sell = price_sell.replace("SVX", "")*1;
+
+  //  fee_pool   = fee_pool.replace("SVX", "");
+ //   fee_share  = fee_share.replace("SVX", "");
+
+
+    
+    total = price_buy + fee + fee_share;
+    console.log("I: " + i + " " + template_id  + " price_buy:" + price_buy + " fee:" + fee + " fee_share:" + fee_share + " " + " total:" + total);
+    
+    if ( template_id == 11305 )
+       {
+
+       document.getElementById('nftdiv3_price_buy').innerHTML  =  price_buy  + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
+       document.getElementById('nftdiv3_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
+       } // 11305
+
+    if ( template_id == 11306 )
+       {
+
+       document.getElementById('nftdiv2_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
+       document.getElementById('nftdiv2_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
+       } // 11305
+
+    if ( template_id == 11308 )
+       {
+
+       document.getElementById('nftdiv1_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
+       document.getElementById('nftdiv1_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
+       } // 11305
+    
+    } // for i...size
+    
+         
+} // callback_getrelays()
+
+
+
+
+
+function getnftbalance()
+{
+
+  
+  //   getdata2(callback_readasset_forlist, params, "atomicassets", "sovspacegame", "assets", asset_id, "", "", 1 );
+  getdata(callback_getinventory, "atomicassets", global_account, "assets", "", "", "", 112 ); 
+
+
+  getdata(callback_getrelays, "rammiegomoon", "rammiegomoon", "relays", "", "", "", 112 ); 
+     
+} // getnftbalance()
+
+
+
+//
+// nftbuy
+//
+function nftbuy( template_id, price )
+{
+//alert("buy " + template_id + " price " + price +  " " + global_account);
+
+// You have to send svx then do ‘paynft’, there are three relays, numbered 1,2 or 3
+alert( price + " x" );
+
+var theactions = [];
+
+var memo = "";
+
+quantitysvx = Number(price).toFixed(4) + " SVX";
+
+alert( quantitysvx );
+
+//theactions.push(action);
+/*
+
+var quantitysov = globaldata['m_sov'] / 10000;
+
+
+
+
+    var action = {
+                 account: "sovmintofeos",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "sovspacegame",
+                       "quantity": quantitysov,
+                       "memo": memo,
+
+
+                       }
+                 };
+
+*/
+
+/*
+rammiestest2	testcat1	11305 3  relay 1
+rammiestest2	testcat1	11306 2  relay 2
+rammiestest2	testcat1	11308 1  relay 3
+*/  
+
+
+    var action = {
+                 account: "svxmintofeos",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "rammiegomoon",
+                       "quantity": quantitysvx,
+                       "memo": memo,
+                       }
+                 };
+                 
+theactions.push(action);                 
+                 
+                 
+if (template_id == 11305) relay_id = 1;                 
+if (template_id == 11306) relay_id = 2;                 
+if (template_id == 11308) relay_id = 3;                 
+
+    var action = {
+                 account: "rammiegomoon",
+                 name: 'paynft',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account,
+                       "relay_id": relay_id                       
+                       }
+                 };
+
+theactions.push(action);                 
+
+
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   cnt = -2;
+   
+   }
+
+} // nftbuy()
+
+
+
+// 
+// nftsell
+//
+function nftsell( template_id, price )
+{
+
+/*
+
+*/
+
+ 
+if (template_id == 11305) relay_id = 1;                 
+if (template_id == 11306) relay_id = 2;                 
+if (template_id == 11308) relay_id = 3;       
+
+size = rowsinventory.rows.length;
+
+
+//alert("sell " + template_id + " price " + price + " size:" + size + "  relay_id:" + relay_id);
+
+// Get Assetid
+var new_assetid = 0;
+ 
+ //   alert("size ... "+ size);
+
+// nftdiv1_price
+
+/*
+rammiestest2	testcat1	11305 3  relay 1
+rammiestest2	testcat1	11306 2  relay 2
+rammiestest2	testcat1	11308 1  relay 3
+*/  
+
+for (var i=0; i<size; i++)
+    {
+    /*
+    var template_id = rowsinventory.rows[i].template_id;
+    var price_buy   = rowsinventory.rows[i].price_buy;
+    var price_sell  = rowsinventory.rows[i].price_sell;
+    
+    
+    price_buy  = price_buy.replace("SVX", "");
+    price_sell = price_sell.replace("SVX", "");
+    */
+    
+    var asset_id = rowsinventory.rows[i].asset_id;
+    
+    collection_name = rowsinventory.rows[i].collection_name;
+    schema_name     = rowsinventory.rows[i].schema_name;
+    template_id2    = rowsinventory.rows[i].template_id*1;
+          
+    console.log("cn: "+  i +  " - " + collection_name + " " + schema_name + " " + template_id);      
+    
+    if ( collection_name == "rammiestest2" && template_id == template_id2 ) // template_id2 11308
+       {
+       new_assetid = asset_id;
+       console.log("found 1");
+       i = size;
+       }
+       
+    if ( collection_name == "rammiestest2" && template_id == template_id2 )  // 11306
+       {
+       new_assetid = asset_id;
+       console.log("found 2");
+       i = size;       
+       }
+       
+    if ( collection_name == "rammiestest2" && template_id == template_id2 )  // 11305
+       {
+       new_assetid = asset_id;
+       console.log("found 3");
+       i = size;       
+       }
+       
+    } // i..size
+    
+    
+    
+if (new_assetid > 0)
+   {
+ 
+   var theactions = [];
+
+
+
+   var memo = "";
+
+
+   var action = {
+                 account: "atomicassets",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account,
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account,
+                       "to": "rammiegomoon",
+                       "asset_ids": [new_assetid],
+                       "memo": memo,
+                       }
+                 };
+
+
+   theactions.push(action);
+
+
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   cnt = -2;
+   }
+   
+   } // if (new_assetid > 0)
+    
+    
+    
+} // nftsell()
+
+
+
+// ---
+ 
+
+
+
+</script>
+
+
+<script>
+init_wallets( "sovpowerpack",setaccountname, logoutall );
+
+update_thread(); 
+</script>
+
+</body>
+</hmtl>
