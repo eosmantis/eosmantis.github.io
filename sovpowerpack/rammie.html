@@ -366,20 +366,20 @@ if (value.rows[0].user == global_account)
 {
 balance = value.rows[0].quantity;
  
-buffer = "" + balance;
-document.getElementById('svxbalancesaved').innerHTML = buffer;
+//buffer = "" + balance;
+//document.getElementById('svxbalancesaved').innerHTML = buffer;
 
 
 
-
+/*
   balance2 = balance.replace("SOV", "");
    balance2 = parseFloat (balance); 
 lastsavedsvxbalance = balance2;
-
+*/
 
 } else
   {
-  document.getElementById('svxbalancesaved').innerHTML = "no data";
+ // document.getElementById('svxbalancesaved').innerHTML = "no data";
   }
                                  
 } // callback_render_balance1
@@ -893,32 +893,40 @@ for (var i=0; i<size; i++)
     var template_id = rows.rows[i].template_id;
     var price_buy   = rows.rows[i].price_buy;
     var price_sell  = rows.rows[i].price_sell;
+    var fee         = rows.rows[i].fee*1;
+    var fee_pool    = rows.rows[i].fee_pool*1;
+    var fee_share   = rows.rows[i].fee_share;
     
     
-    price_buy  = price_buy.replace("SVX", "");
-    price_sell = price_sell.replace("SVX", "");
+    price_buy  = price_buy.replace("SVX", "")*1;
+    price_sell = price_sell.replace("SVX", "")*1;
+
+  //  fee_pool   = fee_pool.replace("SVX", "");
+ //   fee_share  = fee_share.replace("SVX", "");
+
 
     
-    console.log("I: " + i + " " + template_id  + " price_buy:" + price_buy);
+    total = price_buy + fee + fee_share;
+    console.log("I: " + i + " " + template_id  + " price_buy:" + price_buy + " fee:" + fee + " fee_share:" + fee_share + " " + " total:" + total);
     
     if ( template_id == 11305 )
        {
 
-       document.getElementById('nftdiv3_price_buy').innerHTML  =  price_buy  + " <button onclick='nftbuy("+ template_id + ',' + +price_buy+ ");'> buy </button>";
+       document.getElementById('nftdiv3_price_buy').innerHTML  =  price_buy  + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
        document.getElementById('nftdiv3_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
        } // 11305
 
     if ( template_id == 11306 )
        {
 
-       document.getElementById('nftdiv2_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +price_buy+ ");'> buy </button>";
+       document.getElementById('nftdiv2_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
        document.getElementById('nftdiv2_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
        } // 11305
 
     if ( template_id == 11308 )
        {
 
-       document.getElementById('nftdiv1_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +price_buy+ ");'> buy </button>";
+       document.getElementById('nftdiv1_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
        document.getElementById('nftdiv1_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
        } // 11305
     
@@ -953,13 +961,15 @@ function nftbuy( template_id, price )
 //alert("buy " + template_id + " price " + price +  " " + global_account);
 
 // You have to send svx then do ‘paynft’, there are three relays, numbered 1,2 or 3
-
+alert( price + " x" );
 
 var theactions = [];
 
 var memo = "";
 
 quantitysvx = Number(price).toFixed(4) + " SVX";
+
+alert( quantitysvx );
 
 //theactions.push(action);
 /*
