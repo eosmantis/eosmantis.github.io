@@ -158,7 +158,14 @@
 <div id='' style='text-align:center'>SVX balance</div>
 <div id='svxbalance' style='text-align:center;font-size:40px;'>...</div>
 
- 
+<br>
+<div id='' style='text-align:center'>SVX staked</div>
+<div id='svxbalancestaked' style='text-align:center;font-size:20px;'>...</div>
+
+<br>
+<div id='' style='text-align:center'>SVX transferable</div>
+<div id='svxbalancetransfer' style='text-align:center;font-size:20px;'>...</div>
+
 
 </div> <!-- divcenter -->
 
@@ -226,7 +233,7 @@ document.getElementById('logoutbutton').style.height = "";
 
 function logoutall( name )
 {
-document.getElementById('myaccountname').innerHTML = "xxx";
+document.getElementById('myaccountname').innerHTML = "";
 
 document.getElementById('walletmenu_anchor').style.visibility = "visible";
 document.getElementById('walletmenu_anchor').style.height = "";
@@ -459,17 +466,53 @@ console.log(value);
  
 if (value.rows.length == 0) return;                   
 
-balance = value.rows[0].balance;
-  
+balance      = value.rows[0].balance;
+storebalance = value.rows[0].storebalance;
+
+console.log("SVX: " + balance); 
   
 if (balance != undefined)
    {
    document.getElementById('svxbalance').innerHTML = balance + "";
    
-   // alf 
-   balance2 = balance.replace("SOV", "");
-   balance2 = parseFloat (balance); 
+   // alfalf 
+balance2 = balance.replace("SVX", "");
+balance2 = parseFloat (balance); 
+
+balance3 = storebalance.replace("SVX", "");
+balance3 = parseFloat (balance3); 
+
+diffbalance  = balance2 - balance3;
+diffbalance = Number(diffbalance).toFixed(4) + " SVX"; 
    
+    document.getElementById('svxbalancestaked').innerHTML = balance3 + " SVX";
+     document.getElementById('svxbalancetransfer').innerHTML = diffbalance + "";
+   /*
+   svxbalancestaked
+ svxbalancetransfer
+ 
+ 
+ 
+ 
+ 
+balance      = value.rows[0].balance;
+storebalance = value.rows[0].storebalance;
+
+balance2 = balance.replace("SVX", "");
+balance2 = parseFloat (balance); 
+
+balance3 = storebalance.replace("SVX", "");
+balance3 = parseFloat (balance3); 
+
+diffbalance  = balance2 - balance3;
+diffbalance = Number(diffbalance).toFixed(4) + " SVX"; 
+buffer = "";
+
+buffer += "SVX balance: " + balance + "<br>";
+buffer += "SVX staked: " + storebalance + "<br>";
+buffer += "SVX transferable: " + diffbalance + "<br>";
+
+   */
  
    }
                               
@@ -550,7 +593,10 @@ console.log("THREAD");
 getsovsupply();
 
 
-if ( (cnt % 2) == 0 ) getsvxbalance();
+//if ( (cnt % 2) == 0 ) getsvxbalance();
+
+if ( (cnt % 2) == 0 ) getsvxbalance2();
+
 if ( (cnt % 2) == 0 ) getnftbalance();
 
 if ( (cnt % 4) == 0 ) getbalancedata();
