@@ -28,7 +28,7 @@
 
 </head>
 
-<body class='bodyclass'>
+<body class='bodyclass' style='background: url("img/backgreen.png")'>
  
   <div id='logo1' class='logo1x' style='text-align:center;'>
   <img src='img/logo.svg?t=d453s' style='margin-top:30px;height:60px;'><br>
@@ -100,11 +100,11 @@
 
 
 <div id='divcenter' style='text-align:center;'> 
- RAMMIES DEBUG-Frontend...<br>
- <br>
+<h3>RAMMIES Micro-Frontend</h3>
+<br>
  
  
- 
+ <!--
  <br>
  <div onclick='getnftbalance()'>Get NFT Balance</div>
  
@@ -113,11 +113,12 @@
 
 
  DEBUG: <div id='nftdivdebug'>...</div>
+ -->
  <br>
  
 
- <img src='img/rammie/rammie1.png' class='imground' style='width:100px'> <br>
- <div id='nftdiv1'>...0...</div>  
+ <img src='img/rammie/rammie1.png' class='rammiesimg' style='width:200px'> <br>
+ <div id='nftdiv1'>...</div>  
  <div id='nftdiv1_price_buy'>...</div>  
  <div id='nftdiv1_price_sell'>...</div>  
 
@@ -125,8 +126,8 @@
 
 <br>
 <br>
- <img src='img/rammie/rammie2.png' class='imground' style='width:100px'> <br>
- <div id='nftdiv2'>...0...</div>  
+ <img src='img/rammie/rammie2.png' class='rammiesimg' style='width:200px'> <br>
+ <div id='nftdiv2'>...</div>  
  <div id='nftdiv2_price_buy'>...</div>  
  <div id='nftdiv2_price_sell'>...</div>  
 
@@ -134,8 +135,8 @@
 
 <br>
 <br>
- <img src='img/rammie/rammie3.png' class='imground' style='width:100px'> <br>
- <div id='nftdiv3'>...0...</div>  
+ <img src='img/rammie/rammie3.png' class='rammiesimg' style='width:200px'> <br>
+ <div id='nftdiv3'>...</div>  
  <div id='nftdiv3_price_buy'>...</div>  
  <div id='nftdiv3_price_sell'>...</div>  
 
@@ -693,7 +694,7 @@ rowsinventory = rows;
   var size = rows.rows.length;
       console.log("size:::"+ size);
       
-  document.getElementById('nftdivdebug').innerHTML  = "ABC " + global_account + " size:" + size ;
+//  document.getElementById('nftdivdebug').innerHTML  = "ABC " + global_account + " size:" + size ;
 
 /*
 rammiestest2	testcat1	11305 3 
@@ -907,27 +908,31 @@ for (var i=0; i<size; i++)
 
     
     total = price_buy + fee + fee_share;
+    
+    // 2500 * ((15+15)/1000)
+  //  total = (price_buy*1) * ( (fee + fee_share) / 1000 )
+  //  alert(price_buy + ' ' + ( (fee + fee_share) / 1000 ));
     console.log("I: " + i + " " + template_id  + " price_buy:" + price_buy + " fee:" + fee + " fee_share:" + fee_share + " " + " total:" + total);
     
     if ( template_id == 11305 )
        {
 
-       document.getElementById('nftdiv3_price_buy').innerHTML  =  price_buy  + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
-       document.getElementById('nftdiv3_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
+       document.getElementById('nftdiv3_price_buy').innerHTML  =  price_buy  + " SVX <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
+       document.getElementById('nftdiv3_price_sell').innerHTML =  price_sell + " SVX <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
        } // 11305
 
     if ( template_id == 11306 )
        {
 
-       document.getElementById('nftdiv2_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
-       document.getElementById('nftdiv2_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
+       document.getElementById('nftdiv2_price_buy').innerHTML =  price_buy + " SVX <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
+       document.getElementById('nftdiv2_price_sell').innerHTML =  price_sell + " SVX <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
        } // 11305
 
     if ( template_id == 11308 )
        {
 
-       document.getElementById('nftdiv1_price_buy').innerHTML =  price_buy + " <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
-       document.getElementById('nftdiv1_price_sell').innerHTML =  price_sell + " <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
+       document.getElementById('nftdiv1_price_buy').innerHTML =  price_buy + " SVX <button onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
+       document.getElementById('nftdiv1_price_sell').innerHTML =  price_sell + " SVX <button onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
        } // 11305
     
     } // for i...size
