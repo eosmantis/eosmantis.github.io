@@ -980,14 +980,15 @@ for (var i=0; i<size; i++)
 
 
     
-    total = price_buy + fee + fee_share;
+  //  total = price_buy + fee + fee_share;
+  
+  
     extrafee = (price_buy*1) * ( (fee + fee_share) / 1000 );
     
-    // 2500 * ((15+15)/1000)
-  //  total = (price_buy*1) * ( (fee + fee_share) / 1000 )
-  //  alert(price_buy + ' ' + ( (fee + fee_share) / 1000 ));
   
-  total = price_buy + extrafee;
+    total = price_buy + extrafee;
+    
+    
     console.log("xxx I: " + i + " " + template_id  + " price_buy:" + price_buy + " fee:" + fee + " fee_share:" + fee_share + " " + " total:" + total + " extrafee:"+extrafee);
     
     if ( template_id == NFTTEMPLATE3 )
