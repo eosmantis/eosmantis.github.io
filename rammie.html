@@ -117,7 +117,12 @@
  <br>
  
 
- <img src='img/rammie/rammie1.png' class='rammiesimg' style='width:200px'> <br>
+<div style='text-align:center;border:none;width:240px;'>
+ <div class='card' style='width:200px;margin-left:auto;margin-right;auto;'>
+ <img src='img/rammie/rammie1.png' class='' style='width:200px;'>
+ </div>
+</div> 
+  <br>
  <div id='nftdiv1'>...</div>  
  <div id='nftdiv1_price_buy'>...</div>  
  <div id='nftdiv1_price_sell'>...</div>  
@@ -126,7 +131,12 @@
 
 <br>
 <br>
- <img src='img/rammie/rammie2.png' class='rammiesimg' style='width:200px'> <br>
+<div style='text-align:center;border:none;width:240px;'>
+ <div class='card' style='width:200px;margin-left:auto;margin-right;auto;'>
+ <img src='img/rammie/rammie2.png' class='' style='width:200px;'>
+ </div>
+</div> 
+  <br>
  <div id='nftdiv2'>...</div>  
  <div id='nftdiv2_price_buy'>...</div>  
  <div id='nftdiv2_price_sell'>...</div>  
@@ -135,7 +145,12 @@
 
 <br>
 <br>
- <img src='img/rammie/rammie3.png' class='rammiesimg' style='width:200px'> <br>
+<div style='text-align:center;border:none;width:240px;'>
+ <div class='card' style='width:200px;margin-left:auto;margin-right;auto;'>
+ <img src='img/rammie/rammie3.png' class='' style='width:200px;'>
+ </div>
+</div> 
+  <br>
  <div id='nftdiv3'>...</div>  
  <div id='nftdiv3_price_buy'>...</div>  
  <div id='nftdiv3_price_sell'>...</div>  
@@ -204,6 +219,14 @@
 
 
 <script>
+
+// NFT Templates
+var NFTTEMPLATE1 = 11308;
+var NFTTEMPLATE2 = 11306;
+var NFTTEMPLATE3 = 11305;
+
+
+
 var id = 10;
 var tokenid = 12;
 var price = 1;
@@ -765,19 +788,19 @@ for (var i=0; i<size; i++)
           
     console.log("cn: "+  i +  " - " + collection_name + " " + schema_name + " " + template_id);      
     
-    if ( collection_name == "rammiestest2" && template_id == 11308 ) 
+    if ( collection_name == "rammiestest2" && template_id == NFTTEMPLATE1 ) 
        {
        nftdiv1_cnt++;
        console.log("found 1");
        }
        
-    if ( collection_name == "rammiestest2" && template_id == 11306 ) 
+    if ( collection_name == "rammiestest2" && template_id == NFTTEMPLATE2 ) 
        {
        nftdiv2_cnt++;
        console.log("found 2");
        }
        
-    if ( collection_name == "rammiestest2" && template_id == 11305 ) 
+    if ( collection_name == "rammiestest2" && template_id == NFTTEMPLATE3 ) 
        {
        nftdiv3_cnt++;
        console.log("found 3");
@@ -961,26 +984,26 @@ for (var i=0; i<size; i++)
   //  alert(price_buy + ' ' + ( (fee + fee_share) / 1000 ));
     console.log("I: " + i + " " + template_id  + " price_buy:" + price_buy + " fee:" + fee + " fee_share:" + fee_share + " " + " total:" + total);
     
-    if ( template_id == 11305 )
+    if ( template_id == NFTTEMPLATE3 )
        {
 
        document.getElementById('nftdiv3_price_buy').innerHTML  =  price_buy  + " SVX <button class='buttonclass' onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
        document.getElementById('nftdiv3_price_sell').innerHTML =  price_sell + " SVX <button class='buttonclass' onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
-       } // 11305
+       } // NFTTEMPLATE3
 
-    if ( template_id == 11306 )
+    if ( template_id == NFTTEMPLATE2 )
        {
 
        document.getElementById('nftdiv2_price_buy').innerHTML =  price_buy + " SVX <button class='buttonclass' onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
        document.getElementById('nftdiv2_price_sell').innerHTML =  price_sell + " SVX <button class='buttonclass' onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
-       } // 11305
+       } // NFTTEMPLATE2
 
-    if ( template_id == 11308 )
+    if ( template_id == NFTTEMPLATE1 )
        {
 
        document.getElementById('nftdiv1_price_buy').innerHTML =  price_buy + " SVX <button class='buttonclass' onclick='nftbuy("+ template_id + ',' + +total+ ");'> buy </button>";
        document.getElementById('nftdiv1_price_sell').innerHTML =  price_sell + " SVX <button class='buttonclass' onclick='nftsell("+ template_id + ',' +price_sell+ ");'>sell </button>";
-       } // 11305
+       } // NFTTEMPLATE1
     
     } // for i...size
     
@@ -1075,9 +1098,9 @@ rammiestest2	testcat1	11308 1  relay 3
 theactions.push(action);                 
                  
                  
-if (template_id == 11305) relay_id = 1;                 
-if (template_id == 11306) relay_id = 2;                 
-if (template_id == 11308) relay_id = 3;                 
+if (template_id == NFTTEMPLATE3) relay_id = 1;                 
+if (template_id == NFTTEMPLATE2) relay_id = 2;                 
+if (template_id == NFTTEMPLATE1) relay_id = 3;                 
 
     var action = {
                  account: "rammiegomoon",
@@ -1117,9 +1140,9 @@ function nftsell( template_id, price )
 */
 
  
-if (template_id == 11305) relay_id = 1;                 
-if (template_id == 11306) relay_id = 2;                 
-if (template_id == 11308) relay_id = 3;       
+if (template_id == NFTTEMPLATE3) relay_id = 1;                 
+if (template_id == NFTTEMPLATE2) relay_id = 2;                 
+if (template_id == NFTTEMPLATE1) relay_id = 3;       
 
 size = rowsinventory.rows.length;
 
