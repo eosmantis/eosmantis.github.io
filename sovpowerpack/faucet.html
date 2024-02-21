@@ -152,7 +152,7 @@ Faucet-Pool Balances: <a href='https://bloks.io/account/sovsvxfaucet' target='_b
 </div>
 
   
-<div style='float:right;margin-right:20px;'><small>V.0.3.1</small></div>
+<div style='float:right;margin-right:20px;'><small>V.0.3.1b</small></div>
 <br>
 <br>
 <br> 
@@ -301,7 +301,7 @@ for (var i=0; i<size; i++)
     
     
     
-    if (description != "powerup")
+    if (description != "powerupx")
     {
     
     claimbutton = "";
@@ -310,7 +310,13 @@ for (var i=0; i<size; i++)
     
     claimbutton += "</div>";
     
-    buffer += "<div style='border:none;margin:5px;height:60px;' class='claimarea'>";
+    
+    if (description != "powerup")
+    buffer += "<div style='border:none;margin:5px;height:60px;' class='claimarea'>"; else
+    {
+    buffer += "<div style='border:none;margin:5px;height:60px;background:#aa33aa;' class='claimarea'>"; 
+    description = "PowerUp Claim - EOS will be used for account PowerUp";
+    }
   
     //
     // Logo
