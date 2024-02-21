@@ -152,7 +152,7 @@ Faucet-Pool Balances: <a href='https://bloks.io/account/sovsvxfaucet' target='_b
 </div>
 
   
-<div style='float:right;margin-right:20px;'><small>V.0.3</small></div>
+<div style='float:right;margin-right:20px;'><small>V.0.3.1</small></div>
 <br>
 <br>
 <br> 
@@ -299,6 +299,11 @@ for (var i=0; i<size; i++)
     description  = value.rows[i2].description;
     noderequired = value.rows[i2].noderequired;
     
+    
+    
+    if (description != "powerup")
+    {
+    
     claimbutton = "";
     claimbutton += "<div onclick='claimtoken("+tokenid+")' class='claimtokenbutton'>";
     claimbutton += "CLAIM";
@@ -362,6 +367,9 @@ for (var i=0; i<size; i++)
  
      buffer += "<div style='clear:both'></div>";
 
+
+    } // if (description != "powerup")
+ 
 
     } // for i...
 
