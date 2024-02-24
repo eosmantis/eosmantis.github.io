@@ -391,6 +391,12 @@ margin-top:0px;
 
 
 
+.swapaction
+{
+background:#7885b5;
+cursor:pointer;
+}
+
 .swapwnd
 {
 box-shadow: 0px 0px 15px #222222;
@@ -402,4 +408,12 @@ margin-right:5%;
    -moz-border-radius: 5px;
     border-radius: 5px;
 
+}
+
+.swapwnd_inner
+{
+margin:10px;
+margin-top:10px;
+margin-bottom:10px;
+border: 1px dashed;
 }
