@@ -32,7 +32,7 @@
  
   <div id='logo1' class='logo1x' style='text-align:center;'>
   <img src='img/logo.svg?t=d453s' style='margin-top:30px;height:60px;'><br>
-  SOVDEX II<br>
+  EMPTY<br>
   <br>
   </div>
 
@@ -95,11 +95,8 @@
 <br>
 
  
-<div id='menu' style='margin-left:5%;'>
-<small>ALL THIS HERE IS EXPERIMENTAL!!! </small>
-</div>
 
-
+ 
 <div class='separator'>&nbsp;</div>
 
 <br>
@@ -540,9 +537,7 @@ for (var i=0; i<size; i++)
     
      */
  
-    buffer += "<div  class='paircell' style=''> " ;
-    buffer += "<div    style='height:10px;'></div> " ;
-
+    buffer += "<div  class='paircell' style='border:1px solid #ffffff;'> " ;
     buffer += "<div  class='paircell_inner' style=''> " ;
 
        buffer += "<div  class='' style='float:left;width:100px;'>" ;
@@ -577,7 +572,7 @@ for (var i=0; i<size; i++)
        buffer += "</div> " ;
 
 
-       buffer += "<div style='clear:both;'></div> " ;
+       buffer += "<div style='clearboth;'></div> " ;
     
     
     
@@ -591,7 +586,6 @@ for (var i=0; i<size; i++)
   //  buffer += "<span onclick='openswap("+pair_id+")'> [ SWAP ] </span>" ;
     buffer += "</div> " ;
     buffer += "</div> " ;
-    buffer += "<br> " ;
     } // for i...
  
 
@@ -611,22 +605,7 @@ function openswap( tokenid )
 //alert("Token ID " + tokenid); 
 
 buffer = "";
-
-
-buffer += "<div style='margin-left:5%;text-align:left;'>";
- buffer += "<h3>SWAP</h3>";
-buffer += "</div>";
-
-
-buffer += "<div class='swapwnd' style=''>";
-
-
 buffer += "token id " + tokenid
-
-buffer += "</div>";
-
-
-document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('swapdiv').innerHTML = buffer;
 
 } 

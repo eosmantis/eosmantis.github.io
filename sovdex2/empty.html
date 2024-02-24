@@ -28,11 +28,11 @@
 
 </head>
 
-<body class='bodyclass' style='background: url("img/backblue.png")'>
+<body class='bodyclass'>
  
   <div id='logo1' class='logo1x' style='text-align:center;'>
   <img src='img/logo.svg?t=d453s' style='margin-top:30px;height:60px;'><br>
-  SOVDEX II<br>
+  EMPTY<br>
   <br>
   </div>
 
@@ -95,17 +95,9 @@
 <br>
 
  
-<div id='menu' style='margin-left:5%;'>
-<small>ALL THIS HERE IS EXPERIMENTAL!!! </small>
-</div>
 
-
+ 
 <div class='separator'>&nbsp;</div>
-
-<br>
-<div id='' onclick='readpairs()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;'> Markets </div>
-
-
 
 <div style='clear:both;'></div>
 <br>
@@ -125,22 +117,6 @@
 
 <div style='clear:both;'></div>
  
-<br>
-<br>
-
-
-
-<div id='swapdiv' style='text-align:center;'></div>
-
-<div id='pairdivs' style='text-align:center;'> ... </div>
-<br>
-<br>
-
-
-
-<div id='debug' style='text-align:center;'></div>
-<br>
-<br>
 <br>
 <br>
  
@@ -338,6 +314,13 @@ if (balance != undefined)
    balance2 = balance.replace("SOV", "");
    balance2 = parseFloat (balance); 
    
+   if (lastsavedsvxbalance != undefined)
+      {
+      var difference = balance2 - lastsavedsvxbalance;
+      difference = Number(difference).toFixed(4);
+      
+      document.getElementById('svxbalancediff').innerHTML = "&#916; " + difference + " SVX";
+      }
    }
                               
 } // callback_render_sovsupply
@@ -440,212 +423,10 @@ var time = setTimeout("update_thread()", 3000);
 
 
  
-function getLastPart(inputString) {
-    // Zuerst splitten wir den Eingabestring anhand von Leerzeichen
-    const parts = inputString.split(' ');
-    // Der letzte Teilstring ist dann das letzte Element des Arrays
-    const lastPart = parts[parts.length - 1];
-    // Rückgabe des letzten Teilstrings
-    return lastPart;
-} 
- 
- 
- 
-
-function callback_render_loadpairs( value )
-{
-
-if (value.rows.length == 0) return;   
-
-buffer = "";
-
-buffer += "<div style='margin-left:5%;text-align:left;'>";
- buffer += "<h3>Markets</h3>";
-buffer += "</div>";
-
-
-size = value.rows.length;
-console.log("--- size: ",size);
-console.log( value );
-// buffer += "size: " + size;
-
- /*
-
-// sort array
-var thearray = new Array();
-
-for (var i=0; i<size; i++)
-    {
-    thearray[i] = new Object();
-    thearray[i]['index'] = i;
-    thearray[i]['order'] = value.rows[i].order;    
-    } // for i..size
-
-
-console.log("PRE");
-console.log( thearray );
-
-// sort
-
-var SORT = 1;
-while (SORT == 1)
-{
-SORT = 0;
-
-for (var i=0; i<size-1; i++)
-    {
-//    thearray[i] = new Object();
-
-    if ( thearray[i]['order'] > thearray[i+1]['order'] )
-       {
-       o_index = thearray[i]['index'];
-       o_order = thearray[i]['order'];    
-
-       thearray[i]['index'] = thearray[i+1]['index'];
-       thearray[i]['order'] = thearray[i+1]['order'];
-    
-       thearray[i+1]['index'] = o_index;
-       thearray[i+1]['order'] = o_order;
-       SORT = 1;
-       } // 
-       
-    } // for i..size
-    
-} // while (SORT)
-
-console.log("AFTER");
-console.log( thearray );
-
-*/
-
-for (var i=0; i<size; i++)
-    {
-    pair_id              = value.rows[i].id;
-    token1               = value.rows[i].token1;
-    token2               = value.rows[i].token2;
-    
-    tokensym1 = getLastPart(token1);
-    tokensym2 = getLastPart(token2);
-    
-    token_contract1      = value.rows[i].token_contract1;
-    token_contract2      = value.rows[i].token_contract2;
-
-   /*
-    var i2 = thearray[i]['index'];
-    
-    payout       = value.rows[i2].payout;
-    contract     = value.rows[i2].contract;
-    description  = value.rows[i2].description;
-    noderequired = value.rows[i2].noderequired;
-    
-     */
- 
-    buffer += "<div  class='paircell' style=''> " ;
-    buffer += "<div    style='height:10px;'></div> " ;
-
-    buffer += "<div  class='paircell_inner' style=''> " ;
-
-       buffer += "<div  class='' style='float:left;width:100px;'>" ;
-       buffer += "<span style='font-weight:bold;'>"+tokensym1+"</span><br>" ;
-       buffer += "<span style='font-size:12px'>"+token_contract1+"</span><br>" ;
-       buffer += "</div> " ;
-
-
-       buffer += "<div  class='' style='float:left;width:20px;font-size:30px;'>" ;
-       buffer += " / " ;
-       buffer += "</div> " ;
-
-
-       buffer += "<div  class='' style='float:left;width:100px;'>" ;
-       buffer += "<span style='font-weight:bold;'>"+tokensym2+"</span><br>" ;
-       buffer += "<span style='font-size:12px'>"+token_contract2+"</span><br>" ;
-       buffer += "</div> " ;
-       
-       
-        buffer += "<div  class='' style='float:left;width:300px;margin-left:50px;text-align:lefT;'>" ;
-       buffer += "Depth<br>";
-       buffer +=""+token1+  " / "+token2+" " ;
-       buffer += "</div> " ;
 
 
 
 
-
-       buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;'>" ;
-       buffer += "<span class='swapbutton' onclick='openswap("+pair_id+")'>  SWAP  </span>" ;
-
-       buffer += "</div> " ;
-
-
-       buffer += "<div style='clear:both;'></div> " ;
-    
-    
-    
- 
-    /*
-    buffer += "token1: ("+tokensym1+") " ;
-    buffer += "token2: ("+tokensym2+") " ;
-    buffer += "("+token_contract1+") " ;
-    buffer += "("+token_contract2+") " ;
-    */
-  //  buffer += "<span onclick='openswap("+pair_id+")'> [ SWAP ] </span>" ;
-    buffer += "</div> " ;
-    buffer += "</div> " ;
-    buffer += "<br> " ;
-    } // for i...
- 
-
-//buffer = "ALF 2!";
-document.getElementById('pairdivs').innerHTML = buffer;
-document.getElementById('swapdiv').innerHTML = "";
-                         
-                               
-} // callback_render_loadpairs
-
-
- 
- 
-
-function openswap( tokenid )
-{
-//alert("Token ID " + tokenid); 
-
-buffer = "";
-
-
-buffer += "<div style='margin-left:5%;text-align:left;'>";
- buffer += "<h3>SWAP</h3>";
-buffer += "</div>";
-
-
-buffer += "<div class='swapwnd' style=''>";
-
-
-buffer += "token id " + tokenid
-
-buffer += "</div>";
-
-
-document.getElementById('pairdivs').innerHTML = "";
-document.getElementById('swapdiv').innerHTML = buffer;
-
-} 
- 
- 
-function readpairs()
-{
-//alert('read pairs');
-
-getdata(callback_render_loadpairs, "sovdex2trade", "sovdex2trade", "relays", "", "", "", 4000 );
-
-//document.getElementById('pairdivs').innerHTML = "abc";
-  
-//pairdivs
-
-} // readpairs
-
-
-readpairs();
 
 </script>
 
