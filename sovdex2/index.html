@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="icon" href="img/icon.png" />
-<link rel="stylesheet" href="css/style.css?ttd=434324" />
+<link rel="stylesheet" href="css/style.css?ttd=43444" />
 
  <!-- BEGINN WALLET-INCLUDE-->
     
@@ -225,11 +225,11 @@ memo = "This is it";
                  account: "eosio.token",
                  name: 'transfer',
                  authorization: [{
-                                actor: global_account,
+                                actor: global_account + "",
                                 permission: "active"
                                 }],
                  data: {
-                       "from": global_account,
+                       "from": global_account + "",
                        "to": "testtesttest",
                        "quantity": "0.0001 EOS",
                        "memo": memo
@@ -333,7 +333,7 @@ if (balance != undefined)
    {
    document.getElementById('svxbalance').innerHTML = balance + "";
    
-   // alf 
+    
    balance2 = balance.replace("SOV", "");
    balance2 = parseFloat (balance); 
    
@@ -598,7 +598,7 @@ for (var i=0; i<size; i++)
     } // for i...
  
 
-//buffer = "ALF 2!";
+
 document.getElementById('pairdivs').innerHTML = buffer;
 document.getElementById('swapdiv').innerHTML = "";
                          
@@ -608,13 +608,52 @@ document.getElementById('swapdiv').innerHTML = "";
 
  
  
+ 
+ 
 
-function openswap( tokenid )
+
+function callback_render_loadsinglepair( value )
 {
-//alert("Token ID " + tokenid); 
+
+if (value.rows.length == 0) return;   
+
+console.log( value );
 
 buffer = "";
 
+/*
+token_contract1	
+token2	
+token_contract2	
+lptoken	
+cw	
+fee_pool	
+admin_pool	
+fee	
+fee_share	
+price1	
+price2	
+kfactor	
+total_token1_vol	
+total_token2_vol	
+*/
+
+i = 0;
+ pair_id              = value.rows[i].id;
+    token1               = value.rows[i].token1;
+    token2               = value.rows[i].token2;
+    
+    tokensym1 = getLastPart(token1);
+    tokensym2 = getLastPart(token2);
+    
+    token_contract1      = value.rows[i].token_contract1;
+    token_contract2      = value.rows[i].token_contract2;
+
+
+// --- 
+
+get_token_balance1(token1, token_contract1);
+get_token_balance2(token2, token_contract2);
 
 buffer += "<div style='margin-left:5%;text-align:left;'>";
  buffer += "<h3>SWAP</h3>";
@@ -622,17 +661,121 @@ buffer += "</div>";
 
 
 buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
 
 
-buffer += "token id " + tokenid
+//buffer += "token id " + pair_id;
 
+
+buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+buffer += "Payment:<br>";
+buffer += tokensym1+"<br>";
+buffer += token_contract1+"<br>";
+buffer += "<input id='tokenamount1' type='text' placeholder='Please enter amount' value=''> <br>";
+
+buffer += "<br>";
+
+buffer += " &#8595;<br>";
+// &#8595; &#8593; 
+buffer += "<br>";
+
+
+buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
+buffer += "Received:<br>";
+buffer += tokensym2+"<br>";
+buffer += token_contract2+"<br>";
+buffer += "<input id='tokenamount2' type='text'  placeholder='Please enter amount' value='' > <br>";
+
+buffer += "<br>";
+
+buffer += "<div id='swapaction' onclick='swapaction("+pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP ("+pair_id+") </div>";
+
+
+buffer += "</div>";
+buffer += "<br>";
 buffer += "</div>";
 
 
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('swapdiv').innerHTML = buffer;
 
-} 
+} // callback_render_loadsinglepair
+
+
+
+
+/*
+balance = value.rows[0].balance;
+ 
+buffer = "" + balance;
+last_balance1 = balance;
+document.getElementById('balance1').innerHTML = buffer;
+                               
+} // callback_render_balance1
+
+
+
+function getbalancedata()
+{
+getdata(callback_render_balance1, "eosio.token", global_account, "accounts", "", "", "", 112 );
+}
+
+*/
+
+function callback_render_tokenbalance1( value )
+{
+
+if (value.rows.length == 0) return;   
+
+balance = value.rows[0].balance;
+ 
+document.getElementById('tokenbalance1').innerHTML = "" + balance;
+
+console.log( value );
+} // callback_render_tokenbalance1
+
+function get_token_balance1(token1, token_contract1)
+{
+getdata(callback_render_tokenbalance1, token_contract1, global_account, "accounts", "", "", "", 112 );
+
+} // get_token_balance1
+
+
+
+
+function callback_render_tokenbalance2( value )
+{
+
+if (value.rows.length == 0) return;   
+
+balance = value.rows[0].balance;
+ 
+document.getElementById('tokenbalance2').innerHTML = "" + balance;
+
+console.log( value );
+} // callback_render_tokenbalance2
+
+function get_token_balance2(token2, token_contract2)
+{
+getdata(callback_render_tokenbalance2, token_contract2, global_account, "accounts", "", "", "", 112 );
+
+} // get_token_balance2
+
+
+
+function openswap( tokenid )
+{
+//alert("Token ID " + tokenid); 
+
+// getdata2(callback_readasset_forlist, params, "atomicassets", "sovspacegame", "assets", asset_id, "", "", 1 );
+
+getdata(callback_render_loadsinglepair, "sovdex2trade", "sovdex2trade", "relays", tokenid, "", "", 1 );
+
+/*
+
+*/
+} // openswap
  
  
 function readpairs()
@@ -646,6 +789,88 @@ getdata(callback_render_loadpairs, "sovdex2trade", "sovdex2trade", "relays", "",
 //pairdivs
 
 } // readpairs
+
+
+// alfalf
+function swapaction( pair_id, token_contract1)
+{
+
+tokenamount1 = document.getElementById('tokenamount1').value; 
+tokenamount2 = document.getElementById('tokenamount2').value; 
+
+//alert( pair_id  + ' ' + tokenamount1 + ' ' + token_contract1 + ' ' + global_account );
+
+
+var theactions = [];
+
+memo = "";
+
+
+
+
+    
+    
+    
+   
+    var action = {
+                 account: token_contract1,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenamount1,
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+    
+    
+
+   
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'swap',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+                       "swapasset": tokenamount1,
+                       "relay_id": pair_id,
+                       "receiver": global_account + "",
+                       "intermediate": false,
+                       "expected": tokenamount2,
+                       "tolerance": 500 
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+        
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+ 
+} // swapaction
 
 
 readpairs();
