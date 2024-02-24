@@ -36,7 +36,7 @@
   <br>
   </div>
 
- <div id='' style='position:absolute;top:30px;right:50px;border:1px solid #5555ff;cursor:pointer;'> 
+ <div id='' style='position:absolute;top:30px;right:50px;border:none;cursor:pointer;'> 
  <img src='img/powerup.svg?t=d453s' alt='PowerUp' title='PowerUp' onclick='powerup(0.01)' style='height:60px;width:60px;'>  
  </div>
 
@@ -550,18 +550,18 @@ for (var i=0; i<size; i++)
        buffer += "</div> " ;
 
 
-       buffer += "<div  class='' style='float:left;width:20px;font-size:30px;border:1px solid'>" ;
+       buffer += "<div  class='' style='float:left;width:20px;font-size:30px;border:none'>" ;
        buffer += " / " ;
        buffer += "</div> " ;
 
 
-       buffer += "<div  class='' style='float:left;width:100px;;border:1px solid'>" ;
+       buffer += "<div  class='' style='float:left;width:100px;;border:none'>" ;
        buffer += "<span style='font-weight:bold;'>"+tokensym2+"</span><br>" ;
        buffer += "<span style='font-size:12px'>"+token_contract2+"</span><br>" ;
        buffer += "</div> " ;
        
        
-        buffer += "<div  class='' style='float:left;width:500px;margin-left:30px;font-size:16px;text-align:left;;border:1px solid'>" ;
+        buffer += "<div  class='' style='float:left;width:450px;margin-left:30px;font-size:16px;text-align:left;;border:none'>" ;
        buffer += "Depth<br>";
        buffer +=""+token1+  " / "+token2+" " ;
        buffer += "</div> " ;
@@ -570,7 +570,7 @@ for (var i=0; i<size; i++)
 
 
 
-       buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:1px dotted;'>" ;
+       buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:none;'>" ;
        buffer += "<span class='swapbutton' onclick='openswap("+pair_id+")'>  SWAP  </span>" ;
 
        buffer += "</div> " ;
