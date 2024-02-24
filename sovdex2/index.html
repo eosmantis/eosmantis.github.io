@@ -146,7 +146,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1b</div>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1c</div>
  
 
 
@@ -542,26 +542,26 @@ for (var i=0; i<size; i++)
     buffer += "<div  class='paircell' style=''> " ;
     buffer += "<div    style='height:10px;'></div> " ;
 
-    buffer += "<div  class='paircell_inner' style=''> " ;
+    buffer += "<div  class='paircell_inner' style='text-align:left;'> " ;
 
-       buffer += "<div  class='' style='float:left;width:100px;'>" ;
+       buffer += "<div  class='' style='float:left;width:100px;margin-left:20px;'>" ;
        buffer += "<span style='font-weight:bold;'>"+tokensym1+"</span><br>" ;
        buffer += "<span style='font-size:12px'>"+token_contract1+"</span><br>" ;
        buffer += "</div> " ;
 
 
-       buffer += "<div  class='' style='float:left;width:20px;font-size:30px;'>" ;
+       buffer += "<div  class='' style='float:left;width:20px;font-size:30px;border:1px solid'>" ;
        buffer += " / " ;
        buffer += "</div> " ;
 
 
-       buffer += "<div  class='' style='float:left;width:200px;'>" ;
+       buffer += "<div  class='' style='float:left;width:100px;;border:1px solid'>" ;
        buffer += "<span style='font-weight:bold;'>"+tokensym2+"</span><br>" ;
        buffer += "<span style='font-size:12px'>"+token_contract2+"</span><br>" ;
        buffer += "</div> " ;
        
        
-        buffer += "<div  class='' style='float:left;width:300px;margin-left:50px;text-align:lefT;'>" ;
+        buffer += "<div  class='' style='float:left;width:500px;margin-left:30px;font-size:16px;text-align:left;;border:1px solid'>" ;
        buffer += "Depth<br>";
        buffer +=""+token1+  " / "+token2+" " ;
        buffer += "</div> " ;
@@ -570,7 +570,7 @@ for (var i=0; i<size; i++)
 
 
 
-       buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;'>" ;
+       buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:1px dotted;'>" ;
        buffer += "<span class='swapbutton' onclick='openswap("+pair_id+")'>  SWAP  </span>" ;
 
        buffer += "</div> " ;
