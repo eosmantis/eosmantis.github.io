@@ -108,16 +108,15 @@
 
 
 <div style='clear:both;'></div>
-<br>
-<br>
-<br>
+ 
  
 <div id='divcenter' style='text-align:center;'> 
 
 
+<!--
 <div id='' style='text-align:center'>SVX balance</div>
 <div id='svxbalance' style='text-align:center;font-size:40px;'>...</div>
-
+-->
 
  
 
@@ -147,7 +146,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1</div>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1b</div>
  
 
 
@@ -318,7 +317,7 @@ getdata(callback_render_sovsupply, "sovmintofeos", "SOV", "stat", "", "", "", 11
 
 
 
-
+/*
 function callback_render_svxbalance( value )
 {
 console.log("value callback_render_svxbalance");
@@ -349,7 +348,7 @@ function getsvxbalance2()
 getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", "", "", "", 112 );
 }
 
-
+*/
 
 function powerup( eosforpower )
 {
@@ -417,7 +416,7 @@ console.log("THREAD");
 //getsovsupply();
 
 
-if ( (cnt % 2) == 0 ) getsvxbalance2();
+//if ( (cnt % 2) == 0 ) getsvxbalance2();
 /*
 if ( (cnt % 2) == 0 ) getsvxbalance2();
 
@@ -556,7 +555,7 @@ for (var i=0; i<size; i++)
        buffer += "</div> " ;
 
 
-       buffer += "<div  class='' style='float:left;width:100px;'>" ;
+       buffer += "<div  class='' style='float:left;width:200px;'>" ;
        buffer += "<span style='font-weight:bold;'>"+tokensym2+"</span><br>" ;
        buffer += "<span style='font-size:12px'>"+token_contract2+"</span><br>" ;
        buffer += "</div> " ;
@@ -590,6 +589,10 @@ for (var i=0; i<size; i++)
     */
   //  buffer += "<span onclick='openswap("+pair_id+")'> [ SWAP ] </span>" ;
     buffer += "</div> " ;
+          
+    buffer += "<div style='clear:both;'></div> " ;
+          
+          
     buffer += "</div> " ;
     buffer += "<br> " ;
     } // for i...
