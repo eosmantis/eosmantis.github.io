@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="icon" href="img/icon.png" />
-<link rel="stylesheet" href="css/style.css?ttd=434444" />
+<link rel="stylesheet" href="css/style.css?ttd=4444" />
 
  <!-- BEGINN WALLET-INCLUDE-->
     
@@ -609,7 +609,137 @@ document.getElementById('swapdiv').innerHTML = "";
  
  
  
+var swapdirection              = 1;    
+var global_pair_id             = 1;   
+var global_token1              = "";
+var global_token2              = "";
+var global_tokensym1           = "";
+var global_tokensym2           = "";
+var global_token_contract1     = "";
+var global_token_contract2     = "";
+
+
+
+
+function render_swap_area()
+{
+
+buffer = "";
+
+
+/*
+
+
+*/
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+ buffer += "<h3>SWAP</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+
+
+buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+if (swapdirection == 1)
+{
+
+
  
+buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+buffer += "Payment:<br>";
+buffer += global_tokensym1+"<br>";
+buffer += global_token_contract1+"<br>";
+buffer += "<input id='tokenamount1' type='text' placeholder='Please enter amount' value=''> <br>";
+
+buffer += "<br>";
+
+ // alf
+buffer += "<div id='swaparrow' class='swaparrow' onclick='switchswapdir()'>&#8595;</div>";
+
+ 
+// &#8595; &#8593;  swaparrow
+buffer += "<br>";
+
+ 
+buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
+buffer += "Received:<br>";
+buffer += global_tokensym2+"<br>";
+buffer += global_token_contract2+"<br>";
+buffer += "<input id='tokenamount2' type='text'  placeholder='Please enter amount' value='' > <br>";
+
+buffer += "<br>";
+
+
+
+
+ 
+buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP </div>";
+
+
+} // if (swapdirection == 1)
+
+
+if (swapdirection == 2)
+{
+
+
+ 
+buffer += "<div id='tokenbalance2' style='float:right;'>Balance: ...</div><br>";
+buffer += "Payment:<br>";
+buffer += global_tokensym2+"<br>";
+buffer += global_token_contract2+"<br>";
+buffer += "<input id='tokenamount2' type='text' placeholder='Please enter amount' value=''> <br>";
+
+buffer += "<br>";
+
+buffer += "<div id='swaparrow' class='swaparrow' onclick='switchswapdir()'>&#8593;</div>";
+
+
+buffer += "<br>";
+
+ 
+buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
+buffer += "Received:<br>";
+buffer += global_tokensym1+"<br>";
+buffer += global_token_contract1+"<br>";
+buffer += "<input id='tokenamount1' type='text'  placeholder='Please enter amount' value='' > <br>";
+
+buffer += "<br>";
+
+
+
+buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP </div>";
+
+
+} // if (swapdirection == 1)
+
+
+
+buffer += "</div>";
+buffer += "<br>";
+buffer += "</div>";
+
+ 
+
+
+
+document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('swapdiv').innerHTML  = buffer;
+
+ 
+get_token_balance1(global_token1, global_token_contract1);
+get_token_balance2(global_token2, global_token_contract2);
+ 
+
+} // render_swap_area
+
 
 
 function callback_render_loadsinglepair( value )
@@ -639,66 +769,36 @@ total_token2_vol
 */
 
 i = 0;
- pair_id              = value.rows[i].id;
-    token1               = value.rows[i].token1;
-    token2               = value.rows[i].token2;
-    
-    tokensym1 = getLastPart(token1);
-    tokensym2 = getLastPart(token2);
-    
-    token_contract1      = value.rows[i].token_contract1;
-    token_contract2      = value.rows[i].token_contract2;
 
+
+
+global_pair_id            = value.rows[i].id;
+global_token1             = value.rows[i].token1;
+global_token2             = value.rows[i].token2;
+    
+global_tokensym1          = getLastPart(global_token1);
+global_tokensym2          = getLastPart(global_token2);
+    
+global_token_contract1    = value.rows[i].token_contract1;
+global_token_contract2    = value.rows[i].token_contract2;
+
+
+//alert( global_pair_id + ' ' + global_tokensym1 + ' ' + global_tokensym2);
+
+render_swap_area();
+
+
+/*
+var global_token1       = "";
+var global_token2       = "";
+var tokensym1           = "";
+var tokensym2           = "";
+var token_contract1     = "";
+var token_contract2     = "";
+*/
 
 // --- 
 
-get_token_balance1(token1, token_contract1);
-get_token_balance2(token2, token_contract2);
-
-buffer += "<div style='margin-left:5%;text-align:left;'>";
- buffer += "<h3>SWAP</h3>";
-buffer += "</div>";
-
-
-buffer += "<div class='swapwnd' style=''>";
-buffer += "<br>";
-buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
-
-
-//buffer += "token id " + pair_id;
-
-
-buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
-buffer += "Payment:<br>";
-buffer += tokensym1+"<br>";
-buffer += token_contract1+"<br>";
-buffer += "<input id='tokenamount1' type='text' placeholder='Please enter amount' value=''> <br>";
-
-buffer += "<br>";
-
-buffer += " &#8595;<br>";
-// &#8595; &#8593; 
-buffer += "<br>";
-
-
-buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
-buffer += "Received:<br>";
-buffer += tokensym2+"<br>";
-buffer += token_contract2+"<br>";
-buffer += "<input id='tokenamount2' type='text'  placeholder='Please enter amount' value='' > <br>";
-
-buffer += "<br>";
-
-buffer += "<div id='swapaction' onclick='swapaction("+pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP ("+pair_id+") </div>";
-
-
-buffer += "</div>";
-buffer += "<br>";
-buffer += "</div>";
-
-
-document.getElementById('pairdivs').innerHTML = "";
-document.getElementById('swapdiv').innerHTML = buffer;
 
 } // callback_render_loadsinglepair
 
@@ -795,13 +895,20 @@ getdata(callback_render_loadpairs, "sovdex2trade", "sovdex2trade", "relays", "",
 function swapaction( pair_id, token_contract1)
 {
 
+// swapdirection
+
 tokenamount1 = document.getElementById('tokenamount1').value; 
 tokenamount2 = document.getElementById('tokenamount2').value; 
 
 //alert( pair_id  + ' ' + tokenamount1 + ' ' + token_contract1 + ' ' + global_account );
 
 
+
 var theactions = [];
+
+
+if (swapdirection == 1)
+{
 
 memo = "";
 
@@ -813,7 +920,7 @@ memo = "";
     
    
     var action = {
-                 account: token_contract1,
+                 account: global_token_contract1,
                  name: 'transfer',
                  authorization: [{
                                 actor: global_account + "",
@@ -869,8 +976,115 @@ if (1)
    {
    transact( func_success, func_error, theactions );
    }    
+   
+   
+} // if (swapdirection == 1)
+
+
+   
+   
+
+
+if (swapdirection == 2)
+{
+
+memo = "";
+
+
+
+//alert(" Other dir ");
+    
+  
+    
+   
+    var action = {
+                 account: global_token_contract2,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenamount2,
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+    
+    
+
+   
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'swap',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+                       "swapasset": tokenamount2,
+                       "relay_id": pair_id,
+                       "receiver": global_account + "",
+                       "intermediate": false,
+                       "expected": tokenamount1,
+                       "tolerance": 500 
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+        
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+ 
+   
+} // if (swapdirection == 1)
+
+   
  
 } // swapaction
+
+
+function switchswapdir( dir )
+{
+//alert(dir);
+
+// &#8595; &#8593;  swaparrow
+
+if (swapdirection == 1) 
+   {
+   swapdirection = 2; 
+   
+   }
+   else
+      {
+      swapdirection = 1;
+
+      }
+
+
+render_swap_area();
+
+} // switchswapdir
+
 
 
 readpairs();
