@@ -397,6 +397,19 @@ background:#7885b5;
 cursor:pointer;
 }
 
+.swaparrow
+{
+cursor:pointer;
+text-align:center;
+border:2px solid #ffffff;
+width:25px;
+height:25px;
+
+-webkit-border-radius: 50%;
+-moz-border-radius: 50%;
+border-radius: 50%;
+}
+
 .swapwnd
 {
 box-shadow: 0px 0px 15px #222222;
