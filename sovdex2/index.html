@@ -146,7 +146,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1d</div>
+<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1e</div>
  
 
 
@@ -581,12 +581,6 @@ for (var i=0; i<size; i++)
     
     
  
-    /*
-    buffer += "token1: ("+tokensym1+") " ;
-    buffer += "token2: ("+tokensym2+") " ;
-    buffer += "("+token_contract1+") " ;
-    buffer += "("+token_contract2+") " ;
-    */
   //  buffer += "<span onclick='openswap("+pair_id+")'> [ SWAP ] </span>" ;
     buffer += "</div> " ;
           
@@ -686,6 +680,8 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 } // if (swapdirection == 1)
 
 
+
+
 if (swapdirection == 2)
 {
 
@@ -720,6 +716,11 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 
 } // if (swapdirection == 1)
 
+
+/*
+
+
+*/
 
 
 buffer += "</div>";
@@ -899,6 +900,12 @@ function swapaction( pair_id, token_contract1)
 
 tokenamount1 = document.getElementById('tokenamount1').value; 
 tokenamount2 = document.getElementById('tokenamount2').value; 
+
+
+// alfalf
+tokenamount1 = Number(tokenamount1).toFixed(4) + " " + global_tokensym1;   
+tokenamount2 = Number(tokenamount2).toFixed(4) + " " + global_tokensym2;   
+
 
 //alert( pair_id  + ' ' + tokenamount1 + ' ' + token_contract1 + ' ' + global_account );
 
