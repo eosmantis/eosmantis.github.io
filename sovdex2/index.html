@@ -129,6 +129,8 @@
 <br>
 
 
+<div id='liquiditydiv' style='text-align:center;'></div>
+
 <div id='createmarketdiv' style='text-align:center;'></div>
 
 <div id='swapdiv' style='text-align:center;'></div>
@@ -150,7 +152,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1g</div>
  
 
 
@@ -607,7 +609,7 @@ for (var i=0; i<size; i++)
  
 
 
-
+document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = "";                         
 document.getElementById('pairdivs').innerHTML = buffer;
 document.getElementById('swapdiv').innerHTML = "";
@@ -629,6 +631,7 @@ var global_tokensym1           = "";
 var global_tokensym2           = "";
 var global_token_contract1     = "";
 var global_token_contract2     = "";
+var global_lptoken             = "";
 var global_price1              = "";
 var global_price2              = "";
 
@@ -673,7 +676,7 @@ buffer += "<input id='tokenamount1' type='text' class='tokenamount'  onkeyup='ac
 
 buffer += "<br>";
 
- // alf
+ // 
 buffer += "<div id='swaparrow' class='swaparrow' onclick='switchswapdir()'>&#8595;</div>";
 
  
@@ -742,7 +745,7 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 */
 
 
-buffer += "<div  onclick='manageliquidity()' style='float:right;margin-right:20px;text-decoration:underline;'>";
+buffer += "<div  onclick='manageliquidity()' style='float:right;margin-right:20px;text-decoration:underline;cursor:pointer;'>";
 buffer += "Manage Liquidity";
 buffer += "</div>";
 
@@ -753,7 +756,7 @@ buffer += "</div>";
  
 
 
-
+document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('swapdiv').innerHTML  = buffer;
 
@@ -777,7 +780,7 @@ valueoutput = valueinput * global_price2;
 
 //value = Number(valueoutput).toFixed(4) + " " + global_tokensym2;
 
-//alf
+
 fixed2 = getprecision(global_token2);
 console.log("xxxxxx");
  console.log("fixed2: ("+global_token2+") " + fixed2);
@@ -798,7 +801,7 @@ valueinput = document.getElementById('tokenamount2').value;
 valueoutput = valueinput * global_price1; 
 
 
-//alf
+
 fixed1 = getprecision(global_token1);
 console.log("xxxxxx");
  console.log("fixed1: ("+global_token1+") " + fixed1);
@@ -852,6 +855,7 @@ global_tokensym2          = getLastPart(global_token2);
 global_token_contract1    = value.rows[i].token_contract1;
 global_token_contract2    = value.rows[i].token_contract2;
 
+global_lptoken            = value.rows[i].lptoken;
 global_price1             = value.rows[i].price1;
 global_price2             = value.rows[i].price2;
 
@@ -1058,6 +1062,7 @@ buffer += "</div>";
 
 
 
+document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = buffer;
 document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
@@ -1195,7 +1200,7 @@ tokenamount1 = document.getElementById('tokenamount1').value;
 tokenamount2 = document.getElementById('tokenamount2').value; 
 
 
-// swapaction alfalf
+// swapaction 
 //alert("global_token1: " + global_token1 + " "  + global_token2);
 
 fixed1 = getprecision(global_token1);
@@ -1395,9 +1400,235 @@ render_swap_area();
 
 function manageliquidity()
 {
-alert("Manage... soon");
+//alert("Manage... soon");
+
+
+
+get_token_balance1(global_token1, global_token_contract1);
+get_token_balance2(global_token2, global_token_contract2);
+ 
+ 
+ 
+buffer = "";
+ 
+
+
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+ buffer += "<h3>Manage Liquidity</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+buffer += "<strong>Add Liquidity</strong><br>"; 
+buffer += "Total LP-Token balance: "+global_lptoken+"<br>"; 
+
+
+
+
+buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+buffer += "Token1:<br>";
+buffer += global_tokensym1+"<br>";
+buffer += global_token_contract1+"<br>";
+buffer += "<input id='tokenamount1' type='text' class='tokenamount'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value=''> <br>";
+
+buffer += "<br>";
+
+ // 
+//buffer += "<div id='swaparrow' class='swaparrow' onclick='switchswapdir()'>&#8595;</div>";
+
+ 
+// &#8595; &#8593;  swaparrow
+buffer += "<br>";
+
+ 
+buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
+buffer += "Token2:<br>";
+buffer += global_tokensym2+"<br>";
+buffer += global_token_contract2+"<br>";
+buffer += "<input id='tokenamount2' type='text'  class='tokenamount'   onkeyup='action_keyup_tokenamount2(event)'  placeholder='Please enter amount' value='' > <br>";
+
+buffer += "<br>";
+
+
+
+
+ 
+buffer += "<div id='swapaction' onclick='addliquidityaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:200px;' > Add Liquidity </div>";
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+
+
+
+buffer += "<div class='separator'>&nbsp;</div>";
+
+ buffer += "<h3>My Liquidity</h3>";
+
+
+buffer += "....soon<br>";
+
+buffer += "<br>";
+buffer += "<br>";
+
+
+buffer += "</div>";
+buffer += "</div>";
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+
+
+document.getElementById('liquiditydiv').innerHTML    = buffer;
+document.getElementById('createmarketdiv').innerHTML = "";
+document.getElementById('swapdiv').innerHTML         = "";
+document.getElementById('pairdivs').innerHTML        = "";
+
+
+ 
+ 
+//liquiditydiv
 
 } // manageliquidity
+
+
+
+
+
+
+function addliquidityaction( pair_id, token_contract1 )
+{
+// swapaction
+ 
+
+ 
+
+tokenamount1 = document.getElementById('tokenamount1').value; 
+tokenamount2 = document.getElementById('tokenamount2').value; 
+
+
+ 
+fixed1 = getprecision(global_token1);
+fixed2 = getprecision(global_token2);
+
+ 
+console.log(tokenamount1 + ' ' + fixed1 + ' ' + tokenamount2 + ' ' + fixed2 + " " );
+
+tokenamount1 = Number(tokenamount1).toFixed(fixed1) + " " + global_tokensym1;   
+tokenamount2 = Number(tokenamount2).toFixed(fixed2) + " " + global_tokensym2;   
+
+
+ alert( pair_id  + ' ' + tokenamount1 + ' ' + token_contract1 + ' ' + global_account );
+
+
+
+var theactions = [];
+
+
+ 
+memo = "";
+
+
+
+
+    
+
+    
+   
+    var action = {
+                 account: global_token_contract1,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenamount1,
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+    
+    
+
+   
+   
+    var action = {
+                 account: global_token_contract2,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenamount2,
+                       "memo": memo
+                       }
+                 };
+
+ 
+
+ 
+    theactions.push(action);
+    
+    
+    // alfalf
+         
+
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'depositlp',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+                       "token1": tokenamount1,
+                       "token2": tokenamount2,
+                       "relay_id": pair_id       
+                       }
+                 };
+ 
+ 
+    theactions.push(action);
+    
+    
+             
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+    
+     
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+   
+   
+ 
+
+} // addliquidityaction
+
+
 
 
 
