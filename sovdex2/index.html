@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="icon" href="img/icon.png" />
-<link rel="stylesheet" href="css/style.css?ttd=44325644" />
+<link rel="stylesheet" href="css/style.css?ttd=445644" />
 
  <!-- BEGINN WALLET-INCLUDE-->
     
@@ -129,10 +129,13 @@
 <br>
 
 
+<div id='createmarketdiv' style='text-align:center;'></div>
 
 <div id='swapdiv' style='text-align:center;'></div>
 
 <div id='pairdivs' style='text-align:center;'> ... </div>
+
+
 <br>
 <br>
 
@@ -147,7 +150,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-left:30px;font-size:12px;'>frontend V0.1f</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
  
 
 
@@ -604,9 +607,13 @@ for (var i=0; i<size; i++)
  
 
 
+
+document.getElementById('createmarketdiv').innerHTML = "";                         
 document.getElementById('pairdivs').innerHTML = buffer;
 document.getElementById('swapdiv').innerHTML = "";
                          
+ 
+
                                
 } // callback_render_loadpairs
 
@@ -662,7 +669,7 @@ buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
 buffer += "Payment:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
-buffer += "<input id='tokenamount1' type='text'   onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value=''> <br>";
+buffer += "<input id='tokenamount1' type='text' class='tokenamount'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value=''> <br>";
 
 buffer += "<br>";
 
@@ -678,7 +685,7 @@ buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
 buffer += "Received:<br>";
 buffer += global_tokensym2+"<br>";
 buffer += global_token_contract2+"<br>";
-buffer += "<input id='tokenamount2' type='text'   onkeyup='action_keyup_tokenamount2(event)'  placeholder='Please enter amount' value='' > <br>";
+buffer += "<input id='tokenamount2' type='text'  class='tokenamount'   onkeyup='action_keyup_tokenamount2(event)'  placeholder='Please enter amount' value='' > <br>";
 
 buffer += "<br>";
 
@@ -703,7 +710,7 @@ buffer += "<div id='tokenbalance2' style='float:right;'>Balance: ...</div><br>";
 buffer += "Payment:<br>";
 buffer += global_tokensym2+"<br>";
 buffer += global_token_contract2+"<br>";
-buffer += "<input id='tokenamount2' type='text'   onkeyup='action_keyup_tokenamount2(event)' placeholder='Please enter amount' value=''> <br>";
+buffer += "<input id='tokenamount2' type='text'  class='tokenamount'   onkeyup='action_keyup_tokenamount2(event)' placeholder='Please enter amount' value=''> <br>";
 
 buffer += "<br>";
 
@@ -717,7 +724,7 @@ buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
 buffer += "Received:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
-buffer += "<input id='tokenamount1' type='text'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value='' > <br>";
+buffer += "<input id='tokenamount1' type='text' class='tokenamount'   onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value='' > <br>";
 
 buffer += "<br>";
 
@@ -734,6 +741,10 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 
 */
 
+
+buffer += "<div  onclick='manageliquidity()' style='float:right;margin-right:20px;text-decoration:underline;'>";
+buffer += "Manage Liquidity";
+buffer += "</div>";
 
 buffer += "</div>";
 buffer += "<br>";
@@ -942,11 +953,225 @@ getdata(callback_render_loadpairs, "sovdex2trade", "sovdex2trade", "relays", "",
 
 function createpair()
 {
-alert("Create... soon");
+
+//alert("Create... soon");
+
+buffer = "";
+ 
+
+
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+ buffer += "<h3>Create Market</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+/*
+
+initrelay():
+user: sovplsgomoon
+token1: 25.0000 EOS
+token_contract1: eosio.token
+token2: 20000.0000 SOV
+token_contract2: sovmintofeos
+lpsym: SOVEOS
+cw: 100
+fee: 40
+
+cm_token1
+cm_token_contract1
+cm_token2
+cm_token_contract2
+cm_lpsym
+cm_cw 100
+cm_fee 50
+*/
+
+
+
+buffer += "token1:<br>";
+buffer += "<input id='cm_token1' type='text'  class='tokenamount'     placeholder='1.0000 EOS' value='' > <br>";
+buffer += "token_contract1:<br>";
+
+buffer += "<input id='cm_token_contract1' type='text'  class='tokenamount'     placeholder='' value='' > <br>";
+
+buffer += "<br>";
+buffer += "<br>";
+
+
+
+buffer += "token2:<br>";
+buffer += "<input id='cm_token2' type='text'  class='tokenamount'     placeholder='1.0000 EOS' value='' > <br>";
+
+buffer += "token_contract2:<br>";
+buffer += "<input id='cm_token_contract2' type='text'  class='tokenamount'     placeholder='' value='' > <br>";
+
+buffer += "lpsym:<br>";
+buffer += "<input id='cm_lpsym' type='text'  class='tokenamount'     placeholder='' value='' > <br>";
+
+buffer += "cw:<br>";
+buffer += "<input id='cm_cw' type='text'  class='tokenamount'     placeholder='' value='100' > <br>";
+
+buffer += "fee:<br>";
+buffer += "<input id='cm_fee' type='text'  class='tokenamount'     placeholder='' value='40' > <br>";
+
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+
+
+
+ 
+buffer += "<div id='cm_action' onclick='createmarketaction()' class='swapbutton' style='text-align:center;width:200px;' > Create Market </div>";
+
+
+
+
+
+buffer += "<br>";
+buffer += "</div>";
+buffer += "</div>";
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+
+
+document.getElementById('createmarketdiv').innerHTML = buffer;
+document.getElementById('swapdiv').innerHTML         = "";
+document.getElementById('pairdivs').innerHTML        = "";
+
+
+ 
+
+
 }
 
 
+
+function createmarketaction()
+{
 // alfalf
+cm_token1 = document.getElementById('cm_token1').value;
+cm_token_contract1 = document.getElementById('cm_token_contract1').value;
+cm_token2 = document.getElementById('cm_token2').value;
+cm_token_contract2 = document.getElementById('cm_token_contract2').value;
+
+cm_lpsym = document.getElementById('cm_lpsym').value;
+cm_cw = document.getElementById('cm_cw').value;
+cm_fee = document.getElementById('cm_fee').value;
+
+//alert("C M: " + cm_token1);
+
+//return(0);
+
+
+
+
+var theactions = [];
+
+
+
+
+memo = "";
+
+
+
+ 
+    var action = {
+                 account: cm_token_contract1,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : cm_token1,
+                       "memo": memo
+                       }
+                 };
+ 
+    theactions.push(action);
+    
+    
+   
+
+ 
+    var action = {
+                 account: cm_token_contract2,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : cm_token2,
+                       "memo": memo
+                       }
+                 };
+ 
+    theactions.push(action);
+       
+    
+    
+/*
+
+cm_token1
+cm_token_contract1
+cm_token2
+cm_token_contract2
+cm_lpsym
+cm_cw 100
+cm_fee 50
+*/
+ 
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'initrelay',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+                       "token1": cm_token1,
+                       "token_contract1": cm_token_contract1,
+                       "token2": cm_token2,
+                       "token_contract2": cm_token_contract2,
+                       "lpsym": cm_lpsym + "",
+                       "cw": cm_cw,
+                       "fee": cm_fee                         
+                       }
+                 };
+ 
+ 
+    theactions.push(action);
+    
+    
+    
+         
+    console.log(theactions);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+   
+
+} // createmarketaction
+
 function swapaction( pair_id, token_contract1)
 {
 
@@ -956,7 +1181,7 @@ tokenamount1 = document.getElementById('tokenamount1').value;
 tokenamount2 = document.getElementById('tokenamount2').value; 
 
 
-// alfalf
+
 tokenamount1 = Number(tokenamount1).toFixed(4) + " " + global_tokensym1;   
 tokenamount2 = Number(tokenamount2).toFixed(4) + " " + global_tokensym2;   
 
@@ -1132,13 +1357,11 @@ function switchswapdir( dir )
 
 if (swapdirection == 1) 
    {
-   swapdirection = 2; 
-   
+   swapdirection = 2;    
    }
    else
       {
       swapdirection = 1;
-
       }
 
 
@@ -1146,6 +1369,13 @@ render_swap_area();
 
 } // switchswapdir
 
+
+
+function manageliquidity()
+{
+alert("Manage... soon");
+
+} // manageliquidity
 
 
 readpairs();
