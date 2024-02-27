@@ -152,7 +152,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1g</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1a</div>
  
 
 
@@ -211,7 +211,7 @@ function func_success( message )
 
 get_token_balance1(global_token1, global_token_contract1);
 get_token_balance2(global_token2, global_token_contract2);
- 
+get_token_balance_lp(lptoken, "sovdex2trade");
  
 alert(message);
 }
@@ -221,7 +221,7 @@ function func_error( message )
 
 get_token_balance1(global_token1, global_token_contract1);
 get_token_balance2(global_token2, global_token_contract2);
- 
+get_token_balance_lp(lptoken, "sovdex2trade");
  
 alert(message);
 }
@@ -921,6 +921,64 @@ getdata(callback_render_tokenbalance1, token_contract1, global_account, "account
 
 
 
+
+function callback_render_tokenbalance_lp( value )
+{
+
+
+lptoken          = getLastPart(global_lptoken);
+//alert("LP: " + lptoken      );
+if (value.rows.length == 0) return;   
+
+
+size = value.rows.length;
+
+balance = "...";
+for (var i=0; i<size; i++)
+    {
+    sub_balance = value.rows[i].balance;
+    
+    if ( sub_balance.includes(lptoken) == true )
+       {
+       balance = sub_balance;
+       console.log("FOUND: " + balance);
+       i = size;
+       } 
+    } // for i...
+
+
+
+
+console.log("balances xyz: ("+lptoken+")" );
+console.log(value);
+ console.log("FIN xyz:" );
+
+
+if ( document.getElementById('tokenbalance_lp') ) 
+   {
+   document.getElementById('tokenbalance_lp').innerHTML = "" + balance;
+   } else
+     {
+     console.log("no tokenbalance_lp div!");
+     }
+
+
+
+ 
+} // callback_render_tokenbalance_lp
+
+
+
+function get_token_balance_lp(token1, token_contract1)
+{
+ 
+getdata(callback_render_tokenbalance_lp, "sovdex2trade", global_account, "accounts", "", "", "", 112 );
+
+} // get_token_balance_lp
+
+
+
+
 function callback_render_tokenbalance2( value )
 {
 
@@ -1471,8 +1529,16 @@ buffer += "<div class='separator'>&nbsp;</div>";
 
  buffer += "<h3>My Liquidity</h3>";
 
+ 
 
-buffer += "....soon<br>";
+buffer += "LP-Balance: <span id='tokenbalance_lp' style=''>...</span><br>";
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:200px;' > Remove Liquidity </div>";
+
 
 buffer += "<br>";
 buffer += "<br>";
@@ -1492,7 +1558,12 @@ document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
 
+
+// global_lptoken
+
+lptoken          = getLastPart(global_lptoken);
  
+get_token_balance_lp(lptoken, "sovdex2trade");
  
 //liquiditydiv
 
@@ -1525,7 +1596,7 @@ tokenamount1 = Number(tokenamount1).toFixed(fixed1) + " " + global_tokensym1;
 tokenamount2 = Number(tokenamount2).toFixed(fixed2) + " " + global_tokensym2;   
 
 
- alert( pair_id  + ' ' + tokenamount1 + ' ' + token_contract1 + ' ' + global_account );
+ //alert( pair_id  + ' ' + tokenamount1 + ' ' + token_contract1 + ' ' + global_account );
 
 
 
@@ -1588,7 +1659,7 @@ memo = "";
     theactions.push(action);
     
     
-    // alfalf
+
          
 
     var action = {
@@ -1629,6 +1700,90 @@ if (1)
 } // addliquidityaction
 
 
+
+function removeliquidityaction( pair_id, token_contract1 )
+{
+// alf
+// alert("Remove");
+
+//tokenbalance_lp
+tokenbalance_lp = document.getElementById('tokenbalance_lp').innerHTML; 
+console.log("tokenbalance_lp: " + tokenbalance_lp);
+
+var theactions = [];
+
+
+ 
+memo = "";
+
+
+
+
+    
+
+    
+   
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenbalance_lp,
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+    /*
+    2) withdrawlp lptoken:20600 SVXEOS
+              user: goldstandard
+    */
+    
+    
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'withdrawlp',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "lptoken" : tokenbalance_lp,
+                       "user": global_account + ""
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+     
+             
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+    
+     
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+   
+   
+
+
+} // removeliquidityaction
 
 
 
