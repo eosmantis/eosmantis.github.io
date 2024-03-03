@@ -135,6 +135,8 @@
 
 <div id='swapdiv' style='text-align:center;'></div>
 
+<div id='minediv' style='text-align:center;'></div>
+
 <div id='pairdivs' style='text-align:center;'> ... </div>
 
 
@@ -152,7 +154,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1b</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1c</div>
  
 
 
@@ -586,10 +588,21 @@ for (var i=0; i<size; i++)
 
 
 
+
        buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:none;'>" ;
        buffer += "<span class='swapbutton' onclick='openswap("+pair_id+")'>  SWAP  </span>" ;
-
        buffer += "</div> " ;
+
+
+       if ( tokensym1 == "POW" || tokensym2 == "POW" )
+          {
+          
+          
+
+          buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:none;'>" ;
+          buffer += "<span class='swapbutton' onclick='openmine("+pair_id+")'>  MINE </span>" ;
+          buffer += "</div> " ;
+          }
 
 
        buffer += "<div style='clear:both;'></div> " ;
@@ -611,6 +624,7 @@ for (var i=0; i<size; i++)
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = "";                         
+document.getElementById('minediv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML = buffer;
 document.getElementById('swapdiv').innerHTML = "";
                          
@@ -758,6 +772,7 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('minediv').innerHTML         = "";
 document.getElementById('swapdiv').innerHTML  = buffer;
 
  
@@ -1011,6 +1026,132 @@ getdata(callback_render_loadsinglepair, "sovdex2trade", "sovdex2trade", "relays"
 
 */
 } // openswap
+
+
+
+
+
+function openmine( tokenid )
+{
+//alert("Token ID " + tokenid); 
+
+/*
+
+global_tokensym1          = getLastPart(global_token1);
+global_tokensym2          = getLastPart(global_token2);
+*/
+
+buffer = "";
+
+
+/*
+
+global_tokensym1          = getLastPart(global_token1);
+global_tokensym2          = getLastPart(global_token2);
+    
+global_token_contract1    = value.rows[i].token_contract1;
+global_token_contract2    = value.rows[i].token_contract2;
+
+*/
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+buffer += "<h3>MINE Pair-ID: "+tokenid+" "+global_tokensym1+" "+global_tokensym2+" "+global_token1+"</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+  
+
+
+buffer += '<br>';
+
+buffer += 'Mine X:<br>';
+buffer += '<input id="minecounter" type="range" min="1" max="100" step="1.0" value="1" oninput="this.nextElementSibling.value = this.value" style="width:90%">';
+buffer += '<output>1</output>';
+buffer += '<br>';
+buffer += '<br>';
+
+buffer += "<div id='mineaction' onclick='mineaction("+tokenid+")' class='swapbutton' style='text-align:center;width:100px;' > MINE </div>";
+
+ 
+buffer += "</div>";
+buffer += "<br>";
+buffer += "</div>";
+
+ 
+
+
+document.getElementById('liquiditydiv').innerHTML    = "";
+document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('minediv').innerHTML  = buffer;
+document.getElementById('swapdivs').innerHTML = "";
+
+
+} // openmine( tokenid )
+
+
+
+
+function mineaction( pair_id )
+{ 
+// alfalf
+//alert( "pair id: " + pair_id );
+
+minecounter = document.getElementById('minecounter').value;
+
+/*
+cpuminingsvx
+
+action: mine(User, Relay)
+*/ 
+// alert('pairid: '+pair_id+' minecounter' + minecounter);
+
+
+
+var theactions = [];
+
+for (var i=0; i<minecounter; i++)
+    {
+    
+    
+    var action = {
+                 account: 'cpuminingsvx',
+                 name: 'mine',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+                       "relay_id": pair_id
+                                              
+                       }
+                 };
+ 
+    theactions.push(action);
+    
+    
+    
+    } // for i...
+
+
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }   
+   
+ 
+} // mineaction
+
+
  
  
 function readpairs()
@@ -1122,7 +1263,8 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = buffer;
-document.getElementById('swapdiv').innerHTML         = "";
+document.getElementById('minediv').innerHTML         = "";
+document.getElementById('swapdivs').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
 
@@ -1556,6 +1698,7 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = buffer;
 document.getElementById('createmarketdiv').innerHTML = "";
+document.getElementById('minediv').innerHTML         = "";
 document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
@@ -1705,7 +1848,7 @@ if (1)
 
 function removeliquidityaction( pair_id, token_contract1 )
 {
-// alf
+// 
 // alert("Remove");
 
 //tokenbalance_lp
