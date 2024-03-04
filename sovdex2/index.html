@@ -154,7 +154,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1c</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1d</div>
  
 
 
@@ -368,6 +368,32 @@ getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", 
 
 */
 
+
+function callback_render_minigbalance( value )
+{
+//console.log("BALENCE MINING!!!!!!!");
+
+console.log(value);
+
+ 
+if (value.rows.length == 0) return;                   
+
+
+
+balance = value.rows[0].balance;
+ 
+ 
+if (balance != undefined)
+   {
+   document.getElementById('minebalance').innerHTML = balance + "";
+   }
+    
+ 
+ 
+ 
+} // callback_render_minigbalance
+
+
 function powerup( eosforpower )
 {
 
@@ -426,12 +452,34 @@ if (1)
 
 
 
+
+
+
 var cnt = 0;
 function update_thread()
 {
 console.log("THREAD");
 
 //getsovsupply();
+
+
+
+if (mininigdialog == 1)
+   {
+   // alf
+   
+   getbalance_eos();
+   
+   //console.log("---- Balance: " + minetoken + " global_token_contract_mine:" + global_token_contract_mine );
+   
+    
+   getdata(callback_render_minigbalance, global_token_contract_mine, global_account, "accounts", "", "", "", 112 );
+ 
+  
+   } else
+     {
+      
+     } 
 
 
 //if ( (cnt % 2) == 0 ) getsvxbalance2();
@@ -454,6 +502,63 @@ cnt++;
 var time = setTimeout("update_thread()", 3000);
   
 } //// update_thread
+
+
+
+
+function getbalance_eos()
+{
+//alert("test getdata");
+
+getaccount(global_account).then(function(value) {
+             
+               var cpu_available = value.cpu_limit.available;
+
+                                var cpu_max = value.cpu_limit.max;
+
+                                var cpu_used = value.cpu_limit.used;
+
+                                var net_max = value.net_limit.max;
+
+                                var net_used = value.net_limit.used;
+
+                                var balance = value.core_liquid_balance;
+console.log("BBBB:" + balance);
+                                var balance1 = value.core_liquid_balance;
+
+                                var balance2 = value.core_liquid_balance;
+
+                                var cpu_proz = (cpu_used / cpu_max) * 100;
+                                cpu_proz = Number(cpu_proz).toFixed(1);
+
+                                var net_proz = (net_used / net_max) * 100;
+                                net_proz = Number(net_proz).toFixed(1);
+                                
+                             
+                             //   document.getElementById('balance_eos').innerHTML = balance;
+
+
+  if (document.getElementById('minecpu')) {
+                                    cpu_proz = Number(cpu_proz).toFixed(0) * 1;
+                                    
+                                     
+                             document.getElementById('minecpu').innerHTML =  ""+ cpu_proz + "% ";  
+     
+                                  //  set_circle_element("mycpu", cpu_proz);
+                                }
+                                
+  if (document.getElementById('div_net')) {
+                                    net_proz = Number(net_proz).toFixed(0) * 1;
+                                    document.getElementById('div_net').innerHTML = ""+ net_proz + "% NET&nbsp;&nbsp;&nbsp;&nbsp;";
+                                  //  set_circle_element("mycpu", cpu_proz);
+                                }                                
+ 
+
+             }  );
+
+
+//getdata(callback_render_balance_eos, "eosio.token", global_account, "accounts", "", "", "", 1 );
+} // getbalance_eos
 
 
  
@@ -648,6 +753,9 @@ var global_token_contract2     = "";
 var global_lptoken             = "";
 var global_price1              = "";
 var global_price2              = "";
+var mininigdialog              = "";
+
+var global_token_contract_mine = "";
 
 
 
@@ -773,6 +881,7 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('minediv').innerHTML         = "";
+mininigdialog = 0;
 document.getElementById('swapdiv').innerHTML  = buffer;
 
  
@@ -1029,32 +1138,63 @@ getdata(callback_render_loadsinglepair, "sovdex2trade", "sovdex2trade", "relays"
 
 
 
+ 
 
 
-function openmine( tokenid )
+function callback_render_loadmining( value )
 {
-//alert("Token ID " + tokenid); 
 
-/*
+if (value.rows.length == 0) return;   
 
-global_tokensym1          = getLastPart(global_token1);
-global_tokensym2          = getLastPart(global_token2);
-*/
+console.log( value );
 
 buffer = "";
 
+ 
+i = 0;
 
-/*
 
+
+global_pair_id            = value.rows[i].id;
+global_token1             = value.rows[i].token1;
+global_token2             = value.rows[i].token2;
+    
 global_tokensym1          = getLastPart(global_token1);
 global_tokensym2          = getLastPart(global_token2);
     
 global_token_contract1    = value.rows[i].token_contract1;
 global_token_contract2    = value.rows[i].token_contract2;
 
-*/
+global_lptoken            = value.rows[i].lptoken;
+global_price1             = value.rows[i].price1;
+global_price2             = value.rows[i].price2;
+
+
+if (global_tokensym1 != "POW") 
+   {
+   minetoken = global_tokensym1; 
+   global_token_contract_mine = global_token_contract1;
+   } else
+     {
+   
+     if (global_tokensym2 != "POW") 
+        {
+        minetoken = global_tokensym2; 
+        global_token_contract_mine = global_token_contract2;
+        }
+     }
+
+// alert( global_pair_id + ' ' + global_tokensym1 + ' ' + global_tokensym2);
+
+
+ 
+ 
+
+buffer = "";
+
+ 
 buffer += "<div style='margin-left:5%;text-align:left;'>";
-buffer += "<h3>MINE Pair-ID: "+tokenid+" "+global_tokensym1+" "+global_tokensym2+" "+global_token1+"</h3>";
+buffer += "<h3>MINE "+minetoken+"  </h3>";
 buffer += "</div>";
 
 
@@ -1065,21 +1205,20 @@ buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
 
 
 
-
-//buffer += "token id " + global_pair_id + " " + swapdirection;
-
+ // alfalf
   
-
+buffer += 'CPU: <span id="minecpu">...</span><br>';
+buffer += minetoken + ' Balance: <span id="minebalance">...</span><br>';
 
 buffer += '<br>';
 
 buffer += 'Mine X:<br>';
 buffer += '<input id="minecounter" type="range" min="1" max="100" step="1.0" value="1" oninput="this.nextElementSibling.value = this.value" style="width:90%">';
-buffer += '<output>1</output>';
+buffer += ' <output>1</output>';
 buffer += '<br>';
 buffer += '<br>';
 
-buffer += "<div id='mineaction' onclick='mineaction("+tokenid+")' class='swapbutton' style='text-align:center;width:100px;' > MINE </div>";
+buffer += "<div id='mineaction' onclick='mineaction("+global_pair_id+")' class='swapbutton' style='text-align:center;width:100px;' > MINE </div>";
 
  
 buffer += "</div>";
@@ -1092,8 +1231,20 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('minediv').innerHTML  = buffer;
+mininigdialog = 1;
 document.getElementById('swapdivs').innerHTML = "";
 
+
+ 
+ 
+
+} // callback_render_loadsinglepair
+
+
+function openmine( tokenid )
+{
+
+getdata(callback_render_loadmining, "sovdex2trade", "sovdex2trade", "relays", tokenid, "", "", 1 );
 
 } // openmine( tokenid )
 
@@ -1102,8 +1253,6 @@ document.getElementById('swapdivs').innerHTML = "";
 
 function mineaction( pair_id )
 { 
-// alfalf
-//alert( "pair id: " + pair_id );
 
 minecounter = document.getElementById('minecounter').value;
 
@@ -1264,6 +1413,7 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = buffer;
 document.getElementById('minediv').innerHTML         = "";
+mininigdialog = 0;
 document.getElementById('swapdivs').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
@@ -1699,6 +1849,7 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = buffer;
 document.getElementById('createmarketdiv').innerHTML = "";
 document.getElementById('minediv').innerHTML         = "";
+mininigdialog = 0;
 document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
