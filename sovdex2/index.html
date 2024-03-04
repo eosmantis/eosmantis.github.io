@@ -88,7 +88,7 @@
 </div> <!-- end walletmenu -->
 
 <div id='menu' style='width:margin-left:auto;margin-right:auto;padding:5px;'>
-<a href='index.html' style='color:#ffffff;text-decoration:none;'>START</a> | <a href='faucet.html' style='color:#ffffff;text-decoration:none;'>FAUCET</a>  
+<a href='https://eosmantis.github.io/sovpowerpack/index.html' style='color:#ffffff;text-decoration:none;'>START</a> | <a href='https://eosmantis.github.io/sovpowerpack/faucet.html' style='color:#ffffff;text-decoration:none;'>FAUCET</a>  
 </div>
 
 <br>
@@ -880,9 +880,10 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
-document.getElementById('swapdiv').innerHTML  = buffer;
+if (document.getElementById('swapdiv')) document.getElementById('swapdiv').innerHTML  = buffer;
 
  
 get_token_balance1(global_token1, global_token_contract1);
@@ -1230,9 +1231,10 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML  = buffer;
 mininigdialog = 1;
-document.getElementById('swapdivs').innerHTML = "";
+if (document.getElementById('swapdiv')) document.getElementById('swapdivs').innerHTML = "";
 
 
  
@@ -1414,7 +1416,7 @@ document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = buffer;
 document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
-document.getElementById('swapdivs').innerHTML = "";
+if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
 
@@ -1850,7 +1852,7 @@ document.getElementById('liquiditydiv').innerHTML    = buffer;
 document.getElementById('createmarketdiv').innerHTML = "";
 document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
-document.getElementById('swapdiv').innerHTML         = "";
+if (document.getElementById('swapdiv')) document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
 
 
