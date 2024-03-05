@@ -397,7 +397,8 @@ if (balance != undefined)
 function powerup( eosforpower )
 {
 
-//eosforpower = document.getElementById("eosforpower").value;
+if (eosforpower == 0)
+   eosforpower = document.getElementById("eosforpower").value;
  
 var theactions = [];
 
@@ -714,6 +715,8 @@ for (var i=0; i<size; i++)
           buffer += "<span class='swapbutton' onclick='openmine("+pair_id+")'>  MINE </span>" ;
           buffer += "</div> " ;
           }
+
+
 
 
        buffer += "<div style='clear:both;'></div> " ;
@@ -1234,6 +1237,24 @@ buffer += '<br>';
 
 buffer += "<div id='mineaction' onclick='mineaction("+global_pair_id+")' class='swapbutton' style='text-align:center;width:100px;' > MINE </div>";
 
+
+buffer += "<br>";
+buffer += "<br>";
+buffer += "<div class='separator' style='width:100%;'>&nbsp;</div>";
+
+
+// ---
+
+buffer += "<br>";
+buffer += "PowerUP<br>";
+buffer += "<br>";
+ 
+buffer += "<input type='text' id='eosforpower' value='0.05'> EOS<br>";
+buffer += "<br>";
+buffer += "<div onclick='powerup(0)' class='swapbutton' style='text-align:center;display:block;width:150px;'>Powerup &#8623;</div><br>";
+ 
+// ---
+
  
 buffer += "</div>";
 buffer += "<br>";
@@ -1254,6 +1275,7 @@ if (document.getElementById('swapdiv')) document.getElementById('swapdivs').inne
  
 
 } // callback_render_loadsinglepair
+
 
 
 
