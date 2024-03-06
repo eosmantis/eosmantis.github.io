@@ -659,6 +659,9 @@ for (var i=0; i<size; i++)
     token_contract1      = value.rows[i].token_contract1;
     token_contract2      = value.rows[i].token_contract2;
 
+    token_price1      = value.rows[i].price1;
+    token_price2      = value.rows[i].price2;
+
    /*
     var i2 = thearray[i]['index'];
     
@@ -691,13 +694,23 @@ for (var i=0; i<size; i++)
        buffer += "</div> " ;
        
        
-        buffer += "<div  class='' style='float:left;width:350px;margin-left:30px;font-size:16px;text-align:left;;border:none'>" ;
+        buffer += "<div  class='' style='float:left;width:300px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
        buffer += "Depth<br>";
        buffer +=""+token1+  " / "+token2+" " ;
        buffer += "</div> " ;
 
 
+/*
 
+*/
+   buffer += "<div  class='' style='float:left;width:120px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
+     token_price1_view = Number(token_price1).toFixed(4) + " " ;
+token_price2_view = Number(token_price2).toFixed(4) + " " ;
+
+buffer += "<span id='price1' style='font-size:12px;' > " +token_price1_view+"  " + tokensym1 +  "</span><br>";
+buffer += "<span id='price2' style='font-size:12px;' > " +token_price2_view+"  " + tokensym2 +  "</span><br>";
+
+       buffer += "</div> " ;
 
 
 
@@ -787,7 +800,13 @@ buffer += "</div>";
 buffer += "<div class='swapwnd' style=''>";
 buffer += "<br>";
 buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+// alfalf
 
+global_price1_view = Number(global_price1).toFixed(4) + " " ;
+global_price2_view = Number(global_price2).toFixed(4) + " " ;
+
+buffer += "<span id='price1' style='font-size:12px;' >1 " + global_tokensym2 +  " => " +global_price1_view+"  " + global_tokensym1 +  "</span><br>";
+buffer += "<span id='price2' style='font-size:12px;' >1 " + global_tokensym1 +  " => " +global_price2_view+"  " + global_tokensym2 +  "</span><br>";
 
 
 
@@ -796,6 +815,8 @@ buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
 
 if (swapdirection == 1)
 {
+
+
 
 
  
