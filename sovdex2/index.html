@@ -105,6 +105,7 @@
 <br>
 <div id='' onclick='readpairs()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;float:left;margin-left:5%;'> Markets </div>
 <div id='' onclick='createpair()' class='swapbutton' style='margin-left:5%;text-align:center;width:200px;float:left;margin-left:10px;'> Create Market </div>
+<div id='' onclick='showpools()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;float:left;margin-left:10px;'> Pools </div>
 
 
 
@@ -137,7 +138,9 @@
 
 <div id='minediv' style='text-align:center;'></div>
 
-<div id='pairdivs' style='text-align:center;'> ... </div>
+<div id='pairdivs' style='text-align:center;'></div>
+
+<div id='pooldivs' style='text-align:center;'></div>
 
 
 <br>
@@ -467,7 +470,7 @@ console.log("THREAD");
 
 if (mininigdialog == 1)
    {
-   // alf
+   
    
    getbalance_eos();
    
@@ -661,6 +664,28 @@ for (var i=0; i<size; i++)
 
     token_price1      = value.rows[i].price1;
     token_price2      = value.rows[i].price2;
+    
+    /*
+    global_aprs
+    
+
+    */
+    console.log("APRS");
+    console.log(global_aprs);
+    apr_string = "";
+    
+    size2 = global_aprs.rows.length;
+    for (var i2=0; i2<size2; i2++)
+        {
+        // apr_string = global_aprs.rows[0].apr_string;
+        tmp_relay_id = global_aprs.rows[i2].relay_id;
+        if (tmp_relay_id == pair_id)
+           {
+           apr_string   = global_aprs.rows[i2].apr_string;
+           i2 = size2;
+           }
+        
+        } // for i2...
 
    /*
     var i2 = thearray[i]['index'];
@@ -694,12 +719,20 @@ for (var i=0; i<size; i++)
        buffer += "</div> " ;
        
        
-        buffer += "<div  class='' style='float:left;width:250px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
+        buffer += "<div  class='' style='float:left;width:220px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
        buffer += "Depth<br>";
        buffer +=""+token1+  " /<br>"+token2+" " ;
        buffer += "</div> " ;
 
 
+
+
+       buffer += "<div  class='' style='float:left;width:50px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
+       buffer += "APR "+apr_string+"<br>";
+       buffer += "</div> " ;
+   
+   
+   
 /*
 
 */
@@ -715,6 +748,10 @@ buffer += "<span id='price2' style='font-size:12px;' > " +token_price2_view+"  "
 
 
 
+
+   
+   
+   
        buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:none;'>" ;
        buffer += "<span class='swapbutton' onclick='openswap("+pair_id+")'>  SWAP  </span>" ;
        buffer += "</div> " ;
@@ -754,6 +791,7 @@ document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('createmarketdiv').innerHTML = "";                         
 document.getElementById('minediv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML = buffer;
+document.getElementById('pooldivs').innerHTML        = "";
 document.getElementById('swapdiv').innerHTML = "";
                          
  
@@ -801,7 +839,7 @@ buffer += "</div>";
 buffer += "<div class='swapwnd' style=''>";
 buffer += "<br>";
 buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
-// alfalf
+
 
 global_price1_view = Number(global_price1).toFixed(4) + " " ;
 global_price2_view = Number(global_price2).toFixed(4) + " " ;
@@ -911,6 +949,7 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('pooldivs').innerHTML        = "";
 document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
@@ -1237,7 +1276,7 @@ buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
 
 
 
- // alfalf
+ 
  
  
 
@@ -1287,6 +1326,7 @@ buffer += "</div>";
 
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('pooldivs').innerHTML        = "";
 document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML  = buffer;
 mininigdialog = 1;
@@ -1515,6 +1555,24 @@ document.getElementById('pairdivs').innerHTML        = "";
 
 
 }
+
+
+function showpools()
+{
+//alert("soon");
+
+buffer = "soon";
+
+
+
+document.getElementById('liquiditydiv').innerHTML    = "";
+document.getElementById('createmarketdiv').innerHTML = "";
+document.getElementById('minediv').innerHTML         = "";
+mininigdialog = 0;
+if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
+document.getElementById('pairdivs').innerHTML        = "";
+document.getElementById('pooldivs').innerHTML        = buffer;
+} // showpools()
 
 
 
@@ -2176,6 +2234,45 @@ if (1)
 
 
 
+
+var global_aprs = null;
+
+function callback_render_read_aprs( value )
+{
+
+console.log(value);
+
+ 
+if (value.rows.length == 0) return;                   
+
+global_aprs = value;
+
+//alert("test2");
+/*
+balance = value.rows[0].balance;
+ 
+ 
+if (balance != undefined)
+   {
+   document.getElementById('minebalance').innerHTML = balance + "";
+   }
+  */
+ 
+} // callback_render_minigbalance
+
+
+function read_aprs()
+{
+// alf
+
+ 
+//getdata(callback_render_read_aprs, "sovdex2trade", global_account, "accounts", "", "", "", 112 );
+getdata(callback_render_read_aprs, "sovdex2trade", "sovdex2trade", "aprs", "", "", "", 1112 );
+ 
+} // read_aprs()
+
+
+
 function getprecision( string ) {
  
     const parts = string.split(' ');
@@ -2198,6 +2295,7 @@ function getprecision( string ) {
 }
 
 readpairs();
+read_aprs();
 
 </script>
 
