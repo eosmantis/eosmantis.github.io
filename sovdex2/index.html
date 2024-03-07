@@ -583,11 +583,15 @@ function getLastPart(inputString) {
  
  
  
+var global_pairs = null;
+
 
 function callback_render_loadpairs( value )
 {
 
 if (value.rows.length == 0) return;   
+
+global_pairs = value;
 
 buffer = "";
 
@@ -671,9 +675,11 @@ for (var i=0; i<size; i++)
 
     */
     console.log("APRS");
-    console.log(global_aprs);
+   // console.log(global_aprs);
     apr_string = "";
     
+    if ( global_aprs != null )
+    {
     size2 = global_aprs.rows.length;
     for (var i2=0; i2<size2; i2++)
         {
@@ -681,12 +687,13 @@ for (var i=0; i<size; i++)
         tmp_relay_id = global_aprs.rows[i2].relay_id;
         if (tmp_relay_id == pair_id)
            {
-           apr_string   = global_aprs.rows[i2].apr_string;
+           apr_string   = "APR " + global_aprs.rows[i2].apr_string;
            i2 = size2;
            }
         
         } // for i2...
-
+     } // if
+     
    /*
     var i2 = thearray[i]['index'];
     
@@ -728,7 +735,7 @@ for (var i=0; i<size; i++)
 
 
        buffer += "<div  class='' style='float:left;width:50px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
-       buffer += "APR "+apr_string+"<br>";
+       buffer += ""+apr_string+"<br>";
        buffer += "</div> " ;
    
    
@@ -1561,7 +1568,167 @@ function showpools()
 {
 //alert("soon");
 
-buffer = "soon";
+buffer = "soon...<br>";
+// alfalf
+
+
+
+ 
+    
+    size2 = global_aprs.rows.length;
+    for (var i2=0; i2<size2; i2++)
+        {
+        apr_string       = global_aprs.rows[0].apr_string;
+        tmp_relay_id     = global_aprs.rows[i2].relay_id;
+        tmp_equiv_tvl    = global_aprs.rows[i2].equiv_tvl;
+        tmp_daily_reward = global_aprs.rows[i2].daily_reward;
+        tmp_extra_info   = global_aprs.rows[i2].extra_info;
+        
+        // global_pairs
+        
+        tmp_token1          = "";
+        tmp_token2          = "";
+        tmp_tokensym1       = "";
+        tmp_tokensym2       = "";
+        tmp_token_contract1 = "";
+        tmp_token_contract2 = "";
+    
+        size3 = global_pairs.rows.length;
+        var index = -1;
+        for (var i3=0; i3<size3; i3++)
+            {
+            // apr_string = global_aprs.rows[0].apr_string;
+            
+          
+            tmp_relay_id2 = global_pairs.rows[i3].id;
+            if (tmp_relay_id == tmp_relay_id2)
+               {
+               tmp_token1   = global_pairs.rows[i3].token1;
+               tmp_token2   = global_pairs.rows[i3].token2;
+               
+               tmp_tokensym1 = getLastPart(tmp_token1);
+               tmp_tokensym2 = getLastPart(tmp_token2);
+
+               tmp_token_contract1      = global_pairs.rows[i3].token_contract1;
+               tmp_token_contract2      = global_pairs.rows[i3].token_contract2;
+
+               i3 = size3;
+               }
+        
+        
+            } // for i3...
+            
+            /*
+             pair_id              = value.rows[i].id;
+    token1               = value.rows[i].token1;
+    token2               = value.rows[i].token2;
+    
+    tokensym1 = getLastPart(token1);
+    tokensym2 = getLastPart(token2);
+    
+    token_contract1      = value.rows[i].token_contract1;
+    token_contract2      = value.rows[i].token_contract2;
+
+    token_price1      = value.rows[i].price1;
+    token_price2      = value.rows[i].price2;
+            */
+        
+        /*
+        if (tmp_relay_id == pair_id)
+           {
+           apr_string   = global_aprs.rows[i2].apr_string;
+           i2 = size2;
+           }
+        */
+        
+         buffer += "<div  class='paircell' style=''> " ;
+    buffer += "<div    style='height:10px;'></div> " ;
+
+    buffer += "<div  class='paircell_inner' style='text-align:left;'> " ;
+
+       buffer += "<div  class='' style='float:left;width:100px;margin-left:20px;'>" ;
+       buffer += "<span style='font-weight:bold;'>"+tmp_tokensym1+"</span><br>" ;
+       buffer += "<span style='font-size:12px'>"+tmp_token_contract1+"</span><br>" ;
+       buffer += "</div> " ;
+
+
+       buffer += "<div  class='' style='float:left;width:20px;font-size:30px;border:none'>" ;
+       buffer += " / " ;
+       buffer += "</div> " ;
+
+
+       buffer += "<div  class='' style='float:left;width:100px;;border:none'>" ;
+       buffer += "<span style='font-weight:bold;'>"+tmp_tokensym2+"</span><br>" ;
+       buffer += "<span style='font-size:12px'>"+tmp_token_contract2+"</span><br>" ;
+       buffer += "</div> " ;
+       
+       
+        buffer += "<div  class='' style='float:left;width:220px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
+       buffer += "Depth...<br>";
+       //buffer +=""+token1+  " /<br>"+token2+" " ;
+       buffer += "</div> " ;
+
+
+
+
+       buffer += "<div  class='' style='float:left;width:50px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
+       buffer += "APR "+apr_string+"<br>";
+       buffer += "</div> " ;
+   
+   
+   
+/*
+
+
+   buffer += "<div  class='' style='float:left;width:120px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
+     buffer += "Price<br>";
+     token_price1_view = Number(token_price1).toFixed(4) + " " ;
+token_price2_view = Number(token_price2).toFixed(4) + " " ;
+
+buffer += "<span id='price1' style='font-size:12px;' > " +token_price1_view+"  " + tokensym1 +  "</span><br>";
+buffer += "<span id='price2' style='font-size:12px;' > " +token_price2_view+"  " + tokensym2 +  "</span><br>";
+
+       buffer += "</div> " ;
+*/
+
+
+
+   
+   
+   
+       buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:none;'>" ;
+       buffer += "Relay ID: " + tmp_relay_id;
+       buffer += "</div> " ;
+
+
+/*
+       if ( tokensym1 == "POW" || tokensym2 == "POW" )
+          {              
+          buffer += "<div  class='' style='float:right;width:50px;margin-top:10px;border:none;' alt='MINE' title='MINE' >" ;
+          buffer += "<span class='swapbutton' onclick='openmine("+pair_id+")'> &#9935; </span>" ;
+          buffer += "</div> " ;
+          }
+*/
+
+
+
+       buffer += "<div style='clear:both;'></div> " ;
+    
+    
+    
+ 
+  //  buffer += "<span onclick='openswap("+pair_id+")'> [ SWAP ] </span>" ;
+    buffer += "</div> " ;
+          
+    buffer += "<div style='clear:both;'></div> " ;
+          
+          
+    buffer += "</div> " ;
+    buffer += "<br> " ;
+    
+        } // for i2...
+
+
 
 
 
@@ -2263,7 +2430,7 @@ if (balance != undefined)
 
 function read_aprs()
 {
-// alf
+
 
  
 //getdata(callback_render_read_aprs, "sovdex2trade", global_account, "accounts", "", "", "", 112 );
