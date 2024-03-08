@@ -2131,7 +2131,7 @@ global_price2             = value.rows[i].price2;
 
  
 //render_swap_area();
- // alfalf
+ 
  
 manageliquidity(-1);
 
@@ -2235,12 +2235,19 @@ buffer += "<br>";
 
 
 /*
-buffer += '<input id="liquidrembar" type="range" min="100" max="100" step="25.0" value="50" oninput="this.nextElementSibling.value = this.value" style="width:90%">';
+buffer += '<input id="liquidrembar" type="range" min="25" max="100" step="25.0" value="50" oninput="this.nextElementSibling.value = this.value" style="width:90%">';
 buffer += ' <output>1</output>';
 buffer += '<br>';
 */
 
-buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:200px;' > Remove Liquidity </div>";
+
+buffer += "<strong>Remove Liquidity</strong><br><br>";
+
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",25)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 25% </div>";
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",50)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 50% </div>";
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",75)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 75% </div>";
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",100)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 100% </div>";
+buffer += "<div style='clear:both'></div>";
 
 
 buffer += "<br>";
@@ -2409,14 +2416,28 @@ if (1)
 
 
 
-function removeliquidityaction( pair_id, token_contract1 )
+function removeliquidityaction( pair_id, token_contract1, percent )
 {
 // 
-// alert("Remove");
+// alfalf
+
 
 //tokenbalance_lp
 tokenbalance_lp = document.getElementById('tokenbalance_lp').innerHTML; 
+
+tmp_tokensym1 = getLastPart(tokenbalance_lp);
+tokenbalance_lp_tmp = extractNumbers(tokenbalance_lp);
+
+// alert("Remove tokenbalance_lp:" + tokenbalance_lp + " - " + percent + ' - ' + (100/percent) );
+ 
 console.log("tokenbalance_lp: " + tokenbalance_lp);
+
+tokenbalance_lp_tmp =  Math.floor(  tokenbalance_lp_tmp * (percent/100)  ); 
+
+
+tokenbalance_lp_tmp = tokenbalance_lp_tmp + " " +  tmp_tokensym1;
+
+// alert("Remove " + percent + ' -::: ' +  tokenbalance_lp + " (" +(percent/100)+ ") ["+tokenbalance_lp_tmp+"]");
 
 var theactions = [];
 
@@ -2441,7 +2462,8 @@ memo = "";
                  data: {
                        "from": global_account + "",
                        "to": "sovdex2trade",
-                       "quantity" : tokenbalance_lp,
+                   //    "quantity" : tokenbalance_lp,
+                       "quantity" : tokenbalance_lp_tmp,
                        "memo": memo
                        }
                  };
@@ -2465,7 +2487,7 @@ memo = "";
                                 permission: "active"
                                 }],
                  data: {
-                       "lptoken" : tokenbalance_lp,
+                       "lptoken" : tokenbalance_lp_tmp,
                        "user": global_account + ""
                        }
                  };
@@ -2494,6 +2516,16 @@ if (1)
 } // removeliquidityaction
 
 
+function extractNumbers(str) {
+    // Remove all non-numeric characters except dot (.)
+    const cleanedString = str.replace(/[^0-9.]/g, '');
+    
+    // Convert the cleaned string to a floating point number
+    const number = parseFloat(cleanedString);
+    
+    // Return the floating point number
+    return number;
+}
 
 
 var global_aprs = null;
