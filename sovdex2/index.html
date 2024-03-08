@@ -157,7 +157,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1e</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
  
 
 
@@ -943,7 +943,7 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 */
 
 
-buffer += "<div  onclick='manageliquidity()' style='float:right;margin-right:20px;text-decoration:underline;cursor:pointer;'>";
+buffer += "<div  onclick='manageliquidity(-1)' style='float:right;margin-right:20px;text-decoration:underline;cursor:pointer;'>";
 buffer += "Manage Liquidity";
 buffer += "</div>";
 
@@ -1025,23 +1025,7 @@ if (value.rows.length == 0) return;
 console.log( value );
 
 buffer = "";
-
-/*
-token_contract1	
-token2	
-token_contract2	
-lptoken	
-cw	
-fee_pool	
-admin_pool	
-fee	
-fee_share	
-price1	
-price2	
-kfactor	
-total_token1_vol	
-total_token2_vol	
-*/
+ 
 
 i = 0;
 
@@ -1061,23 +1045,9 @@ global_lptoken            = value.rows[i].lptoken;
 global_price1             = value.rows[i].price1;
 global_price2             = value.rows[i].price2;
 
-
-//alert( global_pair_id + ' ' + global_tokensym1 + ' ' + global_tokensym2);
-
+ 
 render_swap_area();
-
-
-/*
-var global_token1       = "";
-var global_token2       = "";
-var tokensym1           = "";
-var tokensym2           = "";
-var token_contract1     = "";
-var token_contract2     = "";
-*/
-
-// --- 
-
+ 
 
 } // callback_render_loadsinglepair
 
@@ -1556,8 +1526,7 @@ document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
 if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
-
-
+document.getElementById('pooldivs').innerHTML        = "";
  
 
 
@@ -1569,7 +1538,7 @@ function showpools()
 //alert("soon");
 
 buffer = "";
-// alfalf
+// 
 
 buffer += "<div style='margin-left:5%;text-align:left;'>";
  buffer += "<h3>Pools</h3>";
@@ -1683,6 +1652,11 @@ buffer += "</div>";
        buffer += "</div> " ;
    
    
+   
+   buffer += "<div  onclick='manageliquidityload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
+buffer += "Manage Liquidity";
+buffer += "</div>";
+
    
 /*
 
@@ -2121,11 +2095,65 @@ render_swap_area();
 
 
 
-function manageliquidity()
+ 
+
+
+function callback_render_manageliquidity( value )
+{
+
+if (value.rows.length == 0) return;   
+
+console.log( value );
+
+buffer = "";
+ 
+
+i = 0;
+
+
+
+global_pair_id            = value.rows[i].id;
+global_token1             = value.rows[i].token1;
+global_token2             = value.rows[i].token2;
+    
+global_tokensym1          = getLastPart(global_token1);
+global_tokensym2          = getLastPart(global_token2);
+    
+global_token_contract1    = value.rows[i].token_contract1;
+global_token_contract2    = value.rows[i].token_contract2;
+
+global_lptoken            = value.rows[i].lptoken;
+global_price1             = value.rows[i].price1;
+global_price2             = value.rows[i].price2;
+
+ 
+//render_swap_area();
+ // alfalf
+ 
+manageliquidity(-1);
+
+} // callback_render_manageliquidity
+
+
+
+ 
+function manageliquidityload( tokenid )
+{
+
+
+getdata(callback_render_manageliquidity, "sovdex2trade", "sovdex2trade", "relays", tokenid, "", "", 1 );
+
+
+//alert("Load " + manageliquidity);
+} // 
+
+
+// commendt: manageliquidity unused?
+function manageliquidity( manageliquidity )
 {
 //alert("Manage... soon");
 
-
+// ... manageliquidity
 
 get_token_balance1(global_token1, global_token_contract1);
 get_token_balance2(global_token2, global_token_contract2);
@@ -2202,6 +2230,13 @@ buffer += "LP-Balance: <span id='tokenbalance_lp' style=''>...</span><br>";
 buffer += "<br>";
 buffer += "<br>";
 
+
+/*
+buffer += '<input id="liquidrembar" type="range" min="100" max="100" step="25.0" value="50" oninput="this.nextElementSibling.value = this.value" style="width:90%">';
+buffer += ' <output>1</output>';
+buffer += '<br>';
+*/
+
 buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:200px;' > Remove Liquidity </div>";
 
 
@@ -2223,7 +2258,10 @@ document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
 if (document.getElementById('swapdiv')) document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
+document.getElementById('pooldivs').innerHTML        = "";
 
+
+ 
 
 
 // global_lptoken
