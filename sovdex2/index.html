@@ -1568,12 +1568,19 @@ function showpools()
 {
 //alert("soon");
 
-buffer = "soon...<br><br>";
+buffer = "";
 // alfalf
 
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+ buffer += "<h3>Pools</h3>";
+buffer += "</div>";
 
+  buffer += "<div  class='' style='float:left;width:350px;margin-top:10px;border:none;' alt='CLAIM' title='CLAIM' >" ;
+          buffer += "<span class='swapbutton' onclick='claimaction()'> CLAIM REWARDS</span>" ;
+          buffer += "</div> " ;
 
- 
+ buffer += "<br><br>";
+ buffer += "<br> ";
     
     size2 = global_aprs.rows.length;
     for (var i2=0; i2<size2; i2++)
@@ -1695,20 +1702,16 @@ buffer += "<span id='price2' style='font-size:12px;' > " +token_price2_view+"  "
 
    
    
-   
+   /*
        buffer += "<div  class='' style='float:right;width:100px;margin-top:10px;border:none;'>" ;
        buffer += "Relay ID: " + tmp_relay_id;
        buffer += "</div> " ;
-
-
-/*
-       if ( tokensym1 == "POW" || tokensym2 == "POW" )
-          {              
-          buffer += "<div  class='' style='float:right;width:50px;margin-top:10px;border:none;' alt='MINE' title='MINE' >" ;
-          buffer += "<span class='swapbutton' onclick='openmine("+pair_id+")'> &#9935; </span>" ;
-          buffer += "</div> " ;
-          }
 */
+
+            
+        
+        
+ 
 
 
 
@@ -1740,6 +1743,56 @@ if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').inne
 document.getElementById('pairdivs').innerHTML        = "";
 document.getElementById('pooldivs').innerHTML        = buffer;
 } // showpools()
+
+
+
+
+
+function claimaction()
+{
+// 
+//alert("test");
+
+
+
+var theactions = [];
+
+
+
+
+memo = "";
+
+
+ 
+ 
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'claimreward',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + ""        
+                       }
+                 };
+ 
+ 
+    theactions.push(action);
+    
+    
+    
+         
+    console.log(theactions);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+   
+} // claimaction()
+
 
 
 
