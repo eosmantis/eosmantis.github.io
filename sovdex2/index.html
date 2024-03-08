@@ -1585,7 +1585,7 @@ buffer += "</div>";
     size2 = global_aprs.rows.length;
     for (var i2=0; i2<size2; i2++)
         {
-        apr_string       = global_aprs.rows[0].apr_string;
+        apr_string       = global_aprs.rows[i2].apr_string;
         tmp_relay_id     = global_aprs.rows[i2].relay_id;
         tmp_equiv_tvl    = global_aprs.rows[i2].equiv_tvl;
         tmp_daily_reward = global_aprs.rows[i2].daily_reward;
@@ -1669,12 +1669,12 @@ buffer += "</div>";
        buffer += "<span style='font-size:12px'>"+tmp_token_contract2+"</span><br>" ;
        buffer += "</div> " ;
        
-       
+       /*
         buffer += "<div  class='' style='float:left;width:220px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
        buffer += "Depth...<br>";
        //buffer +=""+token1+  " /<br>"+token2+" " ;
        buffer += "</div> " ;
-
+*/
 
 
 
