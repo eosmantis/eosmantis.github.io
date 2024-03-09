@@ -107,6 +107,9 @@
 <div id='' onclick='createpair()' class='swapbutton' style='margin-left:5%;text-align:center;width:200px;float:left;margin-left:10px;'> Create Market </div>
 <div id='' onclick='showpools()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;float:left;margin-left:10px;'> Pools </div>
 
+<!--
+<div id='' onclick='showfarms()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;float:left;margin-left:10px;'> Farm </div>
+-->
 
 
 <div style='clear:both;'></div>
@@ -142,6 +145,8 @@
 
 <div id='pooldivs' style='text-align:center;'></div>
 
+<div id='rewarddiv' style='text-align:center;'></div>
+
 
 <br>
 <br>
@@ -157,7 +162,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1a</div>
  
 
 
@@ -799,6 +804,7 @@ document.getElementById('createmarketdiv').innerHTML = "";
 document.getElementById('minediv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML = buffer;
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
 document.getElementById('swapdiv').innerHTML = "";
                          
  
@@ -960,6 +966,7 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
 document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
@@ -1307,6 +1314,7 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
 document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML  = buffer;
 mininigdialog = 1;
@@ -1530,10 +1538,14 @@ mininigdialog = 0;
 if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
  
 
 
 }
+
+
+
 
 
 function showpools()
@@ -1656,8 +1668,13 @@ buffer += "</div>";
    
    
    
+   
    buffer += "<div  onclick='manageliquidityload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
 buffer += "Manage Liquidity";
+buffer += "</div>";
+
+      buffer += "<div  onclick='depositreward("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
+buffer += "Deposit Rewards<br><small style='font-size:10px;'>(Pool Manager)</small>";
 buffer += "</div>";
 
    
@@ -1719,10 +1736,15 @@ mininigdialog = 0;
 if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
 document.getElementById('pooldivs').innerHTML        = buffer;
+document.getElementById('rewarddiv').innerHTML       = "";
 } // showpools()
 
 
 
+function showfarms()
+{
+alert("soon");
+} // showfarms
 
 
 function claimaction()
@@ -2098,7 +2120,201 @@ render_swap_area();
 
 
 
+
+
+
+function dopositrewardaction( pairid )
+{
+
+
+
+tokenamount1           = document.getElementById('tokenamount1_reward').value; 
+tokenamount1_contract  = document.getElementById('tokenamount1_contract').value; 
+loading_ratio          = document.getElementById('loading_ratio').value; 
+
+
+fixed_load          = document.getElementById('fixed_load').checked; 
+//alert(fixed_load);
+
+ //exit(0);
+
+tmp_tokensym1          = getLastPart(tokenamount1);
+
  
+//tokenamount2 = document.getElementById('tokenamount2').value; 
+// tokenamount1_contract
+
+ 
+fixed1 = getprecision(tokenamount1);
+//fixed2 = getprecision(global_token2);
+ 
+//console.log(tokenamount1 + ' ' + fixed1 + ' ' + tokenamount2 + ' ' + fixed2 + " " );
+
+//tokenamount1 = Number(tokenamount1).toFixed(fixed1) + " " + tmp_tokensym1;   
+//tokenamount2 = Number(tokenamount2).toFixed(fixed2) + " " + global_tokensym2;   
+
+ 
+  
+var theactions = [];
+
+ 
+memo = "";
+
+
+
+
+    
+    
+   
+   
+    var action = {
+                 account: tokenamount1_contract,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenamount1,
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+    
+   
+
+   
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'openreward',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "contributor": global_account + "",                       
+                       "reward": tokenamount1,
+                       "reward_contract": tokenamount1_contract,                       
+                       "relay_id": pairid,
+                       
+                       "loading_ratio": loading_ratio + "",
+                       "fixed_load": fixed_load
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+  
+    
+        
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+   
+
+} // dopositrewardaction
+
+
+
+
+function depositreward( pairid ) 
+{
+//alert("Open reward! " + pairid);
+// alfalf
+
+
+buffer = "";
+ 
+ 
+
+
+
+
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+buffer += "<h3>Add Rewards (Experts/Pool Managers)</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+
+ 
+buffer += "Amount: (any Token is allowed, make sure to add correct precision!)<br>";
+buffer += "<input id='tokenamount1_reward' type='text' class='tokenamount'  onkeyup='' placeholder='42.0000 TOK' value=''> <br>";
+
+buffer += "<br>";
+buffer += "Token Contract:<br>";
+buffer += "<input id='tokenamount1_contract' type='text' class='tokenamount'  onkeyup='' placeholder='tokentoken11' value=''> <br>";
+
+
+buffer += "<br>";
+buffer += "Reward per Day: (100 = 1% per day)<br>";
+buffer += "<input id='loading_ratio' type='text' class='tokenamount'  onkeyup='' placeholder='' value='100'> <br>";
+
+
+buffer += "<br>";
+buffer += "Linear distribution<br>";
+buffer += "<input id='fixed_load' type='checkbox'  value='1' checked='checked' > <br>";
+
+
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+
+
+
+ 
+buffer += "<div id='' onclick='dopositrewardaction("+pairid+")' class='swapbutton' style='text-align:center;width:200px;' > Add Liquidity </div>";
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+/*
+then openreward
+     fixed load = true => linear
+     loading_ratio = 100 = 1% per day
+*/
+
+ buffer += "<br>";
+
+buffer += "</div>";
+buffer += "</div>";
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+
+document.getElementById('liquiditydiv').innerHTML    = "";
+document.getElementById('createmarketdiv').innerHTML = "";
+document.getElementById('minediv').innerHTML         = "";
+mininigdialog = 0;
+if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
+document.getElementById('pairdivs').innerHTML        = "";
+document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = buffer;
+
+} // depositreward
 
 
 function callback_render_manageliquidity( value )
@@ -2269,7 +2485,7 @@ mininigdialog = 0;
 if (document.getElementById('swapdiv')) document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
 document.getElementById('pooldivs').innerHTML        = "";
-
+document.getElementById('rewarddiv').innerHTML       = "";
 
  
 
@@ -2418,8 +2634,6 @@ if (1)
 
 function removeliquidityaction( pair_id, token_contract1, percent )
 {
-// 
-// alfalf
 
 
 //tokenbalance_lp
