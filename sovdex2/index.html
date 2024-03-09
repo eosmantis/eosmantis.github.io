@@ -162,7 +162,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1a</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1b</div>
  
 
 
@@ -1562,6 +1562,17 @@ buffer += "</div>";
   buffer += "<div  class='' style='float:left;margin-left:5%; ;margin-top:10px;border:none;' alt='CLAIM' title='CLAIM' >" ;
           buffer += "<span class='swapbutton' onclick='claimaction()'> CLAIM REWARDS </span>" ;
           buffer += "</div> " ;
+          
+
+   
+ 
+        
+ buffer += "<div id='rewardinfo' style='text-align:left;margin-left:5%;'> " ;
+ buffer += "" ;          
+ buffer += "</div> " ; // rewardinfo          
+
+
+
 
  buffer += "<br><br>";
  buffer += "<br> ";
@@ -1737,7 +1748,65 @@ if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').inne
 document.getElementById('pairdivs').innerHTML        = "";
 document.getElementById('pooldivs').innerHTML        = buffer;
 document.getElementById('rewarddiv').innerHTML       = "";
+
+
+
+load_reward_info();
 } // showpools()
+
+
+
+
+
+
+function callback_render_rewardinfo( value )
+{
+  
+console.log(value);
+  
+if (value.rows.length == 0) return;   
+
+
+buffer = "<div style='clear:both'></div><br>";
+ 
+
+
+size = value.rows.length;
+
+/*
+id
+: 
+0
+token_contract
+: 
+"eosio.token"
+value
+: 
+"1.3516 EOS"
+*/
+for (var i=0; i<size; i++)
+    {
+    token_contract            = value.rows[i].token_contract
+    the_value                 = value.rows[i].value
+    buffer +=  the_value + " ("+token_contract+") <br>";
+    } // for i...
+
+//global_pair_id            = value.rows[i].id;
+
+ 
+document.getElementById('rewardinfo').innerHTML       = buffer;
+} // callback_render_rewardinfo
+
+function load_reward_info()
+{
+// alfalf
+
+ global_account2 = global_account;
+  
+getdata(callback_render_rewardinfo, "sovdex2trade", global_account2, "claimrewards", "", "", "", 4000 );
+
+
+} // load_reward_info
 
 
 
@@ -2234,7 +2303,7 @@ if (1)
 function depositreward( pairid ) 
 {
 //alert("Open reward! " + pairid);
-// alfalf
+
 
 
 buffer = "";
