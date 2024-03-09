@@ -889,10 +889,16 @@ buffer += "<br>";
 
  
 buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
-buffer += "Received:<br>";
+buffer += "Received: (slippage and fees are NOT taken into account here, real payout will be lower!)<br>";
 buffer += global_tokensym2+"<br>";
 buffer += global_token_contract2+"<br>";
 buffer += "<input id='tokenamount2' type='text'  class='tokenamount'   onkeyup='action_keyup_tokenamount2(event)'  placeholder='Please enter amount' value='' > <br>";
+
+//buffer += "<hr>";
+buffer += "<input id='debug3' type='text'  class='tokenamount'   style='visibility:hidden;width:100%;height:1px;font-size:12px;'  value='' >";
+//buffer += "<hr>";
+
+buffer += "<br>";
 
 buffer += "<br>";
 
@@ -928,7 +934,7 @@ buffer += "<br>";
 
  
 buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
-buffer += "Received:<br>";
+buffer += "Received: (slippage and fees are NOT taken into account here, real payout will be lower!)<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
 buffer += "<input id='tokenamount1' type='text' class='tokenamount'   onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value='' > <br>";
@@ -1002,6 +1008,9 @@ console.log("xxxxxx");
 value = Number(valueoutput).toFixed(fixed2) + " " ;
 
 document.getElementById('tokenamount2').value  = value;
+
+
+calc_slippage1();
 } // action_keyup_tokenamount1
 
 
@@ -1022,9 +1031,48 @@ console.log("xxxxxx");
 value = Number(valueoutput).toFixed(fixed1) + " " ;
 
 document.getElementById('tokenamount1').value  = value;
+
+calc_slippage2();
 } // action_keyup_tokenamount2
 
 
+
+function calc_slippage1()
+{
+// alfalf
+/*
+EOS - SVX
+*/
+
+/*
+// Perform swap calculation based on whether swapasset is token1 or token2
+if (is_token1) {
+	X input = swapasset. amount / precision_f1;
+	output = -Y * (pow( (1 - (X_input / (X + X_input))) , (cw / 100.0)) - 1) ;
+	result = asset (static_cast<int64_t> (output * precision_f2), relay. token2.symbol);
+	}
+else {
+	Y_input = swapasset.amount / precision_f2;
+	output = -X * (pow((1 - (Y_input / (Y + Y_input))), (1 / (cw / 100.0))) - 1) ;
+	result = asset (static_cast<int64_t> (output * precision_f1), relay. token1. symbol);
+	}
+
+ total_token2_vol    total_token1_vol
+ connectorbal=PBTC, outstandingbal EOS
+ 
+*/
+
+valueinput = document.getElementById('tokenamount1').value;
+value = valueinput * 2;
+cw = 'x';
+document.getElementById('debug3').value  = value + " - " + global_cw + " global_total_token1_vol:" + global_total_token1_vol + " global_total_token2_vol:" + global_total_token2_vol;
+} // calc_slippage1()
+
+
+function calc_slippage2()
+{
+console.log("slippage2");
+}
 
 
 function callback_render_loadsinglepair( value )
@@ -1042,6 +1090,9 @@ i = 0;
 
 
 global_pair_id            = value.rows[i].id;
+global_cw                 = value.rows[i].cw;
+global_total_token1_vol   = value.rows[i].total_token1_vol;
+global_total_token2_vol   = value.rows[i].total_token2_vol;
 global_token1             = value.rows[i].token1;
 global_token2             = value.rows[i].token2;
     
@@ -1054,6 +1105,11 @@ global_token_contract2    = value.rows[i].token_contract2;
 global_lptoken            = value.rows[i].lptoken;
 global_price1             = value.rows[i].price1;
 global_price2             = value.rows[i].price2;
+
+
+ 
+global_total_token1_vol = extractNumbers(global_total_token1_vol);
+global_total_token2_vol = extractNumbers(global_total_token2_vol);
 
  
 render_swap_area();
@@ -1799,7 +1855,7 @@ document.getElementById('rewardinfo').innerHTML       = buffer;
 
 function load_reward_info()
 {
-// alfalf
+
 
  global_account2 = global_account;
   
