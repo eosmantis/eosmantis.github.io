@@ -946,6 +946,9 @@ buffer += "<input id='tokenamount1' type='text' class='tokenamount'   onkeyup='a
 
 buffer += "<br>";
 
+// buffer += "<hr>";
+buffer += "<input id='debug4' type='text'  class='tokenamount'   style='visibility:hidden;width:100%;height:;font-size:12px;'  value='' >";
+ //buffer += "<hr>";
 
 
 buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP </div>";
@@ -961,7 +964,7 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 
 
 buffer += "<div  onclick='manageliquidity(-1)'  class='swapbutton'  style='float:right;margin-right:20px;margin-bottom:10px;text-decoration:none;text-align:center;cursor:pointer;'>";
-buffer += "Manage Liquidity";
+buffer += "Deposit/Withdraw";
 buffer += "</div>";
 buffer += "<br>";
 
@@ -1045,39 +1048,8 @@ calc_slippage2();
 
 function calc_slippage1()
 {
-// alfalf
-/*
-EOS - SVX
-*/
+ 
 
-/*
-// Perform swap calculation based on whether swapasset is token1 or token2
-if (is_token1) {
-	X_input = swapasset. amount / precision_f1;
-	output = -Y * (pow( (1 - (X_input / (X + X_input))) , (cw / 100.0)) - 1) ;
-	
-	pbtcTransferAmount = 
-	output(Auszahlung) = -Y(buypowpbtcBancor) * (pow( (1 - (X_input[pbtcTransferAmount] / (X[eospbtcBalance] + X_input[pbtcTransferAmount]))) , (cw / 100.0)) - 1) ;
-	
-	result = asset (static_cast<int64_t> (output * precision_f2), relay. token2.symbol);
-	}
-else {
-	Y_input = swapasset.amount / precision_f2;
-	output = -X * (pow((1 - (Y_input / (Y + Y_input))), (1 / (cw / 100.0))) - 1) ;
-	result = asset (static_cast<int64_t> (output * precision_f1), relay. token1. symbol);
-	}
-
- total_token2_vol    total_token1_vol
- connectorbal=PBTC, outstandingbal EOS
- 
- ---
- Token1 should be X  (EOS)
- token2 is Y ( SVX)
- x_input = 1 EOS (the token to swap)
- 
- 
- Svx output  = -current svx pool*(1-(eosinput/(eos pool +eos input))^cw  -1)
-*/
 
 global_token1_val = new Decimal(extractNumbers(global_token1) ); // EOS
 global_token2_val = new Decimal(extractNumbers(global_token2) ); // SVX
@@ -1086,29 +1058,7 @@ fixed1 = getprecision(global_token1);
 fixed2 = getprecision(global_token2);
 
 valueinput = new Decimal( document.getElementById('tokenamount1').value ); // EOS
-//value = valueinput * 2;
-//cw = 'x';
 
-// output = -Y * (pow( (1 - (X_input / (X + X_input))) , (cw / 100.0)) - 1) ;
-//output = valueinput * ( Math.pow(  (1- (1) )  ,  ((global_cw/ 100.0)-1)  ) );
-
-//output = (-global_token2_val) * (      Math.pow(  (1- (valueinput / (global_token1_val+valueinput)        ) )  ,  ((global_cw/ 100.0)-1)        )    ) ;
-
-/*
-
-buySVXAmountNoFee = (token2.times(
-                Decimal.pow(
-                  new Decimal(1).minus(
-                    eosAmount.div(token1.plus(eosAmount))
-                  ),
-                  cw.div(100)
-                ).minus(1)
-              ).neg());
-*/
-
-//output = (-global_token2_val) * (      Math.pow(  (1- (valueinput / (global_token1_val+valueinput)        ) )  ,  ((global_cw/ 100.0)-1)        )    ) ;
-
-//output = new Decimal(42.1);
 output = (global_token2_val.times(
                 Decimal.pow(
                   new Decimal(1).minus(
@@ -1126,7 +1076,6 @@ document.getElementById('debug3').value  = output + " ";
 
   
 // Slippage calculation 
-//var pricewithoutslippage = new Decimal( document.getElementById('tokenamount2').value ); 
 pricewithoutslippage = document.getElementById('tokenamount2').value * 1;
 slippage1 = new Decimal(100).minus(
                   new Decimal(100).mul( 
@@ -1143,11 +1092,79 @@ document.getElementById('tokenamount2').value  = output + " ";
  
 } // calc_slippage1()
 
-
+/*
+debug4
+alf
+*/
 function calc_slippage2()
 {
-console.log("slippage2");
-}
+//console.log("slippage2");
+
+// alfalf
+
+
+
+global_token1_val = new Decimal(extractNumbers(global_token1) ); // EOS
+global_token2_val = new Decimal(extractNumbers(global_token2) ); // SVX
+
+fixed1 = getprecision(global_token1);
+fixed2 = getprecision(global_token2);
+
+//valueinput = new Decimal( document.getElementById('tokenamount1').value ); // EOS
+valueinput = new Decimal( document.getElementById('tokenamount2').value ); // SVX
+
+/*
+svxForEOSNoFee = (token1.times(
+        Decimal.pow(
+          new Decimal(1).minus(
+            svxAmount.div(token2.plus(svxAmount))
+          ),
+          Decimal.div(1, cw.div(100))
+        ).minus(1)
+      ).neg());
+*/
+
+/*
+output = (global_token2_val.times(
+                Decimal.pow(
+                  new Decimal(1).minus(
+                    valueinput.div(global_token1_val.plus(valueinput))
+                  ),
+                  global_cw.div(100)
+                ).minus(1)
+              ).neg());
+
+output = output.toFixed(fixed2);
+
+document.getElementById('debug4').value  = output + " ";
+
+
+*/
+output = 42;
+document.getElementById('debug4').value  = output + " ";
+
+
+/* 
+
+
+  
+// Slippage calculation 
+pricewithoutslippage = document.getElementById('tokenamount2').value * 1;
+slippage1 = new Decimal(100).minus(
+                  new Decimal(100).mul( 
+                                      new Decimal( output ).div( pricewithoutslippage )
+                                      )
+                                );
+slippage1 = slippage1.toFixed(2);
+
+document.getElementById('slippage1').innerHTML  = "Slippage " + slippage1 + "%";
+ 
+ 
+// Update real output / tokenamount2
+document.getElementById('tokenamount2').value  = output + " ";
+ */
+  
+} // calc_slippage2
 
 
 function callback_render_loadsinglepair( value )
@@ -1812,11 +1829,11 @@ buffer += "</div>";
    
    
    buffer += "<div  onclick='manageliquidityload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
-buffer += "Manage Liquidity";
+buffer += "Deposit/Withdraw";
 buffer += "</div>";
 
       buffer += "<div  onclick='depositreward("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
-buffer += "Deposit Rewards<br><small style='font-size:10px;'>(Pool Manager)</small>";
+buffer += "Create Rewards<br><small style='font-size:10px;'>(Pool Manager)</small>";
 buffer += "</div>";
 
    
@@ -2600,7 +2617,7 @@ buffer += "Total LP-Token balance: "+global_lptoken+"<br>";
 
 
 
-buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+//buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
 buffer += "Token1:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
@@ -2616,7 +2633,7 @@ buffer += "<br>";
 buffer += "<br>";
 
  
-buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
+//buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
 buffer += "Token2:<br>";
 buffer += global_tokensym2+"<br>";
 buffer += global_token_contract2+"<br>";
