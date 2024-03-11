@@ -164,7 +164,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1b</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1c</div>
  
 
 
@@ -874,7 +874,7 @@ if (swapdirection == 1)
 
 
  
-buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
 buffer += "Payment:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
@@ -890,7 +890,7 @@ buffer += "<div id='swaparrow' class='swaparrow' onclick='switchswapdir()'>&#859
 buffer += "<br>";
 
  
-buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
+buffer += "<div id='tokenbalance2' style='float:right;'>Balance: ...</div><br>";
 //buffer += "Received: (slippage and fees are NOT taken into account here, real payout will be lower!)<br>";
 buffer += "Received: (without fees)<br>";
 buffer += global_tokensym2+"<br>";
@@ -901,7 +901,7 @@ buffer += "<input id='tokenamount2' type='text'  class='tokenamount'   onkeyup='
 
 // buffer += "<hr>";
 buffer += "<input id='debug3' type='text'  class='tokenamount'   style='visibility:hidden;width:100%;height:;font-size:12px;'  value='' >";
- //buffer += "<hr>";
+// buffer += "<hr>";
 
 buffer += "<br>";
 
@@ -939,16 +939,17 @@ buffer += "<br>";
 
  
 buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
-buffer += "Received: (slippage and fees are NOT taken into account here, real payout will be lower!)<br>";
+buffer += "Received: (without fees)<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
 buffer += "<input id='tokenamount1' type='text' class='tokenamount'   onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value='' > <br>";
+ buffer += "<span id='slippage2'></span>";
 
 buffer += "<br>";
 
 // buffer += "<hr>";
 buffer += "<input id='debug4' type='text'  class='tokenamount'   style='visibility:hidden;width:100%;height:;font-size:12px;'  value='' >";
- //buffer += "<hr>";
+// buffer += "<hr>";
 
 
 buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP </div>";
@@ -956,12 +957,7 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 
 } // if (swapdirection == 1)
 
-
-/*
-
-
-*/
-
+ 
 
 buffer += "<div  onclick='manageliquidity(-1)'  class='swapbutton'  style='float:right;margin-right:20px;margin-bottom:10px;text-decoration:none;text-align:center;cursor:pointer;'>";
 buffer += "Deposit/Withdraw";
@@ -1124,11 +1120,11 @@ svxForEOSNoFee = (token1.times(
       ).neg());
 */
 
-/*
-output = (global_token2_val.times(
+
+output = (global_token1_val.times(
                 Decimal.pow(
                   new Decimal(1).minus(
-                    valueinput.div(global_token1_val.plus(valueinput))
+                    valueinput.div(global_token2_val.plus(valueinput))
                   ),
                   global_cw.div(100)
                 ).minus(1)
@@ -1136,20 +1132,19 @@ output = (global_token2_val.times(
 
 output = output.toFixed(fixed2);
 
+
+
+
+//output = 42;
 document.getElementById('debug4').value  = output + " ";
 
 
-*/
-output = 42;
-document.getElementById('debug4').value  = output + " ";
-
-
-/* 
+ 
 
 
   
 // Slippage calculation 
-pricewithoutslippage = document.getElementById('tokenamount2').value * 1;
+pricewithoutslippage = document.getElementById('tokenamount1').value * 1;
 slippage1 = new Decimal(100).minus(
                   new Decimal(100).mul( 
                                       new Decimal( output ).div( pricewithoutslippage )
@@ -1157,12 +1152,12 @@ slippage1 = new Decimal(100).minus(
                                 );
 slippage1 = slippage1.toFixed(2);
 
-document.getElementById('slippage1').innerHTML  = "Slippage " + slippage1 + "%";
+document.getElementById('slippage2').innerHTML  = "Slippage " + slippage1 + "%";
  
  
 // Update real output / tokenamount2
-document.getElementById('tokenamount2').value  = output + " ";
- */
+document.getElementById('tokenamount1').value  = output + " ";
+ 
   
 } // calc_slippage2
 
