@@ -24,6 +24,8 @@
               
  <!-- END WALLET-INCLUDE-->
 
+    <!-- Decimal -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.3.1/decimal.min.js"></script>
 
 
 </head>
@@ -107,6 +109,9 @@
 <div id='' onclick='createpair()' class='swapbutton' style='margin-left:5%;text-align:center;width:200px;float:left;margin-left:10px;'> Create Market </div>
 <div id='' onclick='showpools()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;float:left;margin-left:10px;'> Pools </div>
 
+<!--
+<div id='' onclick='showfarms()' class='swapbutton' style='margin-left:5%;text-align:center;width:100px;float:left;margin-left:10px;'> Farm </div>
+-->
 
 
 <div style='clear:both;'></div>
@@ -142,6 +147,10 @@
 
 <div id='pooldivs' style='text-align:center;'></div>
 
+<div id='rewarddiv' style='text-align:center;'></div>
+
+<div id='votediv' style='text-align:center;'></div>
+
 
 <br>
 <br>
@@ -157,7 +166,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1e</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
  
 
 
@@ -220,6 +229,35 @@ get_token_balance_lp(lptoken, "sovdex2trade");
  
 alert(message);
 }
+
+
+function func_success_vote( message )
+{
+/*
+get_token_balance1(global_token1, global_token_contract1);
+get_token_balance2(global_token2, global_token_contract2);
+get_token_balance_lp(lptoken, "sovdex2trade");
+ */
+//alert('vote global_pair_id:'+global_pair_id);
+alert(message);
+
+initvoteload(global_pair_id);
+}
+
+
+function func_success_unvote( message )
+{
+/*
+get_token_balance1(global_token1, global_token_contract1);
+get_token_balance2(global_token2, global_token_contract2);
+get_token_balance_lp(lptoken, "sovdex2trade");
+ */
+//alert('vote global_pair_id:'+global_pair_id);
+alert(message);
+
+initunvoteload(global_pair_id);
+}
+
 
 function func_error( message )
 {
@@ -799,7 +837,10 @@ document.getElementById('createmarketdiv').innerHTML = "";
 document.getElementById('minediv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML = buffer;
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
 document.getElementById('swapdiv').innerHTML = "";
+document.getElementById('votediv').innerHTML = "";
+
                          
  
 
@@ -866,7 +907,7 @@ if (swapdirection == 1)
 
 
  
-buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
 buffer += "Payment:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
@@ -882,11 +923,20 @@ buffer += "<div id='swaparrow' class='swaparrow' onclick='switchswapdir()'>&#859
 buffer += "<br>";
 
  
-buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
-buffer += "Received:<br>";
+buffer += "<div id='tokenbalance2' style='float:right;'>Balance: ...</div><br>";
+//buffer += "Received: (slippage and fees are NOT taken into account here, real payout will be lower!)<br>";
+buffer += "Received: (without fees)<br>";
 buffer += global_tokensym2+"<br>";
 buffer += global_token_contract2+"<br>";
 buffer += "<input id='tokenamount2' type='text'  class='tokenamount'   onkeyup='action_keyup_tokenamount2(event)'  placeholder='Please enter amount' value='' > <br>";
+ buffer += "<span id='slippage1'></span>";
+
+
+// buffer += "<hr>";
+buffer += "<input id='debug3' type='text'  class='tokenamount'   style='visibility:hidden;width:100%;height:;font-size:12px;'  value='' >";
+// buffer += "<hr>";
+
+buffer += "<br>";
 
 buffer += "<br>";
 
@@ -922,13 +972,17 @@ buffer += "<br>";
 
  
 buffer += "<div id='tokenbalance1' style='float:right;'>Balance: ...</div><br>";
-buffer += "Received:<br>";
+buffer += "Received: (without fees)<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
 buffer += "<input id='tokenamount1' type='text' class='tokenamount'   onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter amount' value='' > <br>";
+ buffer += "<span id='slippage2'></span>";
 
 buffer += "<br>";
 
+// buffer += "<hr>";
+buffer += "<input id='debug4' type='text'  class='tokenamount'   style='visibility:hidden;width:100%;height:;font-size:12px;'  value='' >";
+// buffer += "<hr>";
 
 
 buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:100px;' > SWAP </div>";
@@ -936,16 +990,14 @@ buffer += "<div id='swapaction' onclick='swapaction("+global_pair_id+",\""+token
 
 } // if (swapdirection == 1)
 
+ 
 
-/*
-
-
-*/
-
-
-buffer += "<div  onclick='manageliquidity()' style='float:right;margin-right:20px;text-decoration:underline;cursor:pointer;'>";
-buffer += "Manage Liquidity";
+buffer += "<div  onclick='manageliquidity(-1)'  class='swapbutton'  style='float:right;margin-right:20px;margin-bottom:10px;text-decoration:none;text-align:center;cursor:pointer;'>";
+buffer += "Deposit/Withdraw";
 buffer += "</div>";
+buffer += "<br>";
+
+
 
 buffer += "</div>";
 buffer += "<br>";
@@ -957,6 +1009,8 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('votediv').innerHTML = "";
 document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
@@ -992,6 +1046,9 @@ console.log("xxxxxx");
 value = Number(valueoutput).toFixed(fixed2) + " " ;
 
 document.getElementById('tokenamount2').value  = value;
+
+
+calc_slippage1();
 } // action_keyup_tokenamount1
 
 
@@ -1011,10 +1068,132 @@ console.log("xxxxxx");
 //value = Number(valueoutput).toFixed(4) + " " + global_tokensym1;
 value = Number(valueoutput).toFixed(fixed1) + " " ;
 
+
 document.getElementById('tokenamount1').value  = value;
+
+calc_slippage2();
 } // action_keyup_tokenamount2
 
 
+
+function calc_slippage1()
+{
+ 
+
+
+global_token1_val = new Decimal(extractNumbers(global_token1) ); // EOS
+global_token2_val = new Decimal(extractNumbers(global_token2) ); // SVX
+
+fixed1 = getprecision(global_token1);
+fixed2 = getprecision(global_token2);
+
+valueinput = new Decimal( document.getElementById('tokenamount1').value ); // EOS
+
+output = (global_token2_val.times(
+                Decimal.pow(
+                  new Decimal(1).minus(
+                    valueinput.div(global_token1_val.plus(valueinput))
+                  ),
+                  global_cw.div(100)
+                ).minus(1)
+              ).neg());
+
+output = output.toFixed(fixed2);
+
+document.getElementById('debug3').value  = output + " ";
+ 
+
+
+  
+// Slippage calculation 
+pricewithoutslippage = document.getElementById('tokenamount2').value * 1;
+slippage1 = new Decimal(100).minus(
+                  new Decimal(100).mul( 
+                                      new Decimal( output ).div( pricewithoutslippage )
+                                      )
+                                );
+slippage1 = slippage1.toFixed(2);
+
+document.getElementById('slippage1').innerHTML  = "Slippage " + slippage1 + "%";
+ 
+ 
+// Update real output / tokenamount2
+document.getElementById('tokenamount2').value  = output + " ";
+ 
+} // calc_slippage1()
+
+/*
+debug4
+
+*/
+function calc_slippage2()
+{
+//console.log("slippage2");
+
+
+
+
+
+global_token1_val = new Decimal(extractNumbers(global_token1) ); // EOS
+global_token2_val = new Decimal(extractNumbers(global_token2) ); // SVX
+
+fixed1 = getprecision(global_token1);
+fixed2 = getprecision(global_token2);
+
+//valueinput = new Decimal( document.getElementById('tokenamount1').value ); // EOS
+valueinput = new Decimal( document.getElementById('tokenamount2').value ); // SVX
+
+/*
+svxForEOSNoFee = (token1.times(
+        Decimal.pow(
+          new Decimal(1).minus(
+            svxAmount.div(token2.plus(svxAmount))
+          ),
+          Decimal.div(1, cw.div(100))
+        ).minus(1)
+      ).neg());
+*/
+
+
+output = (global_token1_val.times(
+                Decimal.pow(
+                  new Decimal(1).minus(
+                    valueinput.div(global_token2_val.plus(valueinput))
+                  ),
+                  global_cw.div(100)
+                ).minus(1)
+              ).neg());
+
+output = output.toFixed(fixed2);
+
+
+
+
+//output = 42;
+document.getElementById('debug4').value  = output + " ";
+
+
+ 
+
+
+  
+// Slippage calculation 
+pricewithoutslippage = document.getElementById('tokenamount1').value * 1;
+slippage1 = new Decimal(100).minus(
+                  new Decimal(100).mul( 
+                                      new Decimal( output ).div( pricewithoutslippage )
+                                      )
+                                );
+slippage1 = slippage1.toFixed(2);
+
+document.getElementById('slippage2').innerHTML  = "Slippage " + slippage1 + "%";
+ 
+ 
+// Update real output / tokenamount2
+document.getElementById('tokenamount1').value  = output + " ";
+ 
+  
+} // calc_slippage2
 
 
 function callback_render_loadsinglepair( value )
@@ -1025,29 +1204,16 @@ if (value.rows.length == 0) return;
 console.log( value );
 
 buffer = "";
-
-/*
-token_contract1	
-token2	
-token_contract2	
-lptoken	
-cw	
-fee_pool	
-admin_pool	
-fee	
-fee_share	
-price1	
-price2	
-kfactor	
-total_token1_vol	
-total_token2_vol	
-*/
+ 
 
 i = 0;
 
 
 
 global_pair_id            = value.rows[i].id;
+global_cw                 = new Decimal( value.rows[i].cw );
+global_total_token1_vol   = value.rows[i].total_token1_vol;
+global_total_token2_vol   = value.rows[i].total_token2_vol;
 global_token1             = value.rows[i].token1;
 global_token2             = value.rows[i].token2;
     
@@ -1062,22 +1228,13 @@ global_price1             = value.rows[i].price1;
 global_price2             = value.rows[i].price2;
 
 
-//alert( global_pair_id + ' ' + global_tokensym1 + ' ' + global_tokensym2);
+ 
+global_total_token1_vol = extractNumbers(global_total_token1_vol);
+global_total_token2_vol = extractNumbers(global_total_token2_vol);
 
+ 
 render_swap_area();
-
-
-/*
-var global_token1       = "";
-var global_token2       = "";
-var tokensym1           = "";
-var tokensym2           = "";
-var token_contract1     = "";
-var token_contract2     = "";
-*/
-
-// --- 
-
+ 
 
 } // callback_render_loadsinglepair
 
@@ -1334,6 +1491,8 @@ buffer += "</div>";
 document.getElementById('liquiditydiv').innerHTML    = "";
 document.getElementById('pairdivs').innerHTML = "";
 document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('votediv').innerHTML = "";
 document.getElementById('createmarketdiv').innerHTML = "";   
 document.getElementById('minediv').innerHTML  = buffer;
 mininigdialog = 1;
@@ -1556,12 +1715,16 @@ document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
 if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
-
-
+document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('votediv').innerHTML = "";
  
 
 
 }
+
+
+
 
 
 function showpools()
@@ -1569,7 +1732,7 @@ function showpools()
 //alert("soon");
 
 buffer = "";
-// alfalf
+// 
 
 buffer += "<div style='margin-left:5%;text-align:left;'>";
  buffer += "<h3>Pools</h3>";
@@ -1578,6 +1741,17 @@ buffer += "</div>";
   buffer += "<div  class='' style='float:left;margin-left:5%; ;margin-top:10px;border:none;' alt='CLAIM' title='CLAIM' >" ;
           buffer += "<span class='swapbutton' onclick='claimaction()'> CLAIM REWARDS </span>" ;
           buffer += "</div> " ;
+          
+
+   
+ 
+        
+ buffer += "<div id='rewardinfo' style='text-align:left;margin-left:5%;'> " ;
+ buffer += "" ;          
+ buffer += "</div> " ; // rewardinfo          
+
+
+
 
  buffer += "<br><br>";
  buffer += "<br> ";
@@ -1669,12 +1843,12 @@ buffer += "</div>";
        buffer += "<span style='font-size:12px'>"+tmp_token_contract2+"</span><br>" ;
        buffer += "</div> " ;
        
-       
+       /*
         buffer += "<div  class='' style='float:left;width:220px;margin-left:30px;font-size:12px;text-align:left;;border:none;'>" ;
        buffer += "Depth...<br>";
        //buffer +=""+token1+  " /<br>"+token2+" " ;
        buffer += "</div> " ;
-
+*/
 
 
 
@@ -1683,6 +1857,24 @@ buffer += "</div>";
        buffer += "</div> " ;
    
    
+   
+   
+   buffer += "<div  onclick='manageliquidityload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
+buffer += "Deposit/Withdraw";
+buffer += "</div>";
+
+      buffer += "<div  onclick='depositreward("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
+buffer += "Create Rewards<br><small style='font-size:10px;'>(Pool Manager)</small>";
+buffer += "</div>";
+
+// alfalf
+      buffer += "<div  onclick='initunvoteload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
+buffer += "Unvote<br><small style='font-size:10px;'> </small>";
+buffer += "</div>";
+      buffer += "<div  onclick='initvoteload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
+buffer += "Vote<br><small style='font-size:10px;'> </small>";
+buffer += "</div>";
+
    
 /*
 
@@ -1742,10 +1934,74 @@ mininigdialog = 0;
 if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
 document.getElementById('pairdivs').innerHTML        = "";
 document.getElementById('pooldivs').innerHTML        = buffer;
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('votediv').innerHTML = "";
+
+
+
+load_reward_info();
 } // showpools()
 
 
 
+
+
+
+function callback_render_rewardinfo( value )
+{
+  
+console.log(value);
+  
+if (value.rows.length == 0) return;   
+
+
+buffer = "<div style='clear:both'></div><br>";
+ 
+
+
+size = value.rows.length;
+
+/*
+id
+: 
+0
+token_contract
+: 
+"eosio.token"
+value
+: 
+"1.3516 EOS"
+*/
+for (var i=0; i<size; i++)
+    {
+    token_contract            = value.rows[i].token_contract
+    the_value                 = value.rows[i].value
+    buffer +=  the_value + " ("+token_contract+") <br>";
+    } // for i...
+
+//global_pair_id            = value.rows[i].id;
+
+ 
+document.getElementById('rewardinfo').innerHTML       = buffer;
+} // callback_render_rewardinfo
+
+function load_reward_info()
+{
+
+
+ global_account2 = global_account;
+  
+getdata(callback_render_rewardinfo, "sovdex2trade", global_account2, "claimrewards", "", "", "", 4000 );
+
+
+} // load_reward_info
+
+
+
+function showfarms()
+{
+alert("soon");
+} // showfarms
 
 
 function claimaction()
@@ -1973,7 +2229,7 @@ memo = "";
     
     
     
-    
+    memo = "";
     
 
    
@@ -1992,7 +2248,8 @@ memo = "";
                        "intermediate": false,
                        "expected": tokenamount2,
 //                       "tolerance": 5000 
-                       "tolerance": -1 
+                       "tolerance": -1,
+                       "memo": memo 
                        }
                  };
 
@@ -2053,7 +2310,7 @@ memo = "";
     
     
     
-    
+    memo = "xyz";
 
    
     var action = {
@@ -2071,7 +2328,8 @@ memo = "";
                        "intermediate": false,
                        "expected": tokenamount1,
 //                       "tolerance": 5000 
-                       "tolerance": -1 
+                       "tolerance": -1,
+                       "memo": memo 
                        }
                  };
 
@@ -2121,11 +2379,260 @@ render_swap_area();
 
 
 
-function manageliquidity()
+
+
+
+function dopositrewardaction( pairid )
+{
+
+
+
+tokenamount1           = document.getElementById('tokenamount1_reward').value; 
+tokenamount1_contract  = document.getElementById('tokenamount1_contract').value; 
+loading_ratio          = document.getElementById('loading_ratio').value; 
+
+
+fixed_load          = document.getElementById('fixed_load').checked; 
+//alert(fixed_load);
+
+ //exit(0);
+
+tmp_tokensym1          = getLastPart(tokenamount1);
+
+ 
+//tokenamount2 = document.getElementById('tokenamount2').value; 
+// tokenamount1_contract
+
+ 
+fixed1 = getprecision(tokenamount1);
+//fixed2 = getprecision(global_token2);
+ 
+//console.log(tokenamount1 + ' ' + fixed1 + ' ' + tokenamount2 + ' ' + fixed2 + " " );
+
+//tokenamount1 = Number(tokenamount1).toFixed(fixed1) + " " + tmp_tokensym1;   
+//tokenamount2 = Number(tokenamount2).toFixed(fixed2) + " " + global_tokensym2;   
+
+ 
+  
+var theactions = [];
+
+ 
+memo = "";
+
+
+
+
+    
+    
+   
+   
+    var action = {
+                 account: tokenamount1_contract,
+                 name: 'transfer',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "from": global_account + "",
+                       "to": "sovdex2trade",
+                       "quantity" : tokenamount1,
+                       "memo": memo
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+    
+    
+   
+
+   
+    var action = {
+                 account: "sovdex2trade",
+                 name: 'openreward',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "contributor": global_account + "",                       
+                       "reward": tokenamount1,
+                       "reward_contract": tokenamount1_contract,                       
+                       "relay_id": pairid,
+                       
+                       "loading_ratio": loading_ratio + "",
+                       "fixed_load": fixed_load
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+  
+    
+        
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+ 
+if (1)
+   {
+   transact( func_success, func_error, theactions );
+   }    
+   
+
+} // dopositrewardaction
+
+
+
+
+function depositreward( pairid ) 
+{
+//alert("Open reward! " + pairid);
+
+
+
+buffer = "";
+ 
+ 
+
+
+
+
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+buffer += "<h3>Add Rewards (Experts/Pool Managers)</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+
+ 
+buffer += "Amount: (any Token is allowed, make sure to add correct precision!)<br>";
+buffer += "<input id='tokenamount1_reward' type='text' class='tokenamount'  onkeyup='' placeholder='42.0000 TOK' value=''> <br>";
+
+buffer += "<br>";
+buffer += "Token Contract:<br>";
+buffer += "<input id='tokenamount1_contract' type='text' class='tokenamount'  onkeyup='' placeholder='tokentoken11' value=''> <br>";
+
+
+buffer += "<br>";
+buffer += "Reward per Day: (100 = 1% per day)<br>";
+buffer += "<input id='loading_ratio' type='text' class='tokenamount'  onkeyup='' placeholder='' value='100'> <br>";
+
+
+buffer += "<br>";
+buffer += "Linear distribution<br>";
+buffer += "<input id='fixed_load' type='checkbox'  value='1' checked='checked' > <br>";
+
+
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+
+
+
+ 
+buffer += "<div id='' onclick='dopositrewardaction("+pairid+")' class='swapbutton' style='text-align:center;width:200px;' > Add Liquidity </div>";
+
+
+buffer += "<br>";
+buffer += "<br>";
+
+/*
+then openreward
+     fixed load = true => linear
+     loading_ratio = 100 = 1% per day
+*/
+
+ buffer += "<br>";
+
+buffer += "</div>";
+buffer += "</div>";
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+
+document.getElementById('liquiditydiv').innerHTML    = "";
+document.getElementById('createmarketdiv').innerHTML = "";
+document.getElementById('minediv').innerHTML         = "";
+mininigdialog = 0;
+if (document.getElementById('swapdiv'))  document.getElementById('swapdiv').innerHTML = "";
+document.getElementById('pairdivs').innerHTML        = "";
+document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = buffer;
+document.getElementById('votediv').innerHTML = "";
+
+} // depositreward
+
+
+function callback_render_manageliquidity( value )
+{
+
+if (value.rows.length == 0) return;   
+
+console.log( value );
+
+buffer = "";
+ 
+
+i = 0;
+
+
+
+global_pair_id            = value.rows[i].id;
+global_token1             = value.rows[i].token1;
+global_token2             = value.rows[i].token2;
+    
+global_tokensym1          = getLastPart(global_token1);
+global_tokensym2          = getLastPart(global_token2);
+    
+global_token_contract1    = value.rows[i].token_contract1;
+global_token_contract2    = value.rows[i].token_contract2;
+
+global_lptoken            = value.rows[i].lptoken;
+global_price1             = value.rows[i].price1;
+global_price2             = value.rows[i].price2;
+
+ 
+//render_swap_area();
+ 
+ 
+manageliquidity(-1);
+
+} // callback_render_manageliquidity
+
+
+
+ 
+function manageliquidityload( tokenid )
+{
+
+
+getdata(callback_render_manageliquidity, "sovdex2trade", "sovdex2trade", "relays", tokenid, "", "", 1 );
+
+
+//alert("Load " + manageliquidity);
+} // 
+
+
+// commendt: manageliquidity unused?
+function manageliquidity( manageliquidity )
 {
 //alert("Manage... soon");
 
-
+// ... manageliquidity
 
 get_token_balance1(global_token1, global_token_contract1);
 get_token_balance2(global_token2, global_token_contract2);
@@ -2153,7 +2660,7 @@ buffer += "Total LP-Token balance: "+global_lptoken+"<br>";
 
 
 
-buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+//buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
 buffer += "Token1:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
@@ -2169,7 +2676,7 @@ buffer += "<br>";
 buffer += "<br>";
 
  
-buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
+//buffer += "<div id='tokenbalance2' style='float:right;'>Balance: yyy</div><br>";
 buffer += "Token2:<br>";
 buffer += global_tokensym2+"<br>";
 buffer += global_token_contract2+"<br>";
@@ -2202,7 +2709,21 @@ buffer += "LP-Balance: <span id='tokenbalance_lp' style=''>...</span><br>";
 buffer += "<br>";
 buffer += "<br>";
 
-buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\")' class='swapbutton' style='text-align:center;width:200px;' > Remove Liquidity </div>";
+
+/*
+buffer += '<input id="liquidrembar" type="range" min="25" max="100" step="25.0" value="50" oninput="this.nextElementSibling.value = this.value" style="width:90%">';
+buffer += ' <output>1</output>';
+buffer += '<br>';
+*/
+
+
+buffer += "<strong>Remove Liquidity</strong><br><br>";
+
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",25)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 25% </div>";
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",50)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 50% </div>";
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",75)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 75% </div>";
+buffer += "<div id='swapaction' onclick='removeliquidityaction("+global_pair_id+",\""+token_contract1+"\",100)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > 100% </div>";
+buffer += "<div style='clear:both'></div>";
 
 
 buffer += "<br>";
@@ -2223,7 +2744,11 @@ document.getElementById('minediv').innerHTML         = "";
 mininigdialog = 0;
 if (document.getElementById('swapdiv')) document.getElementById('swapdiv').innerHTML         = "";
 document.getElementById('pairdivs').innerHTML        = "";
+document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('votediv').innerHTML = "";
 
+ 
 
 
 // global_lptoken
@@ -2368,14 +2893,26 @@ if (1)
 
 
 
-function removeliquidityaction( pair_id, token_contract1 )
+function removeliquidityaction( pair_id, token_contract1, percent )
 {
-// 
-// alert("Remove");
+
 
 //tokenbalance_lp
 tokenbalance_lp = document.getElementById('tokenbalance_lp').innerHTML; 
+
+tmp_tokensym1 = getLastPart(tokenbalance_lp);
+tokenbalance_lp_tmp = extractNumbers(tokenbalance_lp);
+
+// alert("Remove tokenbalance_lp:" + tokenbalance_lp + " - " + percent + ' - ' + (100/percent) );
+ 
 console.log("tokenbalance_lp: " + tokenbalance_lp);
+
+tokenbalance_lp_tmp =  Math.floor(  tokenbalance_lp_tmp * (percent/100)  ); 
+
+
+tokenbalance_lp_tmp = tokenbalance_lp_tmp + " " +  tmp_tokensym1;
+
+// alert("Remove " + percent + ' -::: ' +  tokenbalance_lp + " (" +(percent/100)+ ") ["+tokenbalance_lp_tmp+"]");
 
 var theactions = [];
 
@@ -2400,7 +2937,8 @@ memo = "";
                  data: {
                        "from": global_account + "",
                        "to": "sovdex2trade",
-                       "quantity" : tokenbalance_lp,
+                   //    "quantity" : tokenbalance_lp,
+                       "quantity" : tokenbalance_lp_tmp,
                        "memo": memo
                        }
                  };
@@ -2424,7 +2962,7 @@ memo = "";
                                 permission: "active"
                                 }],
                  data: {
-                       "lptoken" : tokenbalance_lp,
+                       "lptoken" : tokenbalance_lp_tmp,
                        "user": global_account + ""
                        }
                  };
@@ -2453,6 +2991,368 @@ if (1)
 } // removeliquidityaction
 
 
+
+
+var svx_power_staked = 0;
+
+function callback_render_initvote( value )
+{
+
+if (value.rows.length == 0) return;   
+
+console.log( value );
+
+buffer = "";
+ 
+
+i = 0;
+
+
+ 
+global_pair_id            = value.rows[i].relay_id;
+svx_power_staked = value.rows[i].svx_power_staked;
+ 
+//render_swap_area();
+ // svx_power_staked
+ 
+votepool(global_pair_id);
+
+ 
+
+} // callback_render_initvote
+
+
+
+function initvoteload( pair_id )
+{
+//alert(" votepool pair_id xxx: " + pair_id );
+
+
+//getdata(callback_render_initvote, "sovdex2trade", "sovdex2trade", "relays", pair_id, "", "", 1 );
+getdata(callback_render_initvote, "sovdexlpvote", global_account, "userstakes", pair_id, "", "", 1 );
+
+
+//votepool(pair_id);
+}
+
+
+
+
+
+
+function callback_render_initunvote( value )
+{
+
+if (value.rows.length == 0) return;   
+
+console.log( value );
+
+buffer = "";
+ 
+
+i = 0;
+
+
+ 
+global_pair_id            = value.rows[i].relay_id;
+svx_power_staked = value.rows[i].svx_power_staked;
+ 
+//render_swap_area();
+ // svx_power_staked
+ 
+//votepool(global_pair_id);
+// alfalfalf
+ unvotepool(global_pair_id);
+
+} // callback_render_initvote
+
+
+
+function initunvoteload( pair_id )
+{
+//alert(" votepool pair_id xxx: " + pair_id );
+
+
+//getdata(callback_render_initvote, "sovdex2trade", "sovdex2trade", "relays", pair_id, "", "", 1 );
+getdata(callback_render_initunvote, "sovdexlpvote", global_account, "userstakes", pair_id, "", "", 1 );
+
+
+//votepool(pair_id);
+}
+
+
+
+function votepool( pair_id )
+{
+//alert(" votepool pair_id: " + pair_id );
+
+ 
+
+
+buffer = "";
+ 
+
+
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+ buffer += "<h3>Vote</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+buffer += "<strong>Voting</strong><br>"; 
+//buffer += "Total LP-Token balance: "+global_lptoken+"<br>"; 
+buffer += "SVX Power Staked: "+svx_power_staked+"<br>"; 
+
+
+
+
+//buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+//buffer += "Token1:<br>";
+buffer += global_tokensym1+"<br>";
+buffer += global_token_contract1+"<br>";
+buffer += "<br>";
+buffer += "<input id='tokenamount1_vote' type='text' class='tokenamount' style='width:50%'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter SVX amount' value=''> <br>";
+
+buffer += "<br>";
+
+ 
+//buffer += "<div id='voteaction' onclick='voteaction("+global_pair_id+",\""+token_contract1+"\",25)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > Vote </div>";
+buffer += "<div id='voteaction' onclick='voteaction("+pair_id+")' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > Vote </div>";
+ 
+
+buffer += "<br>";
+buffer += "<br>";
+buffer += "<span style='font-size:8px;float:right;'>Pair-ID: "+pair_id+"</span><br>";
+
+
+buffer += "</div>";
+buffer += "</div>";
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+
+
+document.getElementById('liquiditydiv').innerHTML    = "";
+document.getElementById('createmarketdiv').innerHTML = "";                         
+document.getElementById('minediv').innerHTML         = "";
+document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('swapdiv').innerHTML = "";
+document.getElementById('votediv').innerHTML = buffer;
+
+} // votepool
+
+
+//alfalf
+
+function voteaction( pair_id )
+{
+tokenamount1_vote = document.getElementById('tokenamount1_vote').value;
+
+tokenamount1_vote = Number(tokenamount1_vote).toFixed(4) + " SVX" ;
+
+ 
+
+//alert("vote pairx : " + pair_id+ ' tokenamount1_vote:' + tokenamount1_vote );
+ 
+
+var theactions = [];
+
+
+ 
+memo = "";
+
+
+
+
+    
+    
+    var action = {
+                 account: "sovdexlpvote",
+                 name: 'vote',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+
+                       "svx" : tokenamount1_vote,
+                       "relay_id": pair_id + ""
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+     
+             
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+    
+     
+ 
+if (1)
+   {
+   //transact( func_success, func_error, theactions );
+   transact( func_success_vote, func_error, theactions );
+   
+   }    
+   
+   
+} // voteaction
+
+
+
+function unvoteaction( pair_id )
+{
+tokenamount1_unvote = document.getElementById('tokenamount1_unvote').value;
+
+tokenamount1_unvote = Number(tokenamount1_unvote).toFixed(4) + " SVX" ;
+
+ 
+
+//alert("vote pairx : " + pair_id+ ' tokenamount1_unvote:' + tokenamount1_unvote );
+ 
+
+var theactions = [];
+
+
+ 
+memo = "";
+
+
+
+
+    
+    
+    var action = {
+                 account: "sovdexlpvote",
+                 name: 'unvote',
+                 authorization: [{
+                                actor: global_account + "",
+                                permission: "active"
+                                }],
+                 data: {
+                       "user": global_account + "",
+
+                       "svx" : tokenamount1_unvote,
+                       "relay_id": pair_id + ""
+                       }
+                 };
+
+ 
+    theactions.push(action);
+    
+    
+     
+             
+    
+    console.log("----- " + global_account);
+    console.log(theactions);
+    
+    
+     
+ 
+if (1)
+   {
+  // transact( func_success, func_error, theactions );
+   transact( func_success_unvote, func_error, theactions );
+   
+   }    
+   
+   
+} // unvoteaction
+
+
+function unvotepool( pair_id )
+{
+//alert("unvotepool pair_id y:  " + pair_id );
+
+
+
+buffer = "";
+ 
+
+
+buffer += "<div style='margin-left:5%;text-align:left;'>";
+ buffer += "<h3>Unvote</h3>";
+buffer += "</div>";
+
+
+
+buffer += "<div class='swapwnd' style=''>";
+buffer += "<br>";
+buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
+
+
+buffer += "<strong>Voting</strong><br>"; 
+//buffer += "Total LP-Token balance: "+global_lptoken+"<br>"; 
+buffer += "SVX Power Staked: "+svx_power_staked+"<br>"; 
+
+
+
+
+//buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
+//buffer += "Token1:<br>";
+buffer += global_tokensym1+"<br>";
+buffer += global_token_contract1+"<br>";
+buffer += "<br>";
+buffer += "<input id='tokenamount1_unvote' type='text' class='tokenamount' style='width:50%'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter SVX amount' value=''> <br>";
+
+buffer += "<br>";
+
+ 
+//buffer += "<div id='voteaction' onclick='voteaction("+global_pair_id+",\""+token_contract1+"\",25)' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > Vote </div>";
+buffer += "<div id='voteaction' onclick='unvoteaction("+pair_id+")' class='swapbutton' style='text-align:center;width:100px;float:left;margin-right:10px;' > Unvote </div>";
+ 
+
+buffer += "<br>";
+buffer += "<br>";
+buffer += "<span style='font-size:8px;float:right;'>Pair-ID: "+pair_id+"</span><br>";
+
+
+buffer += "</div>";
+buffer += "</div>";
+
+//buffer += "token id " + global_pair_id + " " + swapdirection;
+
+
+
+
+document.getElementById('liquiditydiv').innerHTML    = "";
+document.getElementById('createmarketdiv').innerHTML = "";                         
+document.getElementById('minediv').innerHTML         = "";
+document.getElementById('pairdivs').innerHTML = "";
+document.getElementById('pooldivs').innerHTML        = "";
+document.getElementById('rewarddiv').innerHTML       = "";
+document.getElementById('swapdiv').innerHTML = "";
+document.getElementById('votediv').innerHTML = buffer;
+
+
+} // unvotepool
+
+
+function extractNumbers(str) {
+    // Remove all non-numeric characters except dot (.)
+    const cleanedString = str.replace(/[^0-9.]/g, '');
+    
+    // Convert the cleaned string to a floating point number
+    const number = parseFloat(cleanedString);
+    
+    // Return the floating point number
+    return number;
+}
 
 
 var global_aprs = null;
