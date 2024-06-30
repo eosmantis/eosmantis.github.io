@@ -166,7 +166,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1e</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
  
 
 
@@ -229,6 +229,35 @@ get_token_balance_lp(lptoken, "sovdex2trade");
  
 alert(message);
 }
+
+
+function func_success_vote( message )
+{
+/*
+get_token_balance1(global_token1, global_token_contract1);
+get_token_balance2(global_token2, global_token_contract2);
+get_token_balance_lp(lptoken, "sovdex2trade");
+ */
+//alert('vote global_pair_id:'+global_pair_id);
+alert(message);
+
+initvoteload(global_pair_id);
+}
+
+
+function func_success_unvote( message )
+{
+/*
+get_token_balance1(global_token1, global_token_contract1);
+get_token_balance2(global_token2, global_token_contract2);
+get_token_balance_lp(lptoken, "sovdex2trade");
+ */
+//alert('vote global_pair_id:'+global_pair_id);
+alert(message);
+
+initunvoteload(global_pair_id);
+}
+
 
 function func_error( message )
 {
@@ -3077,17 +3106,17 @@ buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
 
 buffer += "<strong>Voting</strong><br>"; 
 //buffer += "Total LP-Token balance: "+global_lptoken+"<br>"; 
-buffer += "Total svx_power_staked: "+svx_power_staked+"<br>"; 
+buffer += "SVX Power Staked: "+svx_power_staked+"<br>"; 
 
 
 
 
 //buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
-buffer += "Token1:<br>";
+//buffer += "Token1:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
 buffer += "<br>";
-buffer += "<input id='tokenamount1_vote' type='text' class='tokenamount'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter SVX amount' value=''> <br>";
+buffer += "<input id='tokenamount1_vote' type='text' class='tokenamount' style='width:50%'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter SVX amount' value=''> <br>";
 
 buffer += "<br>";
 
@@ -3131,7 +3160,7 @@ tokenamount1_vote = Number(tokenamount1_vote).toFixed(4) + " SVX" ;
 
  
 
-alert("vote pairx : " + pair_id+ ' tokenamount1_vote:' + tokenamount1_vote );
+//alert("vote pairx : " + pair_id+ ' tokenamount1_vote:' + tokenamount1_vote );
  
 
 var theactions = [];
@@ -3175,7 +3204,9 @@ memo = "";
  
 if (1)
    {
-   transact( func_success, func_error, theactions );
+   //transact( func_success, func_error, theactions );
+   transact( func_success_vote, func_error, theactions );
+   
    }    
    
    
@@ -3191,7 +3222,7 @@ tokenamount1_unvote = Number(tokenamount1_unvote).toFixed(4) + " SVX" ;
 
  
 
-alert("vote pairx : " + pair_id+ ' tokenamount1_unvote:' + tokenamount1_unvote );
+//alert("vote pairx : " + pair_id+ ' tokenamount1_unvote:' + tokenamount1_unvote );
  
 
 var theactions = [];
@@ -3235,7 +3266,9 @@ memo = "";
  
 if (1)
    {
-   transact( func_success, func_error, theactions );
+  // transact( func_success, func_error, theactions );
+   transact( func_success_unvote, func_error, theactions );
+   
    }    
    
    
@@ -3265,17 +3298,17 @@ buffer += "<div class='swapwnd_inner' style='text-align:left;'>";
 
 buffer += "<strong>Voting</strong><br>"; 
 //buffer += "Total LP-Token balance: "+global_lptoken+"<br>"; 
-buffer += "Total svx_power_staked: "+svx_power_staked+"<br>"; 
+buffer += "SVX Power Staked: "+svx_power_staked+"<br>"; 
 
 
 
 
 //buffer += "<div id='tokenbalance1' style='float:right;'>Balance: xxx</div><br>";
-buffer += "Token1:<br>";
+//buffer += "Token1:<br>";
 buffer += global_tokensym1+"<br>";
 buffer += global_token_contract1+"<br>";
 buffer += "<br>";
-buffer += "<input id='tokenamount1_unvote' type='text' class='tokenamount'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter SVX amount' value=''> <br>";
+buffer += "<input id='tokenamount1_unvote' type='text' class='tokenamount' style='width:50%'  onkeyup='action_keyup_tokenamount1(event)' placeholder='Please enter SVX amount' value=''> <br>";
 
 buffer += "<br>";
 
