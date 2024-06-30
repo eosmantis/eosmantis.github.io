@@ -98,7 +98,15 @@
 
  
 <div id='menu' style='margin-left:5%;'>
-<small>EVERYTHING HERE IS EXPERIMENTAL!!! </small>
+<small>EVERYTHING HERE IS EXPERIMENTAL!!! </small><br>
+
+<div style='float:right;margin-right:5%;'>
+<span id='balance_eos' ></span> 
+<span id='balance_svx' ></span> 
+<span id='balance_stakedsvx' ></span> 
+</div>
+
+
 </div>
 
 
@@ -166,7 +174,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1e</div>
  
 
 
@@ -504,6 +512,10 @@ console.log("THREAD");
 
 //getsovsupply();
 
+// alfalf
+
+if ( (cnt % 2) == 0 ) getbalance_eos();
+if ( (cnt % 2) == 0 ) getbalance_svx();
 
 
 if (mininigdialog == 1)
@@ -533,13 +545,13 @@ if ( (cnt % 4) == 0 ) getbalancedata();
 if ( (cnt % 6) == 0 ) getsovbalancedata();
 */
 
- 
+ /*
 console.log("first_sov_supply: " );
 console.log(first_sov_supply);
 
 console.log("sovburneddiff: " );
 console.log(sovburneddiff);
-
+*/
 cnt++; 
 var time = setTimeout("update_thread()", 3000);
   
@@ -551,6 +563,7 @@ var time = setTimeout("update_thread()", 3000);
 function getbalance_eos()
 {
 //alert("test getdata");
+console.log("--. getbalance_eos " + getbalance_eos);
 
 getaccount(global_account).then(function(value) {
              
@@ -577,8 +590,12 @@ console.log("BBBB:" + balance);
                                 net_proz = Number(net_proz).toFixed(1);
                                 
                              
-                             //   document.getElementById('balance_eos').innerHTML = balance;
-
+                            document.getElementById('balance_eos').innerHTML = balance + ' | ';
+/*
+<span id='balance_eos' >beos...</span> 
+<span id='balance_svx' >bsvx...</span> 
+<span id='balance_stakedsvx' >sbsvx...</span> 
+*/
 
   if (document.getElementById('minecpu')) {
                                     cpu_proz = Number(cpu_proz).toFixed(0) * 1;
@@ -607,6 +624,45 @@ console.log("BBBB:" + balance);
 
 //getdata(callback_render_balance_eos, "eosio.token", global_account, "accounts", "", "", "", 1 );
 } // getbalance_eos
+
+
+
+ 
+
+function callback_render_svxbalance( value )
+{
+
+if (value.rows.length == 0) return;   
+
+balance = value.rows[0].balance;
+storebalance = value.rows[0].storebalance;
+ 
+document.getElementById('balance_svx').innerHTML = "" + balance + ' | ';
+
+document.getElementById('balance_stakedsvx').innerHTML = "" + storebalance + ' (staked)';
+
+/*
+<span id='balance_eos' >..</span> |&nbsp;
+<span id='balance_svx' >...</span> |&nbsp;
+Staked <span id='balance_stakedsvx' >...</span> 
+*/
+
+/*
+ 
+*/
+
+console.log( value );
+} // callback_render_svxbalance
+
+ 
+
+// alfalf
+function getbalance_svx()
+{
+getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", "", "", "", 112 );
+
+} // getbalance_svx
+
 
 
  
@@ -1867,7 +1923,7 @@ buffer += "</div>";
 buffer += "Create Rewards<br><small style='font-size:10px;'>(Pool Manager)</small>";
 buffer += "</div>";
 
-// alfalf
+
       buffer += "<div  onclick='initunvoteload("+tmp_relay_id+")'  class='swapbutton'  style='float:right;margin-right:20px;text-align:center;text-decoration:none;cursor:pointer;'>";
 buffer += "Unvote<br><small style='font-size:10px;'> </small>";
 buffer += "</div>";
@@ -3061,7 +3117,7 @@ svx_power_staked = value.rows[i].svx_power_staked;
  // svx_power_staked
  
 //votepool(global_pair_id);
-// alfalfalf
+
  unvotepool(global_pair_id);
 
 } // callback_render_initvote
@@ -3150,7 +3206,7 @@ document.getElementById('votediv').innerHTML = buffer;
 } // votepool
 
 
-//alfalf
+
 
 function voteaction( pair_id )
 {
