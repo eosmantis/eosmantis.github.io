@@ -174,7 +174,7 @@
  
 <br>
 <br>
-<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1e</div>
+<div style='float:right;margin-right:5%;margin-bottom:20px;font-size:12px;'>frontend V0.1f</div>
  
 
 
@@ -512,7 +512,7 @@ console.log("THREAD");
 
 //getsovsupply();
 
-// alfalf
+
 
 if ( (cnt % 2) == 0 ) getbalance_eos();
 if ( (cnt % 2) == 0 ) getbalance_svx();
@@ -637,9 +637,17 @@ if (value.rows.length == 0) return;
 balance = value.rows[0].balance;
 storebalance = value.rows[0].storebalance;
  
-document.getElementById('balance_svx').innerHTML = "" + balance + ' | ';
 
-document.getElementById('balance_stakedsvx').innerHTML = "" + storebalance + ' (staked)';
+
+tmp_balance      = extractNumbers(balance);
+tmp_storebalance = extractNumbers(storebalance);
+free = ' | ' +  (tmp_balance - tmp_storebalance).toFixed(8) + " (unstaked)";
+ 
+document.getElementById('balance_svx').innerHTML = "" + balance + ' | '  ;
+
+
+
+document.getElementById('balance_stakedsvx').innerHTML = "" + storebalance + ' (staked)' + free;
 
 /*
 <span id='balance_eos' >..</span> |&nbsp;
@@ -656,7 +664,7 @@ console.log( value );
 
  
 
-// alfalf
+
 function getbalance_svx()
 {
 getdata(callback_render_svxbalance, "svxmintofeos", global_account, "accounts", "", "", "", 112 );
@@ -1377,6 +1385,49 @@ if ( document.getElementById('tokenbalance_lp') )
      console.log("no tokenbalance_lp div!");
      }
 
+
+// alfalf
+if ( document.getElementById('lptokenbalance') ) 
+   {
+   /*
+   lptoken = SVXEOS
+   */
+   tmp_balance         = extractNumbers(balance);
+   tmp_bglobal_lptoken = extractNumbers(global_lptoken);
+   global_token1_val   = extractNumbers(global_token1);
+   global_token2_val   = extractNumbers(global_token2);
+   
+   fixed1 = getprecision(global_token1);
+   fixed2 = getprecision(global_token2);
+
+   /*
+  
+
+ 
+console.log(tokenamount1 + ' ' + fixed1 + ' ' + tokenamount2 + ' ' + fixed2 + " " );
+
+tokenamount1 = Number(tokenamount1).toFixed(fixed1) + " " + global_tokensym1;   
+tokenamount2 = Number(tokenamount2).toFixed(fixed2) + " " + global_tokensym2;   
+
+
+   */
+   faktor = tmp_balance / tmp_bglobal_lptoken;
+   
+   share_token1 = global_token1_val * faktor;
+   share_token2 = global_token2_val * faktor;
+   
+   share_bal_token1 = Number(share_token1).toFixed(fixed1) + " " + global_tokensym1;  
+   share_bal_token2 = Number(share_token2).toFixed(fixed2) + " " + global_tokensym2;  
+   
+//   document.getElementById('lptokenbalance').innerHTML = global_tokensym1+ " " + global_tokensym2 + " " + "faktor: " +faktor+  " global_token1_val:" + global_token1_val+   " global_token2_val:" + global_token2_val  + " global_lptoken:" +global_lptoken+ " balance:" + balance + " lptoken: " + lptoken + " global_pair_id:"+ global_pair_id + " global_token1:" + global_token1 + " global_token2:"+global_token2 ;
+//   document.getElementById('lptokenbalance').innerHTML =  "share_token1:" +share_token1+   " share_token2:" +share_token2+" faktor: " +faktor+  " global_token1_val:" + global_token1_val+   " global_token2_val:" + global_token2_val  + " global_lptoken:" +global_lptoken+ " balance:" + balance + " lptoken: " + lptoken + " global_pair_id:"+ global_pair_id + " global_token1:" + global_token1 + " global_token2:"+global_token2 + " <br>" +
+
+   if ( !Number.isNaN(share_token1) )
+       document.getElementById('lptokenbalance').innerHTML =   "" + share_bal_token1 +  "<br>" + share_bal_token2;
+   } else
+     {
+     console.log("no lptokenbalance div!");
+     }
 
 
  
@@ -2755,11 +2806,13 @@ buffer += "<br>";
 
 buffer += "<div class='separator'>&nbsp;</div>";
 
- buffer += "<h3>My Liquidity</h3>";
+buffer += "<h3>My Liquidity</h3>";
+
 
  
 
 buffer += "LP-Balance: <span id='tokenbalance_lp' style=''>...</span><br>";
+buffer += "<span id='lptokenbalance'>...</span><br>";
 
 
 buffer += "<br>";
@@ -3449,7 +3502,8 @@ getdata(callback_render_read_aprs, "sovdex2trade", "sovdex2trade", "aprs", "", "
 
 
 
-function getprecision( string ) {
+function getprecision( string ) 
+{
  
     const parts = string.split(' ');
 
@@ -3468,7 +3522,11 @@ function getprecision( string ) {
     }
 
     return number.length - decimalPointIndex - 1;
-}
+} // getprecision
+
+
+
+
 
 readpairs();
 read_aprs();
